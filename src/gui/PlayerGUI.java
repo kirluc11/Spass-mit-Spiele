@@ -21,6 +21,7 @@ public class PlayerGUI extends javax.swing.JFrame {
      */
     public PlayerGUI() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -34,33 +35,43 @@ public class PlayerGUI extends javax.swing.JFrame {
 
         pnTop = new javax.swing.JPanel();
         pnServer = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        pnIP = new javax.swing.JPanel();
+        tfIP = new javax.swing.JTextField();
+        pnPort = new javax.swing.JPanel();
+        tfPort = new javax.swing.JTextField();
+        btConnect = new javax.swing.JButton();
+        btHome = new javax.swing.JButton();
         pnGame = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         pnTop.setLayout(new java.awt.BorderLayout());
 
-        pnServer.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Server", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Open Sans Extrabold", 0, 14))); // NOI18N
         pnServer.setLayout(new java.awt.GridLayout(1, 4, 5, 0));
 
-        jTextField1.setText("jTextField1");
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "IP Adresse", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Open Sans", 0, 12))); // NOI18N
-        pnServer.add(jTextField1);
+        pnIP.setBorder(javax.swing.BorderFactory.createTitledBorder("IP-Adress"));
+        pnIP.setLayout(new java.awt.BorderLayout());
 
-        jTextField2.setText("jTextField2");
-        pnServer.add(jTextField2);
+        tfIP.setText("127.0.0.1");
+        pnIP.add(tfIP, java.awt.BorderLayout.PAGE_START);
 
-        jButton1.setText("jButton1");
-        pnServer.add(jButton1);
+        pnServer.add(pnIP);
+
+        pnPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Port"));
+        pnPort.setLayout(new java.awt.BorderLayout());
+
+        tfPort.setText("69");
+        pnPort.add(tfPort, java.awt.BorderLayout.CENTER);
+
+        pnServer.add(pnPort);
+
+        btConnect.setText("Connect");
+        pnServer.add(btConnect);
 
         pnTop.add(pnServer, java.awt.BorderLayout.CENTER);
 
-        jButton2.setText("jButton2");
-        pnTop.add(jButton2, java.awt.BorderLayout.EAST);
+        btHome.setText("Home");
+        pnTop.add(btHome, java.awt.BorderLayout.EAST);
 
         getContentPane().add(pnTop, java.awt.BorderLayout.NORTH);
 
@@ -72,7 +83,7 @@ public class PlayerGUI extends javax.swing.JFrame {
         );
         pnGameLayout.setVerticalGroup(
             pnGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 229, Short.MAX_VALUE)
+            .addGap(0, 257, Short.MAX_VALUE)
         );
 
         getContentPane().add(pnGame, java.awt.BorderLayout.CENTER);
@@ -127,12 +138,14 @@ public class PlayerGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton btConnect;
+    private javax.swing.JButton btHome;
     private javax.swing.JPanel pnGame;
+    private javax.swing.JPanel pnIP;
+    private javax.swing.JPanel pnPort;
     private javax.swing.JPanel pnServer;
     private javax.swing.JPanel pnTop;
+    private javax.swing.JTextField tfIP;
+    private javax.swing.JTextField tfPort;
     // End of variables declaration//GEN-END:variables
 }
