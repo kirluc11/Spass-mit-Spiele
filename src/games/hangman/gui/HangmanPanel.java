@@ -1,16 +1,13 @@
 package games.hangman.gui;
 
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,7 +34,6 @@ public class HangmanPanel extends javax.swing.JPanel
         input();
     }
 
-    
     @Override
     public void paint(Graphics g)
     {
@@ -158,7 +154,47 @@ public class HangmanPanel extends javax.swing.JPanel
         }
         lbAnzeige.setText(ausg);
     }
-    
+
+    public void searchLetter(char searchLetter)
+    {
+        boolean boo = true;
+
+        for (int i1 = 0; i1 < c1.length; i1++)
+        {
+            if (c[i1] == searchLetter)
+            {
+                boo = false;
+            } else if (c1[i1] == searchLetter)
+            {
+                c[i1] = searchLetter;
+                help += 1;
+                boo = false;
+            }
+        }
+
+        ausg = "";
+        for (int i = 0; i < c.length; i++)
+        {
+            ausg += c[i] + " ";
+        }
+
+        if (boo == true)
+        {
+            art += 1;
+        }
+
+        repaint();
+        if (art == 10)
+        {
+            JOptionPane.showMessageDialog(null, "Game Over\n Das Wort war '" + eing + "'", "", JOptionPane.ERROR_MESSAGE);
+        }
+        lbAnzeige.setText(ausg);
+        if (help == eing.length())
+        {
+            JOptionPane.showMessageDialog(null, "Glückwunsch!!\nDu hast das Wort erraten :DD");
+        }
+        ftfInput.setText("");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -213,6 +249,13 @@ public class HangmanPanel extends javax.swing.JPanel
             ex.printStackTrace();
         }
         ftfInput.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ftfInput.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                onClicked(evt);
+            }
+        });
         paBottom.add(ftfInput);
 
         btSearch.setText("Search");
@@ -231,44 +274,26 @@ public class HangmanPanel extends javax.swing.JPanel
     private void onSearch(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onSearch
     {//GEN-HEADEREND:event_onSearch
         String str = ftfInput.getText();
-        char ch = str.charAt(0);
-        boolean boo = true;
-
-        for (int i1 = 0; i1 < c1.length; i1++)
+        if (!str.isEmpty())
         {
-            if (c[i1] == ch)
+            char ch = str.charAt(0);
+            searchLetter(ch);
+        }
+
+    }//GEN-LAST:event_onSearch
+
+    private void onClicked(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onClicked
+    {//GEN-HEADEREND:event_onClicked
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            String str = ftfInput.getText();
+            if (!str.isEmpty())
             {
-                boo = false;
-            } else if (c1[i1] == ch)
-            {
-                c[i1] = ch;
-                help += 1;
-                boo = false;
+                char ch = str.charAt(0);
+                searchLetter(ch);
             }
         }
-
-        ausg = "";
-        for (int i = 0; i < c.length; i++)
-        {
-            ausg += c[i] + " ";
-        }
-
-        if (boo == true)
-        {
-            art += 1;
-        }
-
-        repaint();
-        if (art == 10)
-        {
-            JOptionPane.showMessageDialog(null, "Game Over\n Das Wort war '" + eing + "'", "", JOptionPane.ERROR_MESSAGE);
-        }
-        lbAnzeige.setText(ausg);
-        if (help == eing.length())
-        {
-            JOptionPane.showMessageDialog(null, "Glückwunsch!!\nDu hast das Wort erraten :DD");
-        }
-    }//GEN-LAST:event_onSearch
+    }//GEN-LAST:event_onClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
