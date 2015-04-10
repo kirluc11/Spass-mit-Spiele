@@ -174,13 +174,15 @@ public class HangmanPanel extends javax.swing.JPanel
         lbAnzeige = new javax.swing.JLabel();
         paZeichne = new javax.swing.JPanel();
         paBottom = new javax.swing.JPanel();
-        tfInput = new javax.swing.JTextField();
+        ftfInput = new javax.swing.JFormattedTextField();
         btSearch = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
         paTop.setBorder(javax.swing.BorderFactory.createTitledBorder("Hangman"));
         paTop.setLayout(new java.awt.GridLayout(1, 0));
+
+        lbAnzeige.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         paTop.add(lbAnzeige);
 
         add(paTop, java.awt.BorderLayout.PAGE_START);
@@ -202,7 +204,16 @@ public class HangmanPanel extends javax.swing.JPanel
         add(paZeichne, java.awt.BorderLayout.CENTER);
 
         paBottom.setLayout(new java.awt.GridLayout(1, 2));
-        paBottom.add(tfInput);
+
+        try
+        {
+            ftfInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("L")));
+        } catch (java.text.ParseException ex)
+        {
+            ex.printStackTrace();
+        }
+        ftfInput.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        paBottom.add(ftfInput);
 
         btSearch.setText("Search");
         btSearch.addActionListener(new java.awt.event.ActionListener()
@@ -219,7 +230,7 @@ public class HangmanPanel extends javax.swing.JPanel
 
     private void onSearch(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onSearch
     {//GEN-HEADEREND:event_onSearch
-        String str = tfInput.getText();
+        String str = ftfInput.getText();
         char ch = str.charAt(0);
         boolean boo = true;
 
@@ -262,10 +273,10 @@ public class HangmanPanel extends javax.swing.JPanel
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btSearch;
+    private javax.swing.JFormattedTextField ftfInput;
     private javax.swing.JLabel lbAnzeige;
     private javax.swing.JPanel paBottom;
     private javax.swing.JPanel paTop;
     private javax.swing.JPanel paZeichne;
-    private javax.swing.JTextField tfInput;
     // End of variables declaration//GEN-END:variables
 }
