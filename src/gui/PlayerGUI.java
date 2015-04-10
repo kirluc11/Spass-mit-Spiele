@@ -5,7 +5,7 @@
  */
 package gui;
 
-import games.hangman.GUI.HangmanPanel;
+import games.hangman.gui.HangmanPanel;
 import java.awt.BorderLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
