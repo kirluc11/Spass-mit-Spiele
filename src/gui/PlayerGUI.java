@@ -83,7 +83,8 @@ public class PlayerGUI extends javax.swing.JFrame {
 
         getContentPane().add(pnTop, java.awt.BorderLayout.NORTH);
 
-        pnGame.setLayout(new java.awt.GridLayout());
+        pnGame.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
+        pnGame.setLayout(new java.awt.GridLayout(1, 0));
         getContentPane().add(pnGame, java.awt.BorderLayout.CENTER);
 
         pack();
