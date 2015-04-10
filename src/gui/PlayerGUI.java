@@ -53,7 +53,7 @@ public class PlayerGUI extends javax.swing.JFrame {
         pnIP.setLayout(new java.awt.BorderLayout());
 
         tfIP.setText("127.0.0.1");
-        pnIP.add(tfIP, java.awt.BorderLayout.PAGE_START);
+        pnIP.add(tfIP, java.awt.BorderLayout.CENTER);
 
         pnServer.add(pnIP);
 
@@ -70,7 +70,7 @@ public class PlayerGUI extends javax.swing.JFrame {
 
         pnTop.add(pnServer, java.awt.BorderLayout.CENTER);
 
-        btHome.setText("Home");
+        btHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/pictures/home.png"))); // NOI18N
         pnTop.add(btHome, java.awt.BorderLayout.EAST);
 
         getContentPane().add(pnTop, java.awt.BorderLayout.NORTH);
@@ -79,7 +79,7 @@ public class PlayerGUI extends javax.swing.JFrame {
         pnGame.setLayout(pnGameLayout);
         pnGameLayout.setHorizontalGroup(
             pnGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 420, Short.MAX_VALUE)
         );
         pnGameLayout.setVerticalGroup(
             pnGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
