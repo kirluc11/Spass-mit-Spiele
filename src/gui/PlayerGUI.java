@@ -5,6 +5,8 @@
  */
 package gui;
 
+import games.hangman.GUI.HangmanPanel;
+import java.awt.BorderLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -21,7 +23,12 @@ public class PlayerGUI extends javax.swing.JFrame {
      */
     public PlayerGUI() {
         initComponents();
+        this.setSize(600,600);
         this.setLocationRelativeTo(null);
+        
+        pnGame.removeAll();
+        pnGame.add(new HangmanPanel());
+        
     }
 
     /**
@@ -31,7 +38,8 @@ public class PlayerGUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         pnTop = new javax.swing.JPanel();
         pnServer = new javax.swing.JPanel();
@@ -75,17 +83,7 @@ public class PlayerGUI extends javax.swing.JFrame {
 
         getContentPane().add(pnTop, java.awt.BorderLayout.NORTH);
 
-        javax.swing.GroupLayout pnGameLayout = new javax.swing.GroupLayout(pnGame);
-        pnGame.setLayout(pnGameLayout);
-        pnGameLayout.setHorizontalGroup(
-            pnGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 420, Short.MAX_VALUE)
-        );
-        pnGameLayout.setVerticalGroup(
-            pnGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 257, Short.MAX_VALUE)
-        );
-
+        pnGame.setLayout(new java.awt.GridLayout());
         getContentPane().add(pnGame, java.awt.BorderLayout.CENTER);
 
         pack();
