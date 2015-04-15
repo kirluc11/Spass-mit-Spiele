@@ -8,7 +8,6 @@ package games.hangman.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.HashSet;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,14 +21,12 @@ public class HangmanPanel extends javax.swing.JPanel
      * Creates new form HangmanPanel
      */
     private int art = 0;
-    private String inp = "";
+    private String eing;
+    private int laenge;
     char[] c;
-    private String output = "";
+    private String ausg = "";
     private char[] c1;
-    //Variable to check if the player has won
-    private int lenght = 0;
-    private boolean gameRunning;
-    private HashSet<Character> usedChar;
+    private int help = 0;
 
     public HangmanPanel()
     {
@@ -139,16 +136,13 @@ public class HangmanPanel extends javax.swing.JPanel
 
     public void input()
     {
-        while (inp.isEmpty())
-        {
-            inp = JOptionPane.showInputDialog("Please enter a word:").trim();
-        }
-        c = new char[inp.length()];
-        c1 = new char[inp.length()];
-        inp = inp.toLowerCase();
+        eing = JOptionPane.showInputDialog("Bitte geben sie ein Wort ein:\n"
+                + "(in Kleinbuchstaben)");
+        c = new char[eing.length()];
+        c1 = new char[eing.length()];
         for (int i = 0; i < c1.length; i++)
         {
-            c1[i] = inp.charAt(i);
+            c1[i] = eing.charAt(i);
         }
         for (int i = 0; i < c.length; i++)
         {
@@ -156,66 +150,56 @@ public class HangmanPanel extends javax.swing.JPanel
         }
         for (int i1 = 0; i1 < c.length; i1++)
         {
-            output += c[i1] + " ";
+            ausg += c[i1] + " ";
         }
-        lbAnzeige.setText(output);
-        usedChar = new HashSet<>();
-        gameRunning = true;
+        lbAnzeige.setText(ausg);
     }
 
-    
-    /**
-     * Search for character in word
-     * @param searchLetter 
-     */
     public void searchLetter(char searchLetter)
     {
+<<<<<<< HEAD
         ftfInput.setText("");
         if (!usedChar.contains(searchLetter))
         {
             usedChar.add(searchLetter);
             boolean boo = true;
+=======
+        boolean boo = true;
+>>>>>>> parent of 6f3c024... Hangman improvements
 
-            for (int i1 = 0; i1 < c1.length; i1++)
-            {
-                if (c[i1] == searchLetter)
-                {
-                    boo = false;
-                } else if (c1[i1] == searchLetter)
-                {
-                    c[i1] = searchLetter;
-                    lenght += 1;
-                    boo = false;
-                }
-            }
-
-            output = "";
-            for (int i = 0; i < c.length; i++)
-            {
-                output += c[i] + " ";
-            }
-
-            if (boo == true)
-            {
-                art += 1;
-            }
-
-            repaint();
-            if (art == 10)
-            {
-                JOptionPane.showMessageDialog(null, "Game Over\n The word was '" + inp + "'", "", JOptionPane.ERROR_MESSAGE);
-                gameRunning = false;
-            }
-            lbAnzeige.setText(output);
-            if (lenght == inp.length())
-            {
-                JOptionPane.showMessageDialog(null, "Congratulation!!\n You won :DD");
-                gameRunning = false;
-            }
-
-        }else
+        for (int i1 = 0; i1 < c1.length; i1++)
         {
-            JOptionPane.showMessageDialog(null, "Letter already used");
+            if (c[i1] == searchLetter)
+            {
+                boo = false;
+            } else if (c1[i1] == searchLetter)
+            {
+                c[i1] = searchLetter;
+                help += 1;
+                boo = false;
+            }
+        }
+
+        ausg = "";
+        for (int i = 0; i < c.length; i++)
+        {
+            ausg += c[i] + " ";
+        }
+
+        if (boo == true)
+        {
+            art += 1;
+        }
+
+        repaint();
+        if (art == 10)
+        {
+            JOptionPane.showMessageDialog(null, "Game Over\n Das Wort war '" + eing + "'", "", JOptionPane.ERROR_MESSAGE);
+        }
+        lbAnzeige.setText(ausg);
+        if (help == eing.length())
+        {
+            JOptionPane.showMessageDialog(null, "Glückwunsch!!\nDu hast das Wort erraten :DD");
         }
         
     }
@@ -230,23 +214,11 @@ public class HangmanPanel extends javax.swing.JPanel
     private void initComponents()
     {
 
-        pmGame = new javax.swing.JPopupMenu();
-        miRestart = new javax.swing.JMenuItem();
         paTop = new javax.swing.JPanel();
         lbAnzeige = new javax.swing.JLabel();
         paZeichne = new javax.swing.JPanel();
         paBottom = new javax.swing.JPanel();
         ftfInput = new javax.swing.JFormattedTextField();
-
-        miRestart.setText("Restart");
-        miRestart.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                onRestart(evt);
-            }
-        });
-        pmGame.add(miRestart);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -260,7 +232,6 @@ public class HangmanPanel extends javax.swing.JPanel
 
         paZeichne.setBackground(new java.awt.Color(0, 0, 0));
         paZeichne.setForeground(new java.awt.Color(255, 255, 255));
-        paZeichne.setComponentPopupMenu(pmGame);
 
         javax.swing.GroupLayout paZeichneLayout = new javax.swing.GroupLayout(paZeichne);
         paZeichne.setLayout(paZeichneLayout);
@@ -298,40 +269,39 @@ public class HangmanPanel extends javax.swing.JPanel
         add(paBottom, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
+<<<<<<< HEAD
+=======
+    private void onSearch(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onSearch
+    {//GEN-HEADEREND:event_onSearch
+        String str = ftfInput.getText();
+        if (!str.isEmpty())
+        {
+            char ch = str.charAt(0);
+            searchLetter(ch);
+        }
+
+    }//GEN-LAST:event_onSearch
+
+>>>>>>> parent of 6f3c024... Hangman improvements
     private void onClicked(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onClicked
     {//GEN-HEADEREND:event_onClicked
-        if (gameRunning)
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+            String str = ftfInput.getText();
+            if (!str.isEmpty())
             {
-                String input = ftfInput.getText();
-                if (!input.equals(" ")&&!input.isEmpty())
-                {
-                    input = input.toLowerCase();
-                    char ch = input.charAt(0);
-                    searchLetter(ch);
-                }
+                char ch = str.charAt(0);
+                searchLetter(ch);
             }
         }
     }//GEN-LAST:event_onClicked
-
-    private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
-    {//GEN-HEADEREND:event_onRestart
-        art = 0;
-        lenght = 0;
-        inp = "";
-        output="";
-        input();
-    }//GEN-LAST:event_onRestart
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField ftfInput;
     private javax.swing.JLabel lbAnzeige;
-    private javax.swing.JMenuItem miRestart;
     private javax.swing.JPanel paBottom;
     private javax.swing.JPanel paTop;
     private javax.swing.JPanel paZeichne;
-    private javax.swing.JPopupMenu pmGame;
     // End of variables declaration//GEN-END:variables
 }
