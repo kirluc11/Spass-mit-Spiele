@@ -26,9 +26,15 @@ public class PlayerGUI extends javax.swing.JFrame {
         this.setSize(600,600);
         this.setLocationRelativeTo(null);
         
-        pnGame.removeAll();
-        pnGame.add(new HangmanPanel());
+        HangmanPanel hmp = new HangmanPanel();
         
+        pnGame.removeAll();
+        pnGame.add(hmp);
+        
+        this.setVisible(true);
+                
+                
+        hmp.startGame();
     }
 
     /**
@@ -38,8 +44,7 @@ public class PlayerGUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         pnTop = new javax.swing.JPanel();
         pnServer = new javax.swing.JPanel();
@@ -83,7 +88,7 @@ public class PlayerGUI extends javax.swing.JFrame {
 
         getContentPane().add(pnTop, java.awt.BorderLayout.NORTH);
 
-        pnGame.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
+        pnGame.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         pnGame.setLayout(new java.awt.GridLayout(1, 0));
         getContentPane().add(pnGame, java.awt.BorderLayout.CENTER);
 
@@ -127,7 +132,7 @@ public class PlayerGUI extends javax.swing.JFrame {
             /* Create and display the form */
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new PlayerGUI().setVisible(true);
+                    new PlayerGUI();
                 }
             });
         } catch (Exception ex) {
