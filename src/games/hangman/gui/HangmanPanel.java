@@ -170,6 +170,7 @@ public class HangmanPanel extends javax.swing.JPanel
      */
     public void searchLetter(char searchLetter)
     {
+        ftfInput.setText("");
         if (!usedChar.contains(searchLetter))
         {
             usedChar.add(searchLetter);
@@ -216,7 +217,7 @@ public class HangmanPanel extends javax.swing.JPanel
         {
             JOptionPane.showMessageDialog(null, "Letter already used");
         }
-        ftfInput.setText("");
+        
     }
 
     /**
@@ -236,7 +237,6 @@ public class HangmanPanel extends javax.swing.JPanel
         paZeichne = new javax.swing.JPanel();
         paBottom = new javax.swing.JPanel();
         ftfInput = new javax.swing.JFormattedTextField();
-        btSearch = new javax.swing.JButton();
 
         miRestart.setText("Restart");
         miRestart.addActionListener(new java.awt.event.ActionListener()
@@ -270,13 +270,14 @@ public class HangmanPanel extends javax.swing.JPanel
         );
         paZeichneLayout.setVerticalGroup(
             paZeichneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 254, Short.MAX_VALUE)
+            .addGap(0, 235, Short.MAX_VALUE)
         );
 
         add(paZeichne, java.awt.BorderLayout.CENTER);
 
-        paBottom.setLayout(new java.awt.GridLayout(1, 2));
+        paBottom.setLayout(new java.awt.GridLayout(1, 1));
 
+        ftfInput.setBorder(javax.swing.BorderFactory.createTitledBorder("Input"));
         try
         {
             ftfInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("L")));
@@ -294,32 +295,8 @@ public class HangmanPanel extends javax.swing.JPanel
         });
         paBottom.add(ftfInput);
 
-        btSearch.setText("Search");
-        btSearch.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                onSearch(evt);
-            }
-        });
-        paBottom.add(btSearch);
-
         add(paBottom, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void onSearch(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onSearch
-    {//GEN-HEADEREND:event_onSearch
-        if (gameRunning)
-        {
-            String input = ftfInput.getText();
-            if (!input.equals(" ")&&!input.isEmpty())
-            {
-                input = input.toLowerCase();
-                char ch = input.charAt(0);
-                searchLetter(ch);
-            }
-        }
-    }//GEN-LAST:event_onSearch
 
     private void onClicked(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onClicked
     {//GEN-HEADEREND:event_onClicked
@@ -349,7 +326,6 @@ public class HangmanPanel extends javax.swing.JPanel
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btSearch;
     private javax.swing.JFormattedTextField ftfInput;
     private javax.swing.JLabel lbAnzeige;
     private javax.swing.JMenuItem miRestart;
