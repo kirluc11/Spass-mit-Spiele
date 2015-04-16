@@ -164,14 +164,12 @@ public class HangmanPanel extends javax.swing.JPanel {
         lenght = 0;
         inp = "";
         output = "";
+        ftfInput.setCaretPosition(0);
         startGame();
     }
 
-    /**
-     * Search for character in word
-     *
-     * @param searchLetter
-     */
+
+   
     public void searchLetter(char searchLetter) {
         ftfInput.setText("");
         if (!usedChar.contains(searchLetter)) {
