@@ -25,15 +25,15 @@ public class PlayerGUI extends javax.swing.JFrame {
         this.setSize(600,600);
         this.setLocationRelativeTo(null);
         
-        HangmanPanel hmp = new HangmanPanel();
-        
+        //HangmanPanel hmp = new HangmanPanel();
+        GameChooserPanel gcp = new GameChooserPanel();
         pnGame.removeAll();
-        pnGame.add(hmp);
+        pnGame.add(gcp);
         
         this.setVisible(true);
                 
                 
-        hmp.startGame();
+        //hmp.startGame();
     }
 
     /**
