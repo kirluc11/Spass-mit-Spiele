@@ -5,15 +5,21 @@
  */
 package gui;
 
+import games.hangman.gui.HangmanPanel;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -21,33 +27,76 @@ import javax.swing.JPanel;
  */
 public class GameChooserPanel extends javax.swing.JPanel
 {
+
+    private HashMap<String, Image> allGames = new HashMap<String, Image>();
+    private JPanel paGame;
+
     
-     private File hangman = new File(System.getProperty("user.dir")
-            + File.separator + "src"
-            + File.separator + "res"
-            + File.separator + "pictures"
-            + File.separator + "hangman.png");
+
+    public GameChooserPanel(JPanel paGame)
+    {
+        this.paGame = paGame;
+        initComponents();
+        try
+        {
+            this.gameAdding();
+        } catch (IOException ex)
+        {
+            Logger.getLogger(GameChooserPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Creates new form GameChooserPanel
      */
     public GameChooserPanel()
     {
+        
+    }
+    
+    public void gameAdding() throws IOException
+    {
+        String path = System.getProperty("user.dir")
+                + File.separator + "src"
+                + File.separator + "res"
+                + File.separator + "pictures";
 
-        initComponents();
-        try
+        allGames.put("Hangman", ImageIO.read(new File(path + File.separator + "hangman.png")));
+
+        for (String name : allGames.keySet())
         {
-            Image image = ImageIO.read(hangman);
-            ImageComponent imagecom = new ImageComponent(image);
-            paHangman.add(imagecom, BorderLayout.CENTER);
-        } catch (IOException ex)
-        {
-            Logger.getLogger(GameChooserPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Image aktImage = allGames.get(name);
+            ImageComponent paTempGame = new ImageComponent(aktImage);
+            paTempGame.addMouseListener(new MouseAdapter()
+            {
+
+                @Override
+                public void mouseClicked(MouseEvent e)
+                {
+                    JPanel clickedPanel = (JPanel) e.getComponent();
+                    changeGame(clickedPanel.getName());
+                }
+            });
+            paTempGame.setBorder(new TitledBorder(name));
+            paTempGame.setName(name);
+            this.add(paTempGame);
         }
     }
     
     
     
+    public void changeGame(String name)
+    {
+        paGame.removeAll();
+        switch(name)
+        {
+            case "Hangman": 
+                HangmanPanel paHang = new HangmanPanel();
+                paGame.add(paHang);
+                paHang.startGame();
+        }
+    }
+
     //Used for changing Picture size
     class ImageComponent extends JPanel
     {
@@ -77,63 +126,11 @@ public class GameChooserPanel extends javax.swing.JPanel
     private void initComponents()
     {
 
-        paHangman = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-
         setBorder(javax.swing.BorderFactory.createTitledBorder("Game Chooser"));
         setLayout(new java.awt.GridLayout(3, 3));
-
-        paHangman.setBorder(javax.swing.BorderFactory.createTitledBorder("Hangman"));
-        paHangman.setLayout(new java.awt.BorderLayout());
-        add(paHangman);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 146, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
-        );
-
-        add(jPanel2);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 146, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
-        );
-
-        add(jPanel3);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 146, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
-        );
-
-        add(jPanel4);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel paHangman;
     // End of variables declaration//GEN-END:variables
 }
