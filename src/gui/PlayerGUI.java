@@ -6,6 +6,7 @@
 package gui;
 
 import games.hangman.gui.HangmanPanel;
+import games.tictactoe.gui.TicTacToeGUI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -25,15 +26,15 @@ public class PlayerGUI extends javax.swing.JFrame {
         this.setSize(600,600);
         this.setLocationRelativeTo(null);
         
-        HangmanPanel hmp = new HangmanPanel();
+        TicTacToeGUI panel = new TicTacToeGUI();
         
         pnGame.removeAll();
-        pnGame.add(hmp);
+        pnGame.add(panel);
         
         this.setVisible(true);
                 
                 
-        hmp.startGame();
+        //panel.startGame();
     }
 
     /**
