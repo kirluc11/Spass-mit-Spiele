@@ -8,33 +8,44 @@ import games.tictactoe.bl.TicTacToeKI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
 /**
  *
  * @author Lukas
  */
-public class TicTacToeGUI extends JLabel {
+public class TicTacToePanel extends JLabel {
 
     private LinkedList<JLabel> labels = new LinkedList<>();
     private TicTacToeGewinnabfrage tttg;
     private TicTacToeKI tttki = new TicTacToeKI();
-    private boolean einSpieler = true;
+    private boolean singlePlayer = true;
     private int spieler = 1;
     private int starter = 1;
     private int siegeS1;
     private int siegeS2;
 
-    public TicTacToeGUI() {
+    public TicTacToePanel() {
         this.initComponents();
         tttg = new TicTacToeGewinnabfrage(labels);
+        
+        NumberOfPlayerDLG dlg = new NumberOfPlayerDLG(null, true);
+        
+        if(dlg.isOk())
+        {
+            singlePlayer = dlg.isSinglePlayer();
+        }
+        
         /*if (dlg.isOk()) {
             if (einSpieler = dlg.isEinSpieler()) {
                 EinSpielerDLG esdlg = new EinSpielerDLG(this, true);
@@ -72,12 +83,39 @@ public class TicTacToeGUI extends JLabel {
     private void initComponents() {
         this.addKeyListener(new MyKeyAdapter());
         this.setLayout(new GridLayout(3, 3, 1, 1));
+        
+        popupmenu = new JPopupMenu("Game");
+        miRestartSinglePlayer = new JMenuItem("New Single Player Game");
+        miRestartOfflineMultiplayer = new JMenuItem("New Offline Multiplayer Game");
+        
+        miRestartSinglePlayer.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                singlePlayer = true;
+                restart();
+            }
+        });
+        
+        miRestartOfflineMultiplayer.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                singlePlayer = false;
+                restart();
+            }
+        });
+        
+        popupmenu.add(miRestartSinglePlayer);
+        popupmenu.add(miRestartOfflineMultiplayer);
+        
         for (int i = 0; i < 9; i++) {
             JLabel lb = new JLabel();
             lb.setOpaque(true);
             lb.setBackground(Color.black);
             lb.setFont(new Font("Courier New", Font.BOLD, 75));
             lb.setHorizontalAlignment(JLabel.CENTER);
+            lb.setComponentPopupMenu(popupmenu);
             lb.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -130,7 +168,7 @@ public class TicTacToeGUI extends JLabel {
                 break;
         }
         if (clickedLabel != null) {
-            if (einSpieler) {
+            if (singlePlayer) {
                 if (clickedLabel.getBackground().equals(Color.black)) {
                     clickedLabel.setBackground(Color.yellow);
                     clickedLabel.setText("X");
@@ -144,12 +182,10 @@ public class TicTacToeGUI extends JLabel {
                         }
                         JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                         starter *= -1;
-                        this.restart();
                     } else {
                         if (tttg.isUnendschieden()) {
                             JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                             starter *= -1;
-                            this.restart();
                         } else {
                             spieler *= -1;
                             clickedLabel = tttki.nextStep(labels);
@@ -164,12 +200,10 @@ public class TicTacToeGUI extends JLabel {
                                 }
                                 JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                                 starter *= -1;
-                                this.restart();
                             } else {
                                 if (tttg.isUnendschieden()) {
                                     JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                                     starter *= -1;
-                                    this.restart();
                                 }
                             }
                         }
@@ -195,12 +229,10 @@ public class TicTacToeGUI extends JLabel {
                         }
                         JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                         starter *= -1;
-                        this.restart();
                     } else {
                         if (tttg.isUnendschieden()) {
                             JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                             starter *= -1;
-                            this.restart();
                         }
                     }
                     spieler *= -1;
@@ -210,7 +242,7 @@ public class TicTacToeGUI extends JLabel {
     }
 
     private void onMouseClicked(MouseEvent e) {
-        if (einSpieler) {
+        if (singlePlayer) {
             Object obj = e.getSource();
             if (obj instanceof JLabel) {
                 JLabel lb = (JLabel) obj;
@@ -227,12 +259,10 @@ public class TicTacToeGUI extends JLabel {
                         }
                         JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                         starter *= -1;
-                        this.restart();
                     } else {
                         if (tttg.isUnendschieden()) {
                             JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                             starter *= -1;
-                            this.restart();
                         } else {
                             spieler *= -1;
                             lb = tttki.nextStep(labels);
@@ -247,12 +277,10 @@ public class TicTacToeGUI extends JLabel {
                                 }
                                 JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                                 starter *= -1;
-                                this.restart();
                             } else {
                                 if (tttg.isUnendschieden()) {
                                     JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                                     starter *= -1;
-                                    this.restart();
                                 }
                             }
                         }
@@ -282,12 +310,10 @@ public class TicTacToeGUI extends JLabel {
                         }
                         JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                         starter *= -1;
-                        this.restart();
                     } else {
                         if (tttg.isUnendschieden()) {
                             JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                             starter *= -1;
-                            this.restart();
                         }
                     }
                     spieler *= -1;
@@ -302,7 +328,7 @@ public class TicTacToeGUI extends JLabel {
             label.setText("");
         }
         spieler = starter;
-        if (einSpieler) {
+        if (singlePlayer) {
             if (starter == -1) {
                 JLabel lb = tttki.nextStep(labels);
                 lb.setBackground(Color.cyan);
@@ -313,6 +339,10 @@ public class TicTacToeGUI extends JLabel {
     }
 
     public static void main(String[] args) {
-        new TicTacToeGUI();
+        new TicTacToePanel();
     }
+    
+    private JPopupMenu popupmenu;
+    private JMenuItem miRestartSinglePlayer;
+    private JMenuItem miRestartOfflineMultiplayer;
 }
