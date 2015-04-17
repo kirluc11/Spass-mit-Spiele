@@ -6,6 +6,7 @@
 package gui;
 
 import games.hangman.gui.HangmanPanel;
+import games.tictactoe.gui.TicTacToePanel;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -62,6 +63,7 @@ public class GameChooserPanel extends javax.swing.JPanel
                 + File.separator + "pictures";
 
         allGames.put("Hangman", ImageIO.read(new File(path + File.separator + "hangman.png")));
+        allGames.put("TicTacToe", ImageIO.read(new File(path + File.separator + "hangman.png")));
 
         for (String name : allGames.keySet())
         {
@@ -94,6 +96,9 @@ public class GameChooserPanel extends javax.swing.JPanel
                 HangmanPanel paHang = new HangmanPanel();
                 paGame.add(paHang);
                 paHang.startGame();
+                break;
+            case "TicTacToe":
+                paGame.add(new TicTacToePanel());
         }
     }
 
