@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package games.tictactoe.gui;
+
 import games.tictactoe.bl.TicTacToeGewinnabfrage;
 import games.tictactoe.bl.TicTacToeKI;
 import java.awt.Color;
@@ -30,64 +31,29 @@ public class TicTacToePanel extends JLabel {
     private TicTacToeGewinnabfrage tttg;
     private TicTacToeKI tttki = new TicTacToeKI();
     private boolean singlePlayer = true;
-    private int spieler = 1;
-    private int starter = 1;
-    private int siegeS1;
-    private int siegeS2;
+    private int player = 1;
+    private int beginner = 1;
+
+    private boolean gameOver;
 
     public TicTacToePanel() {
         this.initComponents();
         tttg = new TicTacToeGewinnabfrage(labels);
-        
+
         NumberOfPlayerDLG dlg = new NumberOfPlayerDLG(null, true);
-        
-        if(dlg.isOk())
-        {
+
+        if (dlg.isOk()) {
             singlePlayer = dlg.isSinglePlayer();
         }
-        
-        /*if (dlg.isOk()) {
-            if (einSpieler = dlg.isEinSpieler()) {
-                EinSpielerDLG esdlg = new EinSpielerDLG(this, true);
-                esdlg.setVisible(true);
-                if (esdlg.isOk()) {
-                    namen = new String[2];
-                    namen[0] = esdlg.getName();
-                    namen[1] = "KI";
-                    sdlg = new SpielstandDLG(this, namen);
-                    sdlg.setVisible(true);
-                    this.setVisible(true);
-                } else {
-                    this.setVisible(true);
-                    this.dispose();
-                }
-            } else {
-                ZweiSpilerDLG zsdlg = new ZweiSpilerDLG(this, true);
-                zsdlg.setVisible(true);
-                if (zsdlg.isOk()) {
-                    namen = zsdlg.getNamen();
-                    sdlg = new SpielstandDLG(this, namen);
-                    sdlg.setVisible(true);
-                    this.setVisible(true);
-                } else {
-                    this.setVisible(true);
-                    this.dispose();
-                }
-            }
-        } else {
-            this.setVisible(false);
-            this.dispose();
-        }*/
     }
 
     private void initComponents() {
-        this.addKeyListener(new MyKeyAdapter());
         this.setLayout(new GridLayout(3, 3, 1, 1));
-        
+
         popupmenu = new JPopupMenu("Game");
         miRestartSinglePlayer = new JMenuItem("New Single Player Game");
         miRestartOfflineMultiplayer = new JMenuItem("New Offline Multiplayer Game");
-        
+
         miRestartSinglePlayer.addActionListener(new ActionListener() {
 
             @Override
@@ -96,7 +62,7 @@ public class TicTacToePanel extends JLabel {
                 restart();
             }
         });
-        
+
         miRestartOfflineMultiplayer.addActionListener(new ActionListener() {
 
             @Override
@@ -105,10 +71,10 @@ public class TicTacToePanel extends JLabel {
                 restart();
             }
         });
-        
+
         popupmenu.add(miRestartSinglePlayer);
         popupmenu.add(miRestartOfflineMultiplayer);
-        
+
         for (int i = 0; i < 9; i++) {
             JLabel lb = new JLabel();
             lb.setOpaque(true);
@@ -128,195 +94,99 @@ public class TicTacToePanel extends JLabel {
         }
     }
 
-    class MyKeyAdapter extends KeyAdapter {
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-            onKeyTyped(e);
-        }
-    }
-
-    private void onKeyTyped(KeyEvent e) {
-        JLabel clickedLabel = null;
-        switch (e.getKeyChar()) {
-            case '1':
-                clickedLabel = labels.get(6);
-                break;
-            case '2':
-                clickedLabel = labels.get(7);
-                break;
-            case '3':
-                clickedLabel = labels.get(8);
-                break;
-            case '4':
-                clickedLabel = labels.get(3);
-                break;
-            case '5':
-                clickedLabel = labels.get(4);
-                break;
-            case '6':
-                clickedLabel = labels.get(5);
-                break;
-            case '7':
-                clickedLabel = labels.get(0);
-                break;
-            case '8':
-                clickedLabel = labels.get(1);
-                break;
-            case '9':
-                clickedLabel = labels.get(2);
-                break;
-        }
-        if (clickedLabel != null) {
-            if (singlePlayer) {
-                if (clickedLabel.getBackground().equals(Color.black)) {
-                    clickedLabel.setBackground(Color.yellow);
-                    clickedLabel.setText("X");
-
-                    if (tttg.isOver()) {
-                        String gewinner = tttg.getSieger() == 0 ? "X" : "O";
-                        if (tttg.getSieger() == 0) {
-                            siegeS1++;
-                        } else {
-                            siegeS2++;
-                        }
-                        JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
-                        starter *= -1;
-                    } else {
-                        if (tttg.isUnendschieden()) {
-                            JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
-                            starter *= -1;
-                        } else {
-                            spieler *= -1;
-                            clickedLabel = tttki.nextStep(labels);
-                            clickedLabel.setBackground(Color.cyan);
-                            clickedLabel.setText("O");
-                            if (tttg.isOver()) {
-                                String gewinner = tttg.getSieger() == 0 ? "X" : "O";
-                                if (tttg.getSieger() == 0) {
-                                    siegeS1++;
-                                } else {
-                                    siegeS2++;
-                                }
-                                JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
-                                starter *= -1;
-                            } else {
-                                if (tttg.isUnendschieden()) {
-                                    JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
-                                    starter *= -1;
-                                }
-                            }
-                        }
-                        spieler *= -1;
-                    }
-                }
-            } else {
-                if (clickedLabel.getBackground().equals(Color.black)) {
-                    if (spieler == 1) {
-                        clickedLabel.setBackground(Color.yellow);
-                        clickedLabel.setText("X");
-                    } else {
-                        clickedLabel.setBackground(Color.cyan);
-                        clickedLabel.setText("O");
-                    }
-
-                    if (tttg.isOver()) {
-                        String gewinner = tttg.getSieger() == 0 ? "X" : "O";
-                        if (tttg.getSieger() == 0) {
-                            siegeS1++;
-                        } else {
-                            siegeS2++;
-                        }
-                        JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
-                        starter *= -1;
-                    } else {
-                        if (tttg.isUnendschieden()) {
-                            JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
-                            starter *= -1;
-                        }
-                    }
-                    spieler *= -1;
-                }
-            }
+    private void changeLabelState(boolean b) {
+        for (JLabel label : labels) {
+            label.setEnabled(b);
         }
     }
 
     private void onMouseClicked(MouseEvent e) {
-        if (singlePlayer) {
-            Object obj = e.getSource();
-            if (obj instanceof JLabel) {
-                JLabel lb = (JLabel) obj;
-                if (lb.getBackground().equals(Color.black)) {
-                    lb.setBackground(Color.yellow);
-                    lb.setText("X");
-
-                    if (tttg.isOver()) {
-                        String gewinner = tttg.getSieger() == 0 ? "X" : "O";
-                        if (tttg.getSieger() == 0) {
-                            siegeS1++;
-                        } else {
-                            siegeS2++;
-                        }
-                        JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
-                        starter *= -1;
-                    } else {
-                        if (tttg.isUnendschieden()) {
-                            JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
-                            starter *= -1;
-                        } else {
-                            spieler *= -1;
-                            lb = tttki.nextStep(labels);
-                            lb.setBackground(Color.cyan);
-                            lb.setText("O");
-                            if (tttg.isOver()) {
-                                String gewinner = tttg.getSieger() == 0 ? "X" : "O";
-                                if (tttg.getSieger() == 0) {
-                                    siegeS1++;
-                                } else {
-                                    siegeS2++;
-                                }
-                                JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
-                                starter *= -1;
-                            } else {
-                                if (tttg.isUnendschieden()) {
-                                    JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
-                                    starter *= -1;
-                                }
-                            }
-                        }
-                        spieler *= -1;
-                    }
-                }
-            }
-        } else {
-            Object obj = e.getSource();
-            if (obj instanceof JLabel) {
-                JLabel lb = (JLabel) obj;
-                if (lb.getBackground().equals(Color.black)) {
-                    if (spieler == 1) {
+        if (!gameOver) {
+            if (singlePlayer) {
+                Object obj = e.getSource();
+                if (obj instanceof JLabel) {
+                    JLabel lb = (JLabel) obj;
+                    if (lb.getBackground().equals(Color.black)) {
                         lb.setBackground(Color.yellow);
                         lb.setText("X");
-                    } else {
-                        lb.setBackground(Color.cyan);
-                        lb.setText("O");
-                    }
 
-                    if (tttg.isOver()) {
-                        String gewinner = tttg.getSieger() == 0 ? "X" : "Y";
-                        if (tttg.getSieger() == 0) {
-                            siegeS1++;
+                        if (tttg.isOver()) {
+                            String gewinner = tttg.getSieger() == 0 ? "X" : "O";
+                            JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
+                            beginner *= -1;
+
+                            changeLabelState(false);
+                            gameOver = true;
+
                         } else {
-                            siegeS2++;
-                        }
-                        JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
-                        starter *= -1;
-                    } else {
-                        if (tttg.isUnendschieden()) {
-                            JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
-                            starter *= -1;
+                            if (tttg.isUnendschieden()) {
+                                JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
+                                beginner *= -1;
+
+                                changeLabelState(false);
+                                gameOver = true;
+
+                            } else {
+                                player *= -1;
+                                lb = tttki.nextStep(labels);
+                                lb.setBackground(Color.cyan);
+                                lb.setText("O");
+                                if (tttg.isOver()) {
+                                    String gewinner = tttg.getSieger() == 0 ? "X" : "O";
+                                    JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
+                                    beginner *= -1;
+
+                                    changeLabelState(false);
+                                    gameOver = true;
+
+                                } else {
+                                    if (tttg.isUnendschieden()) {
+                                        JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
+                                        beginner *= -1;
+
+                                        changeLabelState(false);
+                                        gameOver = true;
+
+                                    }
+                                }
+                            }
+                            player *= -1;
                         }
                     }
-                    spieler *= -1;
+                }
+            } else {
+                Object obj = e.getSource();
+                if (obj instanceof JLabel) {
+                    JLabel lb = (JLabel) obj;
+                    if (lb.getBackground().equals(Color.black)) {
+                        if (player == 1) {
+                            lb.setBackground(Color.yellow);
+                            lb.setText("X");
+                        } else {
+                            lb.setBackground(Color.cyan);
+                            lb.setText("O");
+                        }
+
+                        if (tttg.isOver()) {
+                            String gewinner = tttg.getSieger() == 0 ? "X" : "Y";
+                            JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
+                            beginner *= -1;
+
+                            changeLabelState(false);
+                            gameOver = true;
+
+                        } else {
+                            if (tttg.isUnendschieden()) {
+                                JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
+                                beginner *= -1;
+
+                                changeLabelState(false);
+                                gameOver = true;
+
+                            }
+                        }
+                        player *= -1;
+                    }
                 }
             }
         }
@@ -327,21 +197,18 @@ public class TicTacToePanel extends JLabel {
             label.setBackground(Color.black);
             label.setText("");
         }
-        spieler = starter;
+        player = beginner;
         if (singlePlayer) {
-            if (starter == -1) {
+            if (beginner == -1) {
                 JLabel lb = tttki.nextStep(labels);
                 lb.setBackground(Color.cyan);
                 lb.setText("O");
             }
         }
-
+        changeLabelState(true);
+        gameOver = false;
     }
 
-    public static void main(String[] args) {
-        new TicTacToePanel();
-    }
-    
     private JPopupMenu popupmenu;
     private JMenuItem miRestartSinglePlayer;
     private JMenuItem miRestartOfflineMultiplayer;

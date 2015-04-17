@@ -99,6 +99,8 @@ public class GameChooserPanel extends javax.swing.JPanel
                 break;
             case "TicTacToe":
                 paGame.add(new TicTacToePanel());
+                paGame.repaint();
+                paGame.getRootPane().updateUI();
         }
     }
 

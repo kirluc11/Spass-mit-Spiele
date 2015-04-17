@@ -231,40 +231,6 @@ public class TicTacToeKI {
             return labels.get(indices[0]);
         }
         
-//        int i = 4;
-//        if(labels.get(i).getText().equals(""))
-//        {
-//            return labels.get(i);
-//        }
-//        
-//        i = 0;
-//        if(labels.get(i).getText().equals(""))
-//        {
-//            return labels.get(i);
-//        }
-//        
-//        i = 2;
-//        if(labels.get(i).getText().equals(""))
-//        {
-//            return labels.get(i);
-//        }
-//        
-//        i = 6;
-//        if(labels.get(i).getText().equals(""))
-//        {
-//            return labels.get(i);
-//        }
-//        
-//        i = 8;
-//        if(labels.get(i).getText().equals(""))
-//        {
-//            return labels.get(i);
-//        }
-        
-        
-        
-        
-        
         Random rand = new Random();
         int zz = 0;
         do {
