@@ -9,6 +9,7 @@ import games.hangman.gui.HangmanPanel;
 import games.tictactoe.gui.TicTacToePanel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
@@ -18,6 +19,8 @@ import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
  */
 public class PlayerGUI extends javax.swing.JFrame {
 
+    
+    private JPanel aktPanel;
     /**
      * Creates new form PlayerGUI
      */
@@ -25,14 +28,18 @@ public class PlayerGUI extends javax.swing.JFrame {
         initComponents();
         this.setSize(600,600);
         this.setLocationRelativeTo(null);
-        
-        TicTacToePanel panel = new TicTacToePanel();
-        
+        //HangmanPanel hmp = new HangmanPanel();
+        this.setVisible(true);     
+        //hmp.startGame();
+        showGameChooser();
+    }
+    
+    public void showGameChooser()
+    {
+        GameChooserPanel gcp = new GameChooserPanel(pnGame);
+        aktPanel = gcp;
         pnGame.removeAll();
-        pnGame.add(panel);
-        
-        this.setVisible(true);
-        //panel.startGame();
+        pnGame.add(gcp);
     }
 
     /**
@@ -42,7 +49,8 @@ public class PlayerGUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         pnTop = new javax.swing.JPanel();
         pnServer = new javax.swing.JPanel();
