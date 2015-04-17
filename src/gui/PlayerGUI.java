@@ -40,6 +40,7 @@ public class PlayerGUI extends javax.swing.JFrame {
         aktPanel = gcp;
         pnGame.removeAll();
         pnGame.add(gcp);
+        pnGame.updateUI();
     }
 
     /**
@@ -90,6 +91,13 @@ public class PlayerGUI extends javax.swing.JFrame {
         pnTop.add(pnServer, java.awt.BorderLayout.CENTER);
 
         btHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/pictures/home.png"))); // NOI18N
+        btHome.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                onHome(evt);
+            }
+        });
         pnTop.add(btHome, java.awt.BorderLayout.EAST);
 
         getContentPane().add(pnTop, java.awt.BorderLayout.NORTH);
@@ -100,6 +108,11 @@ public class PlayerGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void onHome(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onHome
+    {//GEN-HEADEREND:event_onHome
+        showGameChooser();
+    }//GEN-LAST:event_onHome
 
     /**
      * @param args the command line arguments

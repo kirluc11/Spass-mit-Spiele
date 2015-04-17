@@ -64,6 +64,7 @@ public class GameChooserPanel extends javax.swing.JPanel
 
         allGames.put("Hangman", ImageIO.read(new File(path + File.separator + "hangman.png")));
         allGames.put("TicTacToe", ImageIO.read(new File(path + File.separator + "hangman.png")));
+        allGames.put("AsteroidsStorm", ImageIO.read(new File(path + File.separator + "hangman.png")));
 
         for (String name : allGames.keySet())
         {
@@ -101,6 +102,8 @@ public class GameChooserPanel extends javax.swing.JPanel
                 paGame.add(new TicTacToePanel());
                 paGame.repaint();
                 paGame.getRootPane().updateUI();
+                break;
+            case "AsteroidsStorm":break;
         }
     }
 
@@ -119,7 +122,7 @@ public class GameChooserPanel extends javax.swing.JPanel
         protected void paintComponent(Graphics g)
         {
             super.paintComponent(g);
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+            g.drawImage(image, 0, 10, getWidth(), getHeight()-10, null);
         }
     }
 
