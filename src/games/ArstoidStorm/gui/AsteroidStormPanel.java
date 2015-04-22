@@ -5,19 +5,42 @@
  */
 package games.ArstoidStorm.gui;
 
+import java.awt.event.KeyEvent;
+
 /**
  *
  * @author user
  */
 public class AsteroidStormPanel extends javax.swing.JPanel
 {
-
+    private AsteroidStormInnerPanel asip = new AsteroidStormInnerPanel();
+    private int numberX;
+    private int numberY;
+    private int moveSpeed = 10;
+     private Thread thread;
     /**
      * Creates new form AsteroidStormPanel
      */
     public AsteroidStormPanel()
     {
         initComponents();
+        this.add(asip);
+        this.setFocusable(true);
+        startGame();
+    }
+    
+    
+    public void startGame()
+    {
+        asip.setAus(false);
+        numberX=0;
+        numberY=0;
+        asip.setNumberX(numberX);
+        asip.setNumberY(numberY);
+        asip.setCoordY(0);
+        asip.setSpeed(5);
+        thread = new Thread((Runnable) asip);
+        thread.start();
     }
 
     /**
@@ -30,8 +53,22 @@ public class AsteroidStormPanel extends javax.swing.JPanel
     private void initComponents()
     {
 
-        setBackground(new java.awt.Color(0, 0, 0));
-        setForeground(new java.awt.Color(255, 255, 255));
+        pmRestart = new javax.swing.JPopupMenu();
+        miRestart = new javax.swing.JMenuItem();
+
+        miRestart.setText("Restart");
+        miRestart.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                onRestart(evt);
+            }
+        });
+        pmRestart.add(miRestart);
+
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createTitledBorder("AsteroidStorm"));
+        setComponentPopupMenu(pmRestart);
         addKeyListener(new java.awt.event.KeyAdapter()
         {
             public void keyPressed(java.awt.event.KeyEvent evt)
@@ -39,25 +76,41 @@ public class AsteroidStormPanel extends javax.swing.JPanel
                 onMove(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setLayout(new java.awt.GridLayout());
     }// </editor-fold>//GEN-END:initComponents
 
     private void onMove(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onMove
     {//GEN-HEADEREND:event_onMove
-        // TODO add your handling code here:
+        if (!asip.isAus()) {
+            if (evt.getKeyCode() == KeyEvent.VK_UP) {
+                numberY = numberY - moveSpeed;
+                asip.setNumberY(numberY);
+                asip.collision();
+            } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+                numberY = numberY + moveSpeed;
+                asip.setNumberY(numberY);
+                asip.collision();
+            } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+                numberX = numberX + moveSpeed;
+                asip.setNumberX(numberX);
+                asip.collision();
+            } else if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
+                numberX = numberX - moveSpeed;
+                asip.setNumberX(numberX);
+                asip.collision();
+            }
+        }
     }//GEN-LAST:event_onMove
+
+    private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
+    {//GEN-HEADEREND:event_onRestart
+        thread.interrupt();
+        startGame();
+    }//GEN-LAST:event_onRestart
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem miRestart;
+    private javax.swing.JPopupMenu pmRestart;
     // End of variables declaration//GEN-END:variables
 }
