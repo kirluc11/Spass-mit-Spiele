@@ -6,6 +6,7 @@
 package games.ArstoidStorm.gui;
 
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,9 +26,12 @@ public class AsteroidStormPanel extends javax.swing.JPanel
     {
         initComponents();
         this.add(asip);
+        
         this.setFocusable(true);
         startGame();
+        
     }
+    
     
     
     public void startGame()
@@ -41,6 +45,7 @@ public class AsteroidStormPanel extends javax.swing.JPanel
         asip.setSpeed(5);
         thread = new Thread((Runnable) asip);
         thread.start();
+        
     }
 
     /**
@@ -81,6 +86,7 @@ public class AsteroidStormPanel extends javax.swing.JPanel
 
     private void onMove(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onMove
     {//GEN-HEADEREND:event_onMove
+        System.out.println("aaaaa");
         if (!asip.isAus()) {
             if (evt.getKeyCode() == KeyEvent.VK_UP) {
                 numberY = numberY - moveSpeed;
