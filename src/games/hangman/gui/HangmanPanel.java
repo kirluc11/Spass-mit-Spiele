@@ -219,7 +219,8 @@ public class HangmanPanel extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         pmGame = new javax.swing.JPopupMenu();
         miRestart = new javax.swing.JMenuItem();
@@ -230,8 +231,10 @@ public class HangmanPanel extends javax.swing.JPanel {
         ftfInput = new javax.swing.JFormattedTextField();
 
         miRestart.setText("Restart");
-        miRestart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        miRestart.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 onRestart(evt);
             }
         });
@@ -267,14 +270,18 @@ public class HangmanPanel extends javax.swing.JPanel {
         paBottom.setLayout(new java.awt.GridLayout(1, 1));
 
         ftfInput.setBorder(javax.swing.BorderFactory.createTitledBorder("Input"));
-        try {
+        try
+        {
             ftfInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("L")));
-        } catch (java.text.ParseException ex) {
+        } catch (java.text.ParseException ex)
+        {
             ex.printStackTrace();
         }
         ftfInput.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        ftfInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
+        ftfInput.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
                 onClicked(evt);
             }
         });
