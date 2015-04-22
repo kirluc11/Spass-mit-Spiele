@@ -86,7 +86,7 @@ public class AsteroidStormPanel extends javax.swing.JPanel
 
     private void onMove(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onMove
     {//GEN-HEADEREND:event_onMove
-        System.out.println("aaaaa");
+
         if (!asip.isAus()) {
             if (evt.getKeyCode() == KeyEvent.VK_UP) {
                 numberY = numberY - moveSpeed;
