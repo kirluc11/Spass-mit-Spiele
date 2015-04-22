@@ -36,13 +36,7 @@ public class AsteroidStormPanel extends javax.swing.JPanel
     
     public void startGame()
     {
-        asip.setAus(false);
-        numberX=0;
-        numberY=0;
-        asip.setNumberX(numberX);
-        asip.setNumberY(numberY);
-        asip.setCoordY(0);
-        asip.setSpeed(5);
+        
         thread = new Thread((Runnable) asip);
         thread.start();
         
@@ -110,7 +104,15 @@ public class AsteroidStormPanel extends javax.swing.JPanel
 
     private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
     {//GEN-HEADEREND:event_onRestart
+        
         thread.interrupt();
+        asip.setAus(false);
+        numberX=0;
+        numberY=0;
+        asip.setNumberX(numberX);
+        asip.setNumberY(numberY);
+        asip.setCoordY(0);
+        asip.setSpeed(5);
         startGame();
     }//GEN-LAST:event_onRestart
 
