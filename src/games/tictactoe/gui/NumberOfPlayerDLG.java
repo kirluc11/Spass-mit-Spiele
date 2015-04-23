@@ -21,8 +21,8 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog {
      */
     public NumberOfPlayerDLG(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.setLocationRelativeTo(null);
         initComponents();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
