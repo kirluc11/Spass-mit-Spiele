@@ -19,13 +19,16 @@ import java.util.LinkedList;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  *
  * @author Lukas
  */
-public class TicTacToePanel extends JLabel {
+public class TicTacToePanel extends JPanel {
 
     private LinkedList<JLabel> labels = new LinkedList<>();
     private TicTacToeGewinnabfrage tttg;
@@ -49,6 +52,8 @@ public class TicTacToePanel extends JLabel {
 
     private void initComponents() {
         this.setLayout(new GridLayout(3, 3, 1, 1));
+        
+        this.setBorder(new TitledBorder(new EmptyBorder(5, 0, 0, 0), "Tic Tac Toe", TitledBorder.CENTER, TitledBorder.ABOVE_TOP));
 
         popupmenu = new JPopupMenu("Game");
         miRestartSinglePlayer = new JMenuItem("New Single Player Game");
