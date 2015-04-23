@@ -82,19 +82,22 @@ public class AsteroidStormPanel extends javax.swing.JPanel
     {//GEN-HEADEREND:event_onMove
 
         if (!asip.isAus()) {
-            if (evt.getKeyCode() == KeyEvent.VK_UP) {
+           
+            if (evt.getKeyCode() == KeyEvent.VK_UP&&numberY>(asip.getHeight()/2)*-1) {
+                
                 numberY = numberY - moveSpeed;
                 asip.setNumberY(numberY);
                 asip.collision();
-            } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            } else if (evt.getKeyCode() == KeyEvent.VK_DOWN&&numberY<asip.getHeight()/2-asip.getHeight()/20) {
+                
                 numberY = numberY + moveSpeed;
                 asip.setNumberY(numberY);
                 asip.collision();
-            } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+            } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT&&numberX<(asip.getWidth()/2-asip.getWidth()/20)) {
                 numberX = numberX + moveSpeed;
                 asip.setNumberX(numberX);
                 asip.collision();
-            } else if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
+            } else if (evt.getKeyCode() == KeyEvent.VK_LEFT && numberX>(asip.getWidth()/2)*-1) {
                 numberX = numberX - moveSpeed;
                 asip.setNumberX(numberX);
                 asip.collision();
