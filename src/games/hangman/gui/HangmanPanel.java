@@ -10,6 +10,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import javax.swing.JOptionPane;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -32,6 +34,7 @@ public class HangmanPanel extends javax.swing.JPanel {
 
     public HangmanPanel() {
         initComponents();
+        this.setBorder(new TitledBorder(new EmptyBorder(5, 0, 0, 0), "Hangman", TitledBorder.CENTER, TitledBorder.ABOVE_TOP));
     }
 
     @Override
