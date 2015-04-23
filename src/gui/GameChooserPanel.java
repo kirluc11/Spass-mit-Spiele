@@ -5,6 +5,7 @@
  */
 package gui;
 
+import games.ArstoidStorm.gui.AsteroidStormPanel;
 import games.hangman.gui.HangmanPanel;
 import games.tictactoe.gui.TicTacToePanel;
 import java.awt.BorderLayout;
@@ -96,6 +97,8 @@ public class GameChooserPanel extends javax.swing.JPanel
             case "Hangman": 
                 HangmanPanel paHang = new HangmanPanel();
                 paGame.add(paHang);
+                paGame.repaint();
+                paGame.getRootPane().updateUI();
                 paHang.startGame();
                 break;
             case "TicTacToe":
@@ -103,7 +106,13 @@ public class GameChooserPanel extends javax.swing.JPanel
                 paGame.repaint();
                 paGame.getRootPane().updateUI();
                 break;
-            case "AsteroidStorm":break;
+            case "AsteroidStorm":
+                AsteroidStormPanel asp = new AsteroidStormPanel();
+                paGame.add(asp);
+                paGame.repaint();
+                paGame.getRootPane().updateUI();
+                asp.requestFocus();
+                break;
         }
     }
 
