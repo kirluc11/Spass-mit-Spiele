@@ -26,7 +26,7 @@ public class VierGewinntLabel extends JLabel {
     public void paint(Graphics g) {
         super.paint(g);
         try {
-            g.drawImage(ImageIO.read(new File(path + File.separator + "vierGewinntGridHole.png")), 0, 0, getWidth(), getHeight(), null);
+            g.drawImage(ImageIO.read(new File(path + File.separator + "vierGewinntGridHole2.png")), 0, 0, getWidth(), getHeight(), null);
         } catch (IOException ex) {
         }
     }
