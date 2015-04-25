@@ -7,9 +7,15 @@ package vierGewinnt.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,7 +32,7 @@ import vierGewinnt.bl.vierGewinntBL;
  *
  * @author Lukas
  */
-public class vierGewinntGUI extends JPanel {
+public class VierGewinntPanel extends JPanel {
 
     public static Color spieler1 = Color.cyan;
     public static Color spieler2 = Color.yellow;
@@ -102,7 +108,7 @@ public class vierGewinntGUI extends JPanel {
         }
     });
 
-    public vierGewinntGUI() {
+    public VierGewinntPanel() {
         initComponents();
         bl = new vierGewinntBL(labels);
         changePlayer(spieler == 1 ? true : false);
@@ -116,9 +122,9 @@ public class vierGewinntGUI extends JPanel {
 
         panel = new JPanel(new BorderLayout());
         lbSpieler = new JLabel();
-        pnLbs = new JPanel(new GridLayout(6, 7, 2, 2));
+        pnLbs = new JPanel(new GridLayout(6, 7, 0, 0));
         pnBts = new JPanel(new GridLayout(1, 7, 2, 1));
-        
+
         popupmenu = new JPopupMenu("Game");
         miRestart = new JMenuItem("New Game");
 
@@ -134,7 +140,7 @@ public class vierGewinntGUI extends JPanel {
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
-                JLabel lb = new JLabel();
+                VierGewinntLabel lb = new VierGewinntLabel();
                 lb.setOpaque(true);
                 lb.setBackground(Color.black);
                 lb.setName(i + "-" + j);
@@ -179,8 +185,8 @@ public class vierGewinntGUI extends JPanel {
 
     private void changePlayer(boolean spieler1) {
         if (spieler1) {
-            Color col = new Color(255 - vierGewinntGUI.spieler1.getRed(), 255 - vierGewinntGUI.spieler1.getGreen(), 255 - vierGewinntGUI.spieler1.getBlue());
-            lbSpieler.setBackground(vierGewinntGUI.spieler1);
+            Color col = new Color(255 - VierGewinntPanel.spieler1.getRed(), 255 - VierGewinntPanel.spieler1.getGreen(), 255 - VierGewinntPanel.spieler1.getBlue());
+            lbSpieler.setBackground(VierGewinntPanel.spieler1);
             lbSpieler.setForeground(col);
             lbSpieler.setText(namen[0]);
         } else {
@@ -221,7 +227,7 @@ public class vierGewinntGUI extends JPanel {
 
     public static void main(String[] args) {
         JFrame bla = new JFrame("banane");
-        bla.getContentPane().add(new vierGewinntGUI());
+        bla.getContentPane().add(new VierGewinntPanel());
         bla.setVisible(true);
     }
     private JPanel pnLbs;
@@ -231,7 +237,7 @@ public class vierGewinntGUI extends JPanel {
     private JMenuBar mb;
     private JMenu menu;
     private JMenuItem miRestart;
-    private JMenuItem miHelp; 
+    private JMenuItem miHelp;
     private JPopupMenu popupmenu;
     private JMenuItem miNewGame;
 }

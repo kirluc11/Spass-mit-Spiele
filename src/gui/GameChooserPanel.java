@@ -22,29 +22,23 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-import vierGewinnt.gui.vierGewinntGUI;
+import vierGewinnt.gui.VierGewinntPanel;
 
 /**
  *
  * @author user
  */
-public class GameChooserPanel extends javax.swing.JPanel
-{
+public class GameChooserPanel extends javax.swing.JPanel {
 
     private HashMap<String, Image> allGames = new HashMap<String, Image>();
     private JPanel paGame;
 
-    
-
-    public GameChooserPanel(JPanel paGame)
-    {
+    public GameChooserPanel(JPanel paGame) {
         this.paGame = paGame;
         initComponents();
-        try
-        {
+        try {
             this.gameAdding();
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(GameChooserPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -52,33 +46,28 @@ public class GameChooserPanel extends javax.swing.JPanel
     /**
      * Creates new form GameChooserPanel
      */
-    public GameChooserPanel()
-    {
-        
+    public GameChooserPanel() {
+
     }
-    
-    public void gameAdding() throws IOException
-    {
+
+    public void gameAdding() throws IOException {
         String path = System.getProperty("user.dir")
                 + File.separator + "src"
                 + File.separator + "res"
                 + File.separator + "pictures";
 
-        allGames.put("Hangman", ImageIO.read(new File(path + File.separator + "hangman.png")));
-        allGames.put("TicTacToe", ImageIO.read(new File(path + File.separator + "hangman.png")));
-        allGames.put("AsteroidStorm", ImageIO.read(new File(path + File.separator + "hangman.png")));
-        allGames.put("4-Gewinnt", ImageIO.read(new File(path + File.separator + "hangman.png")));
+        allGames.put("Hangman", ImageIO.read(new File(path + File.separator + "hangman.jpg")));
+        allGames.put("TicTacToe", ImageIO.read(new File(path + File.separator + "TicTacToe.png")));
+        allGames.put("AsteroidStorm", ImageIO.read(new File(path + File.separator + "hangman.jpg")));
+        allGames.put("4-Gewinnt", ImageIO.read(new File(path + File.separator + "vierGewinnt.png")));
 
-        for (String name : allGames.keySet())
-        {
+        for (String name : allGames.keySet()) {
             Image aktImage = allGames.get(name);
             ImageComponent paTempGame = new ImageComponent(aktImage);
-            paTempGame.addMouseListener(new MouseAdapter()
-            {
+            paTempGame.addMouseListener(new MouseAdapter() {
 
                 @Override
-                public void mouseClicked(MouseEvent e)
-                {
+                public void mouseClicked(MouseEvent e) {
                     JPanel clickedPanel = (JPanel) e.getComponent();
                     changeGame(clickedPanel.getName());
                 }
@@ -88,15 +77,11 @@ public class GameChooserPanel extends javax.swing.JPanel
             this.add(paTempGame);
         }
     }
-    
-    
-    
-    public void changeGame(String name)
-    {
+
+    public void changeGame(String name) {
         paGame.removeAll();
-        switch(name)
-        {
-            case "Hangman": 
+        switch (name) {
+            case "Hangman":
                 HangmanPanel paHang = new HangmanPanel();
                 paGame.add(paHang);
                 paGame.repaint();
@@ -116,7 +101,7 @@ public class GameChooserPanel extends javax.swing.JPanel
                 asp.requestFocus();
                 break;
             case "4-Gewinnt":
-                vierGewinntGUI vg = new vierGewinntGUI();
+                VierGewinntPanel vg = new VierGewinntPanel();
                 paGame.add(vg);
                 paGame.getRootPane().updateUI();
                 vg.requestFocus();
@@ -125,21 +110,22 @@ public class GameChooserPanel extends javax.swing.JPanel
     }
 
     //Used for changing Picture size
-    class ImageComponent extends JPanel
-    {
+    class ImageComponent extends JPanel {
 
         private Image image;
 
-        public ImageComponent(Image image)
-        {
+        public ImageComponent(Image image) {
             this.image = image;
         }
 
         @Override
-        protected void paintComponent(Graphics g)
-        {
+        protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(image, 0, 10, getWidth(), getHeight()-10, null);
+            if (getHeight() < getWidth()) {
+                g.drawImage(image, (getWidth() - getHeight()) / 2, 10, getHeight(), getHeight() - 20, null);
+            } else {
+                g.drawImage(image, 10, (getHeight() - getWidth()) / 2, getWidth() - 20, getWidth(), null);
+            }
         }
     }
 
@@ -150,13 +136,11 @@ public class GameChooserPanel extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Game Chooser"));
         setLayout(new java.awt.GridLayout(3, 3));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
