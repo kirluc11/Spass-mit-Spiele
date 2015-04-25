@@ -31,6 +31,8 @@ import javax.swing.border.TitledBorder;
 public class TicTacToePanel extends JPanel {
 
     private LinkedList<JLabel> labels = new LinkedList<>();
+    public static Color spieler1 = Color.yellow;
+    public static Color spieler2 = Color.red;
     private TicTacToeGewinnabfrage tttg;
     private TicTacToeKI tttki = new TicTacToeKI();
     private boolean singlePlayer = true;
@@ -112,7 +114,7 @@ public class TicTacToePanel extends JPanel {
                 if (obj instanceof JLabel) {
                     JLabel lb = (JLabel) obj;
                     if (lb.getBackground().equals(Color.black)) {
-                        lb.setBackground(Color.yellow);
+                        lb.setBackground(spieler2);
                         lb.setText("X");
 
                         if (tttg.isOver()) {
@@ -134,7 +136,7 @@ public class TicTacToePanel extends JPanel {
                             } else {
                                 player *= -1;
                                 lb = tttki.nextStep(labels);
-                                lb.setBackground(Color.cyan);
+                                lb.setBackground(spieler1);
                                 lb.setText("O");
                                 if (tttg.isOver()) {
                                     String gewinner = tttg.getSieger() == 0 ? "X" : "O";
@@ -165,10 +167,10 @@ public class TicTacToePanel extends JPanel {
                     JLabel lb = (JLabel) obj;
                     if (lb.getBackground().equals(Color.black)) {
                         if (player == 1) {
-                            lb.setBackground(Color.yellow);
+                            lb.setBackground(spieler2);
                             lb.setText("X");
                         } else {
-                            lb.setBackground(Color.cyan);
+                            lb.setBackground(spieler1);
                             lb.setText("O");
                         }
 
@@ -206,7 +208,7 @@ public class TicTacToePanel extends JPanel {
         if (singlePlayer) {
             if (beginner == -1) {
                 JLabel lb = tttki.nextStep(labels);
-                lb.setBackground(Color.cyan);
+                lb.setBackground(spieler1);
                 lb.setText("O");
             }
         }

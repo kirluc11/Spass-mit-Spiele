@@ -34,7 +34,7 @@ import vierGewinnt.bl.vierGewinntBL;
  */
 public class VierGewinntPanel extends JPanel {
 
-    public static Color spieler1 = Color.cyan;
+    public static Color spieler1 = Color.red;
     public static Color spieler2 = Color.yellow;
     private JLabel[][] labels = new JLabel[6][7];
     private int[] numberOfClicks = new int[7];
