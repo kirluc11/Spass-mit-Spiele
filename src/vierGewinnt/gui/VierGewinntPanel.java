@@ -33,7 +33,7 @@ import vierGewinnt.bl.vierGewinntBL;
  * @author Lukas
  */
 public class VierGewinntPanel extends JPanel {
-
+    
     public static Color spieler1 = Color.red;
     public static Color spieler2 = Color.yellow;
     private JLabel[][] labels = new JLabel[6][7];
@@ -66,6 +66,7 @@ public class VierGewinntPanel extends JPanel {
                     labels[countRow][column].setBackground(spieler2);
                 }
             }
+            pnLbs.repaint();
             if (countRow == 6 - numberOfClicks[column]) {
                 addTimerCompleted = true;
                 isOver();
@@ -94,6 +95,7 @@ public class VierGewinntPanel extends JPanel {
                     }
                 }
             }
+            pnLbs.repaint();
             if (count == 6) {
                 for (int i = 0; i < numberOfClicks.length; i++) {
                     numberOfClicks[i] = 0;
@@ -122,7 +124,7 @@ public class VierGewinntPanel extends JPanel {
 
         panel = new JPanel(new BorderLayout());
         lbSpieler = new JLabel();
-        pnLbs = new JPanel(new GridLayout(6, 7, 0, 0));
+        pnLbs = new VierGewinntLabelPanel(new GridLayout(6, 7, 0, 0));
         pnBts = new JPanel(new GridLayout(1, 7, 2, 1));
 
         popupmenu = new JPopupMenu("Game");
@@ -140,7 +142,7 @@ public class VierGewinntPanel extends JPanel {
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
-                VierGewinntLabel lb = new VierGewinntLabel();
+                JLabel lb = new JLabel();
                 lb.setOpaque(true);
                 lb.setBackground(Color.black);
                 lb.setName(i + "-" + j);
@@ -230,7 +232,7 @@ public class VierGewinntPanel extends JPanel {
         bla.getContentPane().add(new VierGewinntPanel());
         bla.setVisible(true);
     }
-    private JPanel pnLbs;
+    private VierGewinntLabelPanel pnLbs;
     private JPanel pnBts;
     private JPanel panel;
     private JLabel lbSpieler;
