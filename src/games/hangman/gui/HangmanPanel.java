@@ -160,6 +160,7 @@ public class HangmanPanel extends javax.swing.JPanel {
             usedChar = new HashSet<>();
             gameRunning = true;
         }
+        ftfInput.requestFocus();
     }
 
     public void restartGame() {
