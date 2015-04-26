@@ -146,12 +146,20 @@ public class HangmanPanel extends javax.swing.JPanel {
             inp = inp.trim();
             c = new char[inp.length()];
             c1 = new char[inp.length()];
-            inp = inp.toLowerCase();
+            inp = inp.toUpperCase();
             for (int i = 0; i < c1.length; i++) {
                 c1[i] = inp.charAt(i);
             }
             for (int i = 0; i < c.length; i++) {
-                c[i] = '_';
+                if(c1[i] == ' ')
+                {
+                    lenght++;
+                    c[i] = ' ';
+                }
+                else
+                {
+                    c[i] = '_';
+                }
             }
             for (int i1 = 0; i1 < c.length; i1++) {
                 output += c[i1] + " ";
@@ -223,8 +231,7 @@ public class HangmanPanel extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         pmGame = new javax.swing.JPopupMenu();
         miRestart = new javax.swing.JMenuItem();
@@ -235,10 +242,8 @@ public class HangmanPanel extends javax.swing.JPanel {
         ftfInput = new javax.swing.JFormattedTextField();
 
         miRestart.setText("Restart");
-        miRestart.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        miRestart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 onRestart(evt);
             }
         });
@@ -246,7 +251,7 @@ public class HangmanPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        paTop.setBorder(javax.swing.BorderFactory.createTitledBorder("Hangman"));
+        paTop.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 5, 0));
         paTop.setLayout(new java.awt.GridLayout(1, 0));
 
         lbAnzeige.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -266,7 +271,7 @@ public class HangmanPanel extends javax.swing.JPanel {
         );
         paZeichneLayout.setVerticalGroup(
             paZeichneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGap(0, 253, Short.MAX_VALUE)
         );
 
         add(paZeichne, java.awt.BorderLayout.CENTER);
@@ -274,18 +279,14 @@ public class HangmanPanel extends javax.swing.JPanel {
         paBottom.setLayout(new java.awt.GridLayout(1, 1));
 
         ftfInput.setBorder(javax.swing.BorderFactory.createTitledBorder("Input"));
-        try
-        {
+        try {
             ftfInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("L")));
-        } catch (java.text.ParseException ex)
-        {
+        } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
         ftfInput.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        ftfInput.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyReleased(java.awt.event.KeyEvent evt)
-            {
+        ftfInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
                 onClicked(evt);
             }
         });
@@ -300,7 +301,7 @@ public class HangmanPanel extends javax.swing.JPanel {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 String input = ftfInput.getText();
                 if (!input.equals(" ") && !input.isEmpty()) {
-                    input = input.toLowerCase();
+                    input = input.toUpperCase();
                     char ch = input.charAt(0);
                     searchLetter(ch);
                 }
