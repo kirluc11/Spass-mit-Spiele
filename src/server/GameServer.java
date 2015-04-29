@@ -146,6 +146,7 @@ public class GameServer
     class ClientCommunicationThread extends Thread
     {
 
+        
         Socket socket;
 
         public ClientCommunicationThread(Socket socket)

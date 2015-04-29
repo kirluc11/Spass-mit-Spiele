@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
+import server.GameServer;
 
 /**
  *
@@ -18,7 +19,7 @@ import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
  */
 public class ServerGUI extends javax.swing.JFrame
 {
-
+    private GameServer gs;
 
     /**
      * Creates new form ServerGUI
@@ -29,6 +30,13 @@ public class ServerGUI extends javax.swing.JFrame
         this.setSize(600, 400);
         this.setLocationRelativeTo(null);
         taOutput.setEditable(false);
+        try
+        {
+            gs= new GameServer(taOutput);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(ServerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -102,10 +110,18 @@ public class ServerGUI extends javax.swing.JFrame
     private void onStart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onStart
     {//GEN-HEADEREND:event_onStart
 
-        String port = tfPort.getText();
-        if (!port.isEmpty())
+        String portString = tfPort.getText();
+        if (!portString.isEmpty())
         {
-            
+            try
+            {
+            int portNr = Integer.parseInt(portString);
+            gs.setPORTNR(portNr);
+            gs.startServer();
+            }catch(NumberFormatException ex)
+            {
+                JOptionPane.showMessageDialog(this, "Please enter valid portnumber", "Invalid port", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
 
@@ -113,8 +129,13 @@ public class ServerGUI extends javax.swing.JFrame
 
     private void onStop(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onStop
     {//GEN-HEADEREND:event_onStop
-
-        
+        try
+        {
+            gs.stopServer();
+        } catch (IOException ex)
+        {
+            Logger.getLogger(ServerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_onStop
 
     /**

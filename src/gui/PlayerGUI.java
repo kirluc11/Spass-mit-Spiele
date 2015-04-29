@@ -5,8 +5,11 @@
  */
 package gui;
 
+import client.GameClient;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
@@ -19,6 +22,8 @@ public class PlayerGUI extends javax.swing.JFrame {
 
     
     private JPanel aktPanel;
+    private boolean connected = false;
+    private GameClient gClient;
     /**
      * Creates new form PlayerGUI
      */
@@ -27,7 +32,8 @@ public class PlayerGUI extends javax.swing.JFrame {
         this.setSize(600,600);
         this.setLocationRelativeTo(null);
         //HangmanPanel hmp = new HangmanPanel();
-        this.setVisible(true);     
+        this.setVisible(true);    
+        gClient = new GameClient();
         //hmp.startGame();
         showGameChooser();
     }
@@ -84,18 +90,18 @@ public class PlayerGUI extends javax.swing.JFrame {
         pnServer.add(pnPort);
 
         btConnect.setText("Connect");
+        btConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                onDisConnect(evt);
+            }
+        });
         pnServer.add(btConnect);
 
         pnTop.add(pnServer, java.awt.BorderLayout.CENTER);
 
         btHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/pictures/home.png"))); // NOI18N
-        btHome.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                onHome(evt);
-            }
-        });
         pnTop.add(btHome, java.awt.BorderLayout.EAST);
 
         getContentPane().add(pnTop, java.awt.BorderLayout.NORTH);
@@ -111,6 +117,35 @@ public class PlayerGUI extends javax.swing.JFrame {
     {//GEN-HEADEREND:event_onHome
         showGameChooser();
     }//GEN-LAST:event_onHome
+
+    private void onDisConnect(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onDisConnect
+    {//GEN-HEADEREND:event_onDisConnect
+        if(!connected)
+        {
+            String nickname = JOptionPane.showInputDialog("Please enter nickname");
+            gClient.setNickname(nickname);
+            try
+            {
+                gClient.startClient();
+                connected=true;
+                btConnect.setText("Disconnect");
+            } catch (IOException ex)
+            {
+                Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else
+        {
+            try
+            {
+                gClient.stopClient();
+                connected=false;
+                btConnect.setText("Connect");
+            } catch (IOException ex)
+            {
+                Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_onDisConnect
 
     /**
      * @param args the command line arguments
