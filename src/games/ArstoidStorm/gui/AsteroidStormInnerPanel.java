@@ -54,6 +54,7 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable {
 
     public void setNumberY(int numberY) {
         this.numberY = numberY;
+        
         repaint();
     }
 
@@ -69,10 +70,10 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable {
         x = this.getWidth();
         y = this.getHeight();
         g.setColor(Color.white);
-        g.fillRect(x / 2 + numberX, y / 2 + numberY, 10, 10);
+        g.fillRect(x / 2 + numberX, y / 2 + numberY, x/20, y/20);
         g.setColor(col);
         for (int i = 0; i < coordX.length; i++) {
-            g.fillRect(coordX[i], coordY[i], 30, 30);
+            g.fillRect(coordX[i], coordY[i], x/10, y/10);
         }
 
 
@@ -80,13 +81,14 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable {
     }
 
     public void collision() {
+        
         for (int l = 0; l < coordX.length; l++) {
-            for (int i = 0; i < 30; i++) {
-                for (int j = 0; j < 30; j++) {
+            for (int i = 0; i < x/10; i++) {
+                for (int j = 0; j < y/10; j++) {
                     if ((x / 2 + numberX == coordX[l] + i && y / 2 + numberY == coordY[l] + j)
-                            || (x / 2 + numberX + 10 == coordX[l] + i && y / 2 + numberY == coordY[l] + j)
-                            || (x / 2 + numberX + 10 == coordX[l] + i && y / 2 + numberY + 10 == coordY[l] + j)
-                            || (x / 2 + numberX == coordX[l] + i && y / 2 + numberY + 10 == coordY[l] + j)) {
+                            || (x / 2 + numberX + x/20 == coordX[l] + i && y / 2 + numberY == coordY[l] + j)
+                            || (x / 2 + numberX + x/20 == coordX[l] + i && y / 2 + numberY + y/20 == coordY[l] + j)
+                            || (x / 2 + numberX == coordX[l] + i && y / 2 + numberY + y/20 == coordY[l] + j)) {
                         aus = true;
                         JOptionPane.showMessageDialog(this, "GAME OVER!!");
                         return;
