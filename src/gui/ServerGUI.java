@@ -58,7 +58,7 @@ public class ServerGUI extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        paButtons.setBackground(new java.awt.Color(0, 0, 0));
+        paButtons.setBackground(new java.awt.Color(255, 255, 255));
         paButtons.setLayout(new java.awt.GridLayout(1, 3));
 
         tfPort.setHorizontalAlignment(javax.swing.JTextField.RIGHT);

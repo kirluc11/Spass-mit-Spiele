@@ -32,15 +32,15 @@ public class GameClient
         this.PORTNR = PORTNR;
     }
 
-    public void setAddress() throws UnknownHostException
+    public void setAddress(String inetAdress) throws UnknownHostException
     {
-
         address = InetAddress.getLocalHost();
     }
 
-    public void setNickname(String nickname)
+    public void setNickname(String nickname) throws IOException
     {
         this.nickname = nickname;
+        oos.writeObject(nickname);
     }
     
    

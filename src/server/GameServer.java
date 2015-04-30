@@ -35,12 +35,12 @@ public class GameServer
     private ServerThread st = null;
     private LinkedList<ObjectOutputStream> writerList = new LinkedList<ObjectOutputStream>();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss'>'");
+    private LinkedList<String> nicknames = new LinkedList<>();
 
     public void setPORTNR(int PORTNR)
     {
         this.PORTNR = PORTNR;
     }
-
 
     public GameServer(JTextComponent logArea) throws IOException
     {
@@ -70,20 +70,20 @@ public class GameServer
 
     public void stopServer() throws IOException
     {
-        
+
         if (st != null && st.isAlive())
         {
             for (ObjectOutputStream writerList1 : writerList)
-        {
+            {
 
-            writerList1.writeObject("###Sever###stopped###");
-        }
+                writerList1.writeObject("###Sever###stopped###");
+            }
             st.interrupt();
         }
 
     }
 
-    private void log(String logText)
+    public void log(String logText)
     {
         Date date = new Date();
         if (logArea == null)
@@ -146,8 +146,9 @@ public class GameServer
     class ClientCommunicationThread extends Thread
     {
 
-        
         Socket socket;
+        String test = "";
+        boolean inGame = false;
 
         public ClientCommunicationThread(Socket socket)
         {
@@ -166,14 +167,32 @@ public class GameServer
                 os = socket.getOutputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
                 ObjectOutputStream oos = new ObjectOutputStream(os);
+                Object request = ois.readObject();
+                String nickname = (String)request;
+                nicknames.add(nickname);
                 
-                
-            }catch(EOFException ex) 
+                while (!inGame)
+                {
+                    request = ois.readObject();
+                    if (request instanceof String)
+                    {
+                        String text = (String) request;
+                        if(text.equals("###Client###Disconnect###"))
+                        {
+                            break;
+                        }
+                        test += text;
+                    }
+                }
+            } catch (EOFException ex)
             {
-                
-            }catch (IOException ex)
+
+            } catch (IOException ex)
             {
                 log("Communication failure: " + ex.toString());
+            } catch (ClassNotFoundException ex)
+            {
+                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
             } finally
             {
                 try

@@ -7,6 +7,7 @@ package gui;
 
 import client.GameClient;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,26 +19,28 @@ import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
  *
  * @author Churchy
  */
-public class PlayerGUI extends javax.swing.JFrame {
+public class PlayerGUI extends javax.swing.JFrame
+{
 
-    
     private JPanel aktPanel;
     private boolean connected = false;
     private GameClient gClient;
+
     /**
      * Creates new form PlayerGUI
      */
-    public PlayerGUI() {
+    public PlayerGUI()
+    {
         initComponents();
-        this.setSize(600,600);
+        this.setSize(600, 600);
         this.setLocationRelativeTo(null);
         //HangmanPanel hmp = new HangmanPanel();
-        this.setVisible(true);    
+        this.setVisible(true);
         gClient = new GameClient();
         //hmp.startGame();
         showGameChooser();
     }
-    
+
     public void showGameChooser()
     {
         GameChooserPanel gcp = new GameChooserPanel(pnGame);
@@ -84,7 +87,7 @@ public class PlayerGUI extends javax.swing.JFrame {
         pnPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Port"));
         pnPort.setLayout(new java.awt.BorderLayout());
 
-        tfPort.setText("69");
+        tfPort.setText("9999");
         pnPort.add(tfPort, java.awt.BorderLayout.CENTER);
 
         pnServer.add(pnPort);
@@ -120,29 +123,39 @@ public class PlayerGUI extends javax.swing.JFrame {
 
     private void onDisConnect(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onDisConnect
     {//GEN-HEADEREND:event_onDisConnect
-        if(!connected)
+        if (!connected)
         {
             String nickname = JOptionPane.showInputDialog("Please enter nickname");
-            gClient.setNickname(nickname);
-            try
+            String inetAddress = tfIP.getText();
+            String portString = tfPort.getText();
+            if (!inetAddress.isEmpty() && !portString.isEmpty())
             {
-                gClient.startClient();
-                connected=true;
-                btConnect.setText("Disconnect");
-            } catch (IOException ex)
-            {
-                Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                try
+                {
+                    gClient.setPORTNR(Integer.parseInt(portString));
+                    gClient.setAddress(inetAddress);
+                    gClient.startClient();
+                    gClient.setNickname(nickname);
+                    connected = true;
+                    btConnect.setText("Disconnect");
+                } catch (IOException ex)
+                {
+                    JOptionPane.showMessageDialog(this, "An error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException ex)
+                {
+                    JOptionPane.showMessageDialog(this, "Please enter valid portnumber", "Invalid port", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        }else
+        } else
         {
             try
             {
                 gClient.stopClient();
-                connected=false;
+                connected = false;
                 btConnect.setText("Connect");
             } catch (IOException ex)
             {
-                Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "An error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_onDisConnect
@@ -150,44 +163,55 @@ public class PlayerGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[])
+    {
 
-        try {
+        try
+        {
             /* Set the Nimbus look and feel */
             //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
             /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-            * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-            */
-            try {
-                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {
+             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+             */
+            try
+            {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+                {
+                    if ("Nimbus".equals(info.getName()))
+                    {
                         javax.swing.UIManager.setLookAndFeel(info.getClassName());
                         break;
                     }
                 }
-            } catch (ClassNotFoundException ex) {
+            } catch (ClassNotFoundException ex)
+            {
                 java.util.logging.Logger.getLogger(PlayerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
+            } catch (InstantiationException ex)
+            {
                 java.util.logging.Logger.getLogger(PlayerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
+            } catch (IllegalAccessException ex)
+            {
                 java.util.logging.Logger.getLogger(PlayerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            } catch (javax.swing.UnsupportedLookAndFeelException ex)
+            {
                 java.util.logging.Logger.getLogger(PlayerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
             //</editor-fold>
-            
-            
+
             BeautyEyeLNFHelper.translucencyAtFrameInactive = false;
             BeautyEyeLNFHelper.launchBeautyEyeLNF();
             UIManager.put("RootPane.setupButtonVisible", false);
-            
+
             /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
+            java.awt.EventQueue.invokeLater(new Runnable()
+            {
+                public void run()
+                {
                     new PlayerGUI();
                 }
             });
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
