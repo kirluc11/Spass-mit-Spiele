@@ -31,20 +31,23 @@ public class Snake implements Directions {
     public void initSnake(int windowWidth, int windowHeight) {
         snakeParts = new LinkedList<>();
         Random rand = new Random();
-        double w = windowWidth / 20;
-        double h = windowHeight / 20;
-        double x = rand.nextInt(windowWidth / 20 - 4);
-        double y = rand.nextInt(windowHeight / 20 - 4);
+        
+        int devider = 15;
+        
+        double w = windowWidth / devider;
+        double h = windowHeight / devider;
+        double x = rand.nextInt((int) (w - 4));
+        double y = rand.nextInt((int) (h - 4));
 
-        SnakeHead head = new SnakeHead(Direction.RIGHT, x * w, y * h, w, h);
-        SnakePart p1 = new SnakePart(Direction.RIGHT, x * w - w, y * h, w, h);
-        SnakePart p2 = new SnakePart(Direction.RIGHT, x * w - w * 2, y * h, w, h);
-        SnakePart p3 = new SnakePart(Direction.RIGHT, x * w - w * 3, y * h, w, h);
-
-        snakeParts.add(head);
-        snakeParts.add(p1);
-        snakeParts.add(p2);
-        snakeParts.add(p3);
+        for (int i = 0; i < 10; i++) {
+            if (i == 0) {
+                SnakeHead head = new SnakeHead(Direction.RIGHT, x * w, y * h, w, h);
+                snakeParts.add(head);
+            } else {
+                SnakePart part = new SnakePart(Direction.RIGHT, x * w - w * i, y * h, w, h);
+                snakeParts.add(part);
+            }
+        }
     }
 
     public void move() {
@@ -54,7 +57,6 @@ public class Snake implements Directions {
 
         for (SnakePart sp : snakeParts) {
             Direction dir = sp.getDir();
-            System.out.println(dir);
             if (dir == null) {
                 snakeParts.remove(sp);
             } else {
@@ -74,7 +76,16 @@ public class Snake implements Directions {
                 }
             }
         }
-        System.out.println("\n");
+        
+        SnakeHead head = (SnakeHead) snakeParts.getFirst();
+        
+        for (int i = 1; i < snakeParts.size(); i++) {
+            SnakePart part = snakeParts.get(i);
+            if(head.equals(part))
+            {
+                System.out.println("dead: " + i);
+            }
+        }
 
         for (int i = snakeParts.size() - 1; i > 0; i--) {
             snakeParts.get(i).setDir(snakeParts.get(i - 1).getDir());
@@ -82,7 +93,24 @@ public class Snake implements Directions {
     }
 
     public void changeDirection(Direction dir) {
-        snakeParts.getFirst().setDir(dir);
+        if (snakeParts != null) {
+            SnakeHead head = (SnakeHead) snakeParts.getFirst();
+            if (head.getDir().equals(Direction.UP) && !dir.equals(Direction.DOWN)) {
+                snakeParts.getFirst().setDir(dir);
+            } else {
+                if (head.getDir().equals(Direction.DOWN) && !dir.equals(Direction.UP)) {
+                    snakeParts.getFirst().setDir(dir);
+                } else {
+                    if (head.getDir().equals(Direction.LEFT) && !dir.equals(Direction.RIGHT)) {
+                        snakeParts.getFirst().setDir(dir);
+                    } else {
+                        if (head.getDir().equals(Direction.RIGHT) && !dir.equals(Direction.LEFT)) {
+                            snakeParts.getFirst().setDir(dir);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public int getWidth() {

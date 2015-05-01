@@ -9,6 +9,7 @@ import games.Snake.bl.Directions;
 import games.Snake.bl.Snake;
 import games.Snake.bl.SnakePart;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -25,6 +26,7 @@ import javax.swing.border.TitledBorder;
 public class SnakePanel extends javax.swing.JPanel implements Runnable, Directions {
 
     Snake snake;
+    Direction dir = Direction.RIGHT;
 
     /**
      * Creates new form SnakePanel
@@ -67,16 +69,16 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
 
     private void onKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onKeyTyped
         if (evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W || (evt.getKeyChar() + "").equalsIgnoreCase("w")) {
-            snake.changeDirection(Direction.UP);
+            dir = Direction.UP;
         } else {
             if (evt.getKeyCode() == KeyEvent.VK_DOWN || evt.getKeyCode() == KeyEvent.VK_S || (evt.getKeyChar() + "").equalsIgnoreCase("s")) {
-                snake.changeDirection(Direction.DOWN);
+                dir = Direction.DOWN;
             } else {
                 if (evt.getKeyCode() == KeyEvent.VK_RIGHT || evt.getKeyCode() == KeyEvent.VK_D || (evt.getKeyChar() + "").equalsIgnoreCase("d")) {
-                    snake.changeDirection(Direction.RIGHT);
+                    dir = Direction.RIGHT;
                 } else {
                     if (evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_A || (evt.getKeyChar() + "").equalsIgnoreCase("a")) {
-                        snake.changeDirection(Direction.LEFT);
+                        dir = Direction.LEFT;
                     }
                 }
             }
@@ -117,7 +119,7 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
     public void run() {
         while (true) {
             try {
-                Thread.sleep(300);
+                Thread.sleep(200);
                 repaint();
             } catch (InterruptedException ex) {
             }
@@ -129,11 +131,14 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         super.paint(gr);
         Graphics2D g = (Graphics2D) gr;
         if (snake != null) {
+            snake.changeDirection(dir);
             snake.move();
             LinkedList<SnakePart> snakeParts = snake.getSnakeParts();
-            for (SnakePart snakePart : snakeParts) {
-                g.setColor(snakePart.getColor());
-                g.fill(snakePart);
+            for (int i = snakeParts.size() - 1; i >= 0; i--) {
+                g.setColor(snakeParts.get(i).getColor());
+                g.fill(snakeParts.get(i));
+                g.setColor(Color.lightGray);
+                g.draw(snakeParts.get(i));
             }
         }
     }

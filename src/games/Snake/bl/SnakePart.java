@@ -12,7 +12,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Churchy
  */
-public class SnakePart extends Rectangle2D.Double implements Directions{
+public class SnakePart extends Rectangle2D.Double implements Directions {
 
     Color color = Color.YELLOW;
     double w;
@@ -24,6 +24,27 @@ public class SnakePart extends Rectangle2D.Double implements Directions{
         this.w = w;
         this.h = h;
         this.dir = dir;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        final SnakePart other = (SnakePart) obj;
+        if (java.lang.Double.doubleToLongBits(this.x) != java.lang.Double.doubleToLongBits(other.x)) {
+            return false;
+        }
+        if (java.lang.Double.doubleToLongBits(this.y) != java.lang.Double.doubleToLongBits(other.y)) {
+            return false;
+        }
+        return true;
     }
 
     public void setX(double x) {
@@ -41,14 +62,12 @@ public class SnakePart extends Rectangle2D.Double implements Directions{
     public void setColor(Color color) {
         this.color = color;
     }
-    
-    public void changeX(double zuX)
-    {
+
+    public void changeX(double zuX) {
         this.setX(this.getX() + zuX * w);
     }
-    
-    public void changeY(double zuY)
-    {
+
+    public void changeY(double zuY) {
         this.setY(this.getY() + zuY * h);
     }
 
