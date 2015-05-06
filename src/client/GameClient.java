@@ -81,4 +81,15 @@ public class GameClient
     {
         oos.writeObject(request);
     }
+    
+    
+    class ClientUpdateThread extends Thread
+    {
+        
+        @Override
+        public void run()
+        {
+            super.run(); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
 }
