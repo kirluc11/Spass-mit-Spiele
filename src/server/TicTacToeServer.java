@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,36 +23,37 @@ import java.util.logging.Logger;
  */
 public class TicTacToeServer
 {
-    
+
     private GameServer gs;
-    private LinkedList<Socket> player = new LinkedList<>();
-    
+    private HashMap<String, Socket> player = new HashMap<>();
+
     public TicTacToeServer(GameServer gs)
     {
-        this.gs=gs;
+        this.gs = gs;
     }
-    
-    public void addPlayer(Socket socket)
+
+    public void addPlayer(Socket socket, String nickname)
     {
-        player.add(socket);
+        player.put(nickname, socket);
+        new TicTacToeThread(socket, nickname).start();
     }
-    
-    public void removePlayer(Socket socket)
+
+    public void removePlayer(String nickname)
     {
-        player.remove(socket);
+        player.remove(nickname);
     }
-    
-    
-    
-     class TicTacToeThread extends Thread
+
+    class TicTacToeThread extends Thread
     {
 
         Socket socket;
+        String nickname;
         String test = "";
 
-        public TicTacToeThread(Socket socket)
+        public TicTacToeThread(Socket socket, String nickname)
         {
             this.socket = socket;
+            this.nickname = nickname;
         }
 
         @Override
@@ -66,13 +68,14 @@ public class TicTacToeServer
                 os = socket.getOutputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
                 ObjectOutputStream oos = new ObjectOutputStream(os);
+                System.out.println("new TicTacToeThread");
                 while (true)
                 {
                     Object request = ois.readObject();
                     if (request instanceof String)
                     {
                         String nickname = (String) request;
-                        if(nickname.equals("###Client###Disconnect###"))
+                        if (nickname.equals("###Client###Disconnect###"))
                         {
                             break;
                         }
@@ -88,21 +91,11 @@ public class TicTacToeServer
             } catch (ClassNotFoundException ex)
             {
                 Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
-            } finally
-            {
-                try
-                {
-                    is.close();
-                    os.close();
-                    socket.close();
-
-                } catch (IOException ex)
-                {
-                    gs.log("Communication failure: " + ex.toString());
-                }
             }
+
+            gs.startNewClientHomeThread(socket, nickname);
 
         }
     }
-   
+
 }

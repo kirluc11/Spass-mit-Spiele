@@ -43,7 +43,7 @@ public class PlayerGUI extends javax.swing.JFrame
 
     public void showGameChooser()
     {
-        GameChooserPanel gcp = new GameChooserPanel(pnGame);
+        GameChooserPanel gcp = new GameChooserPanel(pnGame,gClient);
         aktPanel = gcp;
         pnGame.removeAll();
         pnGame.add(gcp);

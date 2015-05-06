@@ -36,6 +36,7 @@ public class GameServer
     private LinkedList<ObjectOutputStream> writerList = new LinkedList<ObjectOutputStream>();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss'>'");
     private LinkedList<String> nicknames = new LinkedList<>();
+    private TicTacToeServer ttts;
 
     public void setPORTNR(int PORTNR)
     {
@@ -45,6 +46,7 @@ public class GameServer
     public GameServer(JTextComponent logArea) throws IOException
     {
         this.logArea = logArea;
+        ttts = new TicTacToeServer(this);
     }
 
     public void startServer()
@@ -118,8 +120,9 @@ public class GameServer
                 try
                 {
                     Socket socket = server.accept();
+
                     log("Connection established with: " + socket.getRemoteSocketAddress().toString());
-                    new ClientCommunicationThread(socket).start();
+                    new ClientHomeThread(socket).start();
 
                 } catch (SocketTimeoutException ex)
                 {
@@ -142,16 +145,29 @@ public class GameServer
         }
 
     }
+    
+    
+    public void startNewClientHomeThread(Socket socket,String nickname)
+    {
+        new ClientHomeThread(socket, nickname);
+    }
+    
 
-    class ClientCommunicationThread extends Thread
+    class ClientHomeThread extends Thread
     {
 
         Socket socket;
-        String test = "";
         boolean inGame = false;
+        String nickname = "";
 
-        public ClientCommunicationThread(Socket socket)
+        public ClientHomeThread(Socket socket)
         {
+            this.socket = socket;
+        }
+
+        public ClientHomeThread(Socket socket, String nickname)
+        {
+            this.nickname = nickname;
             this.socket = socket;
         }
 
@@ -167,23 +183,30 @@ public class GameServer
                 os = socket.getOutputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
                 ObjectOutputStream oos = new ObjectOutputStream(os);
-                Object request = ois.readObject();
-                String nickname = (String)request;
-                nicknames.add(nickname);
-                
-                while (!inGame)
+                if (nickname.isEmpty())
                 {
-                    request = ois.readObject();
-                    if (request instanceof String)
+                    Object request = ois.readObject();
+                    nickname = (String) request;
+                    nicknames.add(nickname);
+                    System.out.println("" + nickname);
+                }
+
+                Object request = ois.readObject();
+                if (request instanceof String)
+                {
+                    String text = (String) request;
+                    System.out.println(""+text);
+                    if (text.equals("TicTacToe"))
                     {
-                        String text = (String) request;
-                        if(text.equals("###Client###Disconnect###"))
-                        {
-                            break;
-                        }
-                        test += text;
+                        ttts.addPlayer(socket, nickname);
+                    }
+                    
+                    if (text.equals("###Client###Disconnect###"))
+                    {
+                        //break;
                     }
                 }
+
             } catch (EOFException ex)
             {
 
@@ -199,7 +222,6 @@ public class GameServer
                 {
                     is.close();
                     os.close();
-                    socket.close();
 
                 } catch (IOException ex)
                 {

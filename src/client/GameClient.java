@@ -67,11 +67,18 @@ public class GameClient
             socket.close();
         }
     }
+    
+    public boolean isConnected()
+    {
+        if (socket != null && !socket.isClosed())
+        {
+            return true;
+        }
+        return false;
+    }
 
-    public void sendAndRecieveObject(Object request) throws IOException, ClassNotFoundException
+    public void sendObject(Object request) throws IOException, ClassNotFoundException
     {
         oos.writeObject(request);
-        Object response = ois.readObject();
-
     }
 }

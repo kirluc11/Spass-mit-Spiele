@@ -5,6 +5,7 @@
  */
 package gui;
 
+import client.GameClient;
 import games.ArstoidStorm.gui.AsteroidStormPanel;
 import games.hangman.gui.HangmanPanel;
 import games.tictactoe.gui.TicTacToePanel;
@@ -32,9 +33,11 @@ public class GameChooserPanel extends javax.swing.JPanel {
 
     private HashMap<String, Image> allGames = new HashMap<String, Image>();
     private JPanel paGame;
+    private GameClient gc;
 
-    public GameChooserPanel(JPanel paGame) {
+    public GameChooserPanel(JPanel paGame,GameClient gc) {
         this.paGame = paGame;
+        this.gc = gc;
         initComponents();
         try {
             this.gameAdding();
@@ -69,7 +72,16 @@ public class GameChooserPanel extends javax.swing.JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     JPanel clickedPanel = (JPanel) e.getComponent();
-                    changeGame(clickedPanel.getName());
+                    try
+                    {
+                        changeGame(clickedPanel.getName());
+                    } catch (IOException ex)
+                    {
+                        Logger.getLogger(GameChooserPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex)
+                    {
+                        Logger.getLogger(GameChooserPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
             paTempGame.setBorder(new TitledBorder(name));
@@ -78,7 +90,7 @@ public class GameChooserPanel extends javax.swing.JPanel {
         }
     }
 
-    public void changeGame(String name) {
+    public void changeGame(String name) throws IOException, ClassNotFoundException {
         paGame.removeAll();
         switch (name) {
             case "Hangman":
@@ -107,6 +119,12 @@ public class GameChooserPanel extends javax.swing.JPanel {
                 vg.requestFocus();
                 break;
         }
+        if(gc.isConnected())
+        {
+            System.out.println("Chooser"+name);
+            gc.sendObject(name);
+        }
+        
     }
 
     //Used for changing Picture size
