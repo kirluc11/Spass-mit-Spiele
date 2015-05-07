@@ -11,7 +11,7 @@ import javax.swing.JLabel;
  *
  * @author Churchy
  */
-public class NumberOfPlayerDLG extends javax.swing.JDialog
+public class NumberOfPlayerOnlineDLG extends javax.swing.JDialog
 {
 
     private boolean ok = false;
@@ -20,7 +20,7 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog
     /**
      * Creates new form AnzSpielerDLG
      */
-    public NumberOfPlayerDLG(java.awt.Frame parent, boolean modal)
+    public NumberOfPlayerOnlineDLG(java.awt.Frame parent, boolean modal)
     {
         super(parent, modal);
         initComponents();
@@ -45,22 +45,26 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanel1 = new javax.swing.JPanel();
         lbSingle = new javax.swing.JLabel();
         lbMult = new javax.swing.JLabel();
+        lbOnline = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 3));
 
         lbSingle.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lbSingle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbSingle.setText("Singleplayer");
         lbSingle.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        lbSingle.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        lbSingle.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 onMouseClicked(evt);
             }
         });
@@ -70,12 +74,25 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog
         lbMult.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbMult.setText("Multiplayer");
         lbMult.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        lbMult.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        lbMult.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 onMouseClicked(evt);
             }
         });
         jPanel1.add(lbMult);
+
+        lbOnline.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        lbOnline.setText("Online");
+        lbOnline.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                onMouseClicked(evt);
+            }
+        });
+        jPanel1.add(lbOnline);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -93,13 +110,19 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog
             ok = true;
             gameMode = 1;
             dispose();
+        } else if (((JLabel) evt.getSource()).getText().equals(lbOnline.getText()))
+        {
+            ok = true;
+            gameMode = 2;
+            dispose();
         }
-
+    
     }//GEN-LAST:event_onMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbMult;
+    private javax.swing.JLabel lbOnline;
     private javax.swing.JLabel lbSingle;
     // End of variables declaration//GEN-END:variables
 }

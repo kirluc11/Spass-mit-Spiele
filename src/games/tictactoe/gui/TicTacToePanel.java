@@ -40,7 +40,8 @@ public class TicTacToePanel extends JPanel
     public static Color spieler2 = Color.red;
     private TicTacToeGewinnabfrage tttg;
     private TicTacToeKI tttki = new TicTacToeKI();
-    private boolean singlePlayer = true;
+    //GameMode: 0=Single,1=Multiplayer, 2=Online
+    private int gameMode = 0;
     private int player = 1;
     private int beginner = 1;
     private GameClient gc;
@@ -68,10 +69,9 @@ public class TicTacToePanel extends JPanel
         } else
         {
             NumberOfPlayerDLG dlg = new NumberOfPlayerDLG(null, true);
-
             if (dlg.isOk())
             {
-                singlePlayer = dlg.isSinglePlayer();
+                gameMode = dlg.getGameMode();
             }
         }
     }
@@ -92,7 +92,7 @@ public class TicTacToePanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                singlePlayer = true;
+                gameMode = 0;
                 restart();
             }
         });
@@ -103,7 +103,7 @@ public class TicTacToePanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                singlePlayer = false;
+                gameMode = 1;
                 restart();
             }
         });
@@ -145,7 +145,7 @@ public class TicTacToePanel extends JPanel
     {
         if (!gameOver)
         {
-            if (singlePlayer)
+            if (gameMode == 0)
             {
                 Object obj = e.getSource();
                 if (obj instanceof JLabel)
@@ -207,7 +207,7 @@ public class TicTacToePanel extends JPanel
                         }
                     }
                 }
-            } else
+            } else if (gameMode == 1)
             {
                 Object obj = e.getSource();
                 if (obj instanceof JLabel)
@@ -261,7 +261,7 @@ public class TicTacToePanel extends JPanel
             label.setText("");
         }
         player = beginner;
-        if (singlePlayer)
+        if (gameMode==0)
         {
             if (beginner == -1)
             {
