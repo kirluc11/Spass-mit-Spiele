@@ -122,7 +122,7 @@ public class GameServer
                     Socket socket = server.accept();
 
                     log("Connection established with: " + socket.getRemoteSocketAddress().toString());
-                    new ClientHomeThread(socket).start();
+                    new HomeThread(socket).start();
 
                 } catch (SocketTimeoutException ex)
                 {
@@ -149,23 +149,23 @@ public class GameServer
     
     public void startNewClientHomeThread(Socket socket,String nickname)
     {
-        new ClientHomeThread(socket, nickname);
+        new HomeThread(socket, nickname);
     }
     
 
-    class ClientHomeThread extends Thread
+    class HomeThread extends Thread
     {
 
         Socket socket;
         boolean inGame = false;
         String nickname = "";
 
-        public ClientHomeThread(Socket socket)
+        public HomeThread(Socket socket)
         {
             this.socket = socket;
         }
 
-        public ClientHomeThread(Socket socket, String nickname)
+        public HomeThread(Socket socket, String nickname)
         {
             this.nickname = nickname;
             this.socket = socket;

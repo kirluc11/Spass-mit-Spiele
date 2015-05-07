@@ -12,7 +12,9 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 
 /**
  *
@@ -82,9 +84,20 @@ public class GameClient
         oos.writeObject(request);
     }
     
-    
-    class ClientUpdateThread extends Thread
+    public void newTicTacToeThread(LinkedList<JLabel> labels)
     {
+        new ClientTicTacToeThread(labels);
+    }
+    
+    
+    class ClientTicTacToeThread extends Thread
+    {
+        LinkedList<JLabel> labels;
+        public ClientTicTacToeThread(LinkedList<JLabel> labels)
+        {
+            this.labels=labels;
+        }
+        
         
         @Override
         public void run()

@@ -4,6 +4,7 @@
  */
 package games.tictactoe.gui;
 
+import client.GameClient;
 import games.tictactoe.bl.TicTacToeGewinnabfrage;
 import games.tictactoe.bl.TicTacToeKI;
 import java.awt.Color;
@@ -15,7 +16,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -28,7 +32,8 @@ import javax.swing.border.TitledBorder;
  *
  * @author Lukas
  */
-public class TicTacToePanel extends JPanel {
+public class TicTacToePanel extends JPanel
+{
 
     private LinkedList<JLabel> labels = new LinkedList<>();
     public static Color spieler1 = Color.yellow;
@@ -38,42 +43,66 @@ public class TicTacToePanel extends JPanel {
     private boolean singlePlayer = true;
     private int player = 1;
     private int beginner = 1;
+    private GameClient gc;
 
     private boolean gameOver;
 
-    public TicTacToePanel() {
+    public TicTacToePanel(GameClient gc)
+    {
         this.initComponents();
+        this.gc = gc;
         tttg = new TicTacToeGewinnabfrage(labels);
+        if (gc.isConnected())
+        {
 
-        NumberOfPlayerDLG dlg = new NumberOfPlayerDLG(null, true);
+            try
+            {
+                gc.sendObject("TicTacToe");
+            } catch (IOException ex)
+            {
+                Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex)
+            {
+                Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else
+        {
+            NumberOfPlayerDLG dlg = new NumberOfPlayerDLG(null, true);
 
-        if (dlg.isOk()) {
-            singlePlayer = dlg.isSinglePlayer();
+            if (dlg.isOk())
+            {
+                singlePlayer = dlg.isSinglePlayer();
+            }
         }
     }
 
-    private void initComponents() {
+    private void initComponents()
+    {
         this.setLayout(new GridLayout(3, 3, 1, 1));
-        
+
         this.setBorder(new TitledBorder(new EmptyBorder(5, 0, 0, 0), "Tic Tac Toe", TitledBorder.CENTER, TitledBorder.ABOVE_TOP));
 
         popupmenu = new JPopupMenu("Game");
         miRestartSinglePlayer = new JMenuItem("New Single Player Game");
         miRestartOfflineMultiplayer = new JMenuItem("New Offline Multiplayer Game");
 
-        miRestartSinglePlayer.addActionListener(new ActionListener() {
+        miRestartSinglePlayer.addActionListener(new ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 singlePlayer = true;
                 restart();
             }
         });
 
-        miRestartOfflineMultiplayer.addActionListener(new ActionListener() {
+        miRestartOfflineMultiplayer.addActionListener(new ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 singlePlayer = false;
                 restart();
             }
@@ -82,16 +111,19 @@ public class TicTacToePanel extends JPanel {
         popupmenu.add(miRestartSinglePlayer);
         popupmenu.add(miRestartOfflineMultiplayer);
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++)
+        {
             JLabel lb = new JLabel();
             lb.setOpaque(true);
             lb.setBackground(Color.black);
             lb.setFont(new Font("Courier New", Font.BOLD, 75));
             lb.setHorizontalAlignment(JLabel.CENTER);
             lb.setComponentPopupMenu(popupmenu);
-            lb.addMouseListener(new MouseAdapter() {
+            lb.addMouseListener(new MouseAdapter()
+            {
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mouseClicked(MouseEvent e)
+                {
                     onMouseClicked(e);
                 }
             });
@@ -101,23 +133,31 @@ public class TicTacToePanel extends JPanel {
         }
     }
 
-    private void changeLabelState(boolean b) {
-        for (JLabel label : labels) {
+    private void changeLabelState(boolean b)
+    {
+        for (JLabel label : labels)
+        {
             label.setEnabled(b);
         }
     }
 
-    private void onMouseClicked(MouseEvent e) {
-        if (!gameOver) {
-            if (singlePlayer) {
+    private void onMouseClicked(MouseEvent e)
+    {
+        if (!gameOver)
+        {
+            if (singlePlayer)
+            {
                 Object obj = e.getSource();
-                if (obj instanceof JLabel) {
+                if (obj instanceof JLabel)
+                {
                     JLabel lb = (JLabel) obj;
-                    if (lb.getBackground().equals(Color.black)) {
+                    if (lb.getBackground().equals(Color.black))
+                    {
                         lb.setBackground(spieler2);
                         lb.setText("X");
 
-                        if (tttg.isOver()) {
+                        if (tttg.isOver())
+                        {
                             String gewinner = tttg.getSieger() == 0 ? "X" : "O";
                             JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                             beginner *= -1;
@@ -125,20 +165,24 @@ public class TicTacToePanel extends JPanel {
                             changeLabelState(false);
                             gameOver = true;
 
-                        } else {
-                            if (tttg.isUnendschieden()) {
+                        } else
+                        {
+                            if (tttg.isUnendschieden())
+                            {
                                 JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                                 beginner *= -1;
 
                                 changeLabelState(false);
                                 gameOver = true;
 
-                            } else {
+                            } else
+                            {
                                 player *= -1;
                                 lb = tttki.nextStep(labels);
                                 lb.setBackground(spieler1);
                                 lb.setText("O");
-                                if (tttg.isOver()) {
+                                if (tttg.isOver())
+                                {
                                     String gewinner = tttg.getSieger() == 0 ? "X" : "O";
                                     JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                                     beginner *= -1;
@@ -146,8 +190,10 @@ public class TicTacToePanel extends JPanel {
                                     changeLabelState(false);
                                     gameOver = true;
 
-                                } else {
-                                    if (tttg.isUnendschieden()) {
+                                } else
+                                {
+                                    if (tttg.isUnendschieden())
+                                    {
                                         JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                                         beginner *= -1;
 
@@ -161,20 +207,26 @@ public class TicTacToePanel extends JPanel {
                         }
                     }
                 }
-            } else {
+            } else
+            {
                 Object obj = e.getSource();
-                if (obj instanceof JLabel) {
+                if (obj instanceof JLabel)
+                {
                     JLabel lb = (JLabel) obj;
-                    if (lb.getBackground().equals(Color.black)) {
-                        if (player == 1) {
+                    if (lb.getBackground().equals(Color.black))
+                    {
+                        if (player == 1)
+                        {
                             lb.setBackground(spieler2);
                             lb.setText("X");
-                        } else {
+                        } else
+                        {
                             lb.setBackground(spieler1);
                             lb.setText("O");
                         }
 
-                        if (tttg.isOver()) {
+                        if (tttg.isOver())
+                        {
                             String gewinner = tttg.getSieger() == 0 ? "X" : "Y";
                             JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                             beginner *= -1;
@@ -182,8 +234,10 @@ public class TicTacToePanel extends JPanel {
                             changeLabelState(false);
                             gameOver = true;
 
-                        } else {
-                            if (tttg.isUnendschieden()) {
+                        } else
+                        {
+                            if (tttg.isUnendschieden())
+                            {
                                 JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                                 beginner *= -1;
 
@@ -199,14 +253,18 @@ public class TicTacToePanel extends JPanel {
         }
     }
 
-    private void restart() {
-        for (JLabel label : labels) {
+    private void restart()
+    {
+        for (JLabel label : labels)
+        {
             label.setBackground(Color.black);
             label.setText("");
         }
         player = beginner;
-        if (singlePlayer) {
-            if (beginner == -1) {
+        if (singlePlayer)
+        {
+            if (beginner == -1)
+            {
                 JLabel lb = tttki.nextStep(labels);
                 lb.setBackground(spieler1);
                 lb.setText("O");

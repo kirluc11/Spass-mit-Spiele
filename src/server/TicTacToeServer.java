@@ -26,6 +26,8 @@ public class TicTacToeServer
 
     private GameServer gs;
     private HashMap<String, Socket> player = new HashMap<>();
+    
+    private LinkedList<ObjectOutputStream> lioos = new LinkedList<>();
 
     public TicTacToeServer(GameServer gs)
     {
@@ -68,20 +70,29 @@ public class TicTacToeServer
                 os = socket.getOutputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
                 ObjectOutputStream oos = new ObjectOutputStream(os);
-                System.out.println("new TicTacToeThread");
+                lioos.add(oos);
                 while (true)
                 {
                     Object request = ois.readObject();
+
                     if (request instanceof String)
                     {
-                        String nickname = (String) request;
-                        if (nickname.equals("###Client###Disconnect###"))
+                        String label = (String) request;
+
+                        if (label.equals("###Client###Disconnect###"))
                         {
+
+                            gs.log("Connection closed from: " + socket.getRemoteSocketAddress().toString());
                             break;
                         }
-                        test += nickname;
+                        gs.log("recieved: from: Player " + nickname + "; Label: " + label);
+                        for (ObjectOutputStream aktoos : lioos)
+                        {
+                            aktoos.writeObject(label + "##" + nickname);
+                        }
                     }
                 }
+
             } catch (EOFException ex)
             {
 
@@ -90,10 +101,20 @@ public class TicTacToeServer
                 gs.log("Communication failure: " + ex.toString());
             } catch (ClassNotFoundException ex)
             {
-                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                gs.log("Communication failure: " + ex.toString());
+            } finally
+            {
+                try
+                {
+                    is.close();
+                    os.close();
+                    socket.close();
 
-            gs.startNewClientHomeThread(socket, nickname);
+                } catch (IOException ex)
+                {
+                    gs.log("Communication failure: " + ex.toString());
+                }
+            }
 
         }
     }

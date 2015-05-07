@@ -101,7 +101,7 @@ public class GameChooserPanel extends javax.swing.JPanel {
                 paHang.startGame();
                 break;
             case "TicTacToe":
-                paGame.add(new TicTacToePanel());
+                paGame.add(new TicTacToePanel(gc));
                 paGame.repaint();
                 paGame.getRootPane().updateUI();
                 break;
@@ -119,11 +119,7 @@ public class GameChooserPanel extends javax.swing.JPanel {
                 vg.requestFocus();
                 break;
         }
-        if(gc.isConnected())
-        {
-            System.out.println("Chooser"+name);
-            gc.sendObject(name);
-        }
+        
         
     }
 
