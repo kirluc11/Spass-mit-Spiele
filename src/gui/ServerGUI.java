@@ -190,7 +190,6 @@ public class ServerGUI extends javax.swing.JFrame
             public void run()
             {
                 new ServerGUI().setVisible(true);
-
             }
         });
     }

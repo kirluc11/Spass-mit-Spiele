@@ -43,7 +43,7 @@ public class PlayerGUI extends javax.swing.JFrame
 
     public void showGameChooser()
     {
-        GameChooserPanel gcp = new GameChooserPanel(pnGame,gClient);
+        GameChooserPanel gcp = new GameChooserPanel(pnGame, gClient);
         aktPanel = gcp;
         pnGame.removeAll();
         pnGame.add(gcp);
@@ -105,6 +105,13 @@ public class PlayerGUI extends javax.swing.JFrame
         pnTop.add(pnServer, java.awt.BorderLayout.CENTER);
 
         btHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/pictures/home.png"))); // NOI18N
+        btHome.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                onHome(evt);
+            }
+        });
         pnTop.add(btHome, java.awt.BorderLayout.EAST);
 
         getContentPane().add(pnTop, java.awt.BorderLayout.NORTH);
@@ -207,7 +214,11 @@ public class PlayerGUI extends javax.swing.JFrame
             {
                 public void run()
                 {
+
                     new PlayerGUI();
+                    new PlayerGUI();
+                    new PlayerGUI();
+                    new ServerGUI().setVisible(true);
                 }
             });
         } catch (Exception ex)

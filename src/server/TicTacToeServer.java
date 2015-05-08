@@ -25,8 +25,7 @@ public class TicTacToeServer
 {
 
     private GameServer gs;
-    private HashMap<String, Socket> player = new HashMap<>();
-    
+
     private LinkedList<ObjectOutputStream> lioos = new LinkedList<>();
 
     public TicTacToeServer(GameServer gs)
@@ -34,16 +33,12 @@ public class TicTacToeServer
         this.gs = gs;
     }
 
-    public void addPlayer(Socket socket, String nickname)
+    public void addPlayer(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
     {
-        player.put(nickname, socket);
-        new TicTacToeThread(socket, nickname).start();
+        System.out.println("TicTacToeServer.addPlayer");
+        new TicTacToeThread(ois, oos, nickname).start();
     }
 
-    public void removePlayer(String nickname)
-    {
-        player.remove(nickname);
-    }
 
     class TicTacToeThread extends Thread
     {
@@ -51,30 +46,30 @@ public class TicTacToeServer
         Socket socket;
         String nickname;
         String test = "";
+        ObjectInputStream ois;
+        ObjectOutputStream oos;
 
-        public TicTacToeThread(Socket socket, String nickname)
+        public TicTacToeThread(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
         {
-            this.socket = socket;
+            this.ois = ois;
+            this.oos = oos;
             this.nickname = nickname;
         }
 
         @Override
         public void run()
         {
-
-            InputStream is = null;
-            OutputStream os = null;
+            System.out.println("TicTacToeServer.TicTacToeThread.run: Start");
             try
             {
-                is = socket.getInputStream();
-                os = socket.getOutputStream();
-                ObjectInputStream ois = new ObjectInputStream(is);
-                ObjectOutputStream oos = new ObjectOutputStream(os);
                 lioos.add(oos);
                 while (true)
                 {
+                    
+                    System.out.println("TicTacToeServer.TicTacToeThread.run: WhileTrueStart");
                     Object request = ois.readObject();
 
+                    System.out.println("TicTacToeServer.TicTacToeThread.run: reqest=" + request);
                     if (request instanceof String)
                     {
                         String label = (String) request;
@@ -88,32 +83,30 @@ public class TicTacToeServer
                         gs.log("recieved: from: Player " + nickname + "; Label: " + label);
                         for (ObjectOutputStream aktoos : lioos)
                         {
-                            aktoos.writeObject(label + "##" + nickname);
+                            if(aktoos!=oos)
+                            {
+                                aktoos.writeObject(label);
+                            }
                         }
                     }
+
+                    System.out.println("TicTacToeServer.TicTacToeThread.run: WhileTrueEnd");
                 }
 
             } catch (EOFException ex)
             {
 
+                System.out.println("TicTacToeServer.TicTacToeThread.run: EOFException");
             } catch (IOException ex)
             {
                 gs.log("Communication failure: " + ex.toString());
+
+                System.out.println("TicTacToeServer.TicTacToeThread.run: IOException");
             } catch (ClassNotFoundException ex)
             {
                 gs.log("Communication failure: " + ex.toString());
-            } finally
-            {
-                try
-                {
-                    is.close();
-                    os.close();
-                    socket.close();
 
-                } catch (IOException ex)
-                {
-                    gs.log("Communication failure: " + ex.toString());
-                }
+                System.out.println("TicTacToeServer.TicTacToeThread.run: ClassNotFoundEx");
             }
 
         }

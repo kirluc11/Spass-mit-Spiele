@@ -5,6 +5,9 @@
  */
 package client;
 
+import games.tictactoe.bl.TicTacToeGewinnabfrage;
+import games.tictactoe.gui.TicTacToePanel;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,6 +25,7 @@ import javax.swing.JLabel;
  */
 public class GameClient
 {
+
     private int PORTNR;
     private static InetAddress address;
     private Socket socket;
@@ -44,8 +48,6 @@ public class GameClient
         this.nickname = nickname;
         oos.writeObject(nickname);
     }
-    
-   
 
     public void startClient() throws IOException
     {
@@ -69,7 +71,7 @@ public class GameClient
             socket.close();
         }
     }
-    
+
     public boolean isConnected()
     {
         if (socket != null && !socket.isClosed())
@@ -83,26 +85,64 @@ public class GameClient
     {
         oos.writeObject(request);
     }
-    
-    public void newTicTacToeThread(LinkedList<JLabel> labels)
+
+    public void newTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp)
     {
-        new ClientTicTacToeThread(labels);
+        new ClientTicTacToeThread(labels, tttg, tttp).start();
     }
-    
-    
+
     class ClientTicTacToeThread extends Thread
     {
+
         LinkedList<JLabel> labels;
-        public ClientTicTacToeThread(LinkedList<JLabel> labels)
+        TicTacToeGewinnabfrage tttg;
+        TicTacToePanel tttp;
+        boolean turn;
+        Color labelColor;
+        
+
+        public ClientTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp)
         {
-            this.labels=labels;
+            this.labels = labels;
+            this.tttg = tttg;
+            this.tttp = tttp;
+            labelColor = tttp.getSpieler1();
         }
-        
-        
+
         @Override
         public void run()
         {
-            super.run(); //To change body of generated methods, choose Tools | Templates.
+            try
+            {
+                while (true)
+                {
+                    System.out.println("GameClient.ClientTicTacToeThread.run: WhileTrueStart");
+                    Object response = ois.readObject();
+
+                    if (response instanceof String)
+                    {
+                        String aktlabel = (String) response;
+
+                        System.out.println("GameClient.ClientTicTacToeThread.run: aktLabel=" + aktlabel);
+                        for (JLabel label : labels)
+                        {
+                            if (label.getName().equals(aktlabel))
+                            {
+                                label.setBackground(labelColor);
+                                label.setText("O");
+                                tttp.setMyTurn(true);
+                            }
+                        }
+                    }
+                }
+            } catch (IOException ex)
+            {
+
+            } catch (ClassNotFoundException ex)
+            {
+                System.out.println(ex.toString());
+            }
+
         }
     }
 }

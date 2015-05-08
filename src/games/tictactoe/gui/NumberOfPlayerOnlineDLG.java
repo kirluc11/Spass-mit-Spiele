@@ -84,6 +84,7 @@ public class NumberOfPlayerOnlineDLG extends javax.swing.JDialog
         jPanel1.add(lbMult);
 
         lbOnline.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        lbOnline.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbOnline.setText("Online");
         lbOnline.addMouseListener(new java.awt.event.MouseAdapter()
         {

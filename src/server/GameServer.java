@@ -145,13 +145,11 @@ public class GameServer
         }
 
     }
-    
-    
-    public void startNewClientHomeThread(Socket socket,String nickname)
+
+    public void startNewClientHomeThread(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
     {
-        new HomeThread(socket, nickname);
+        new HomeThread(ois, oos, nickname);
     }
-    
 
     class HomeThread extends Thread
     {
@@ -159,48 +157,56 @@ public class GameServer
         Socket socket;
         boolean inGame = false;
         String nickname = "";
+        ObjectInputStream ois = null;
+        ObjectOutputStream oos = null;
 
         public HomeThread(Socket socket)
         {
             this.socket = socket;
         }
 
-        public HomeThread(Socket socket, String nickname)
+        public HomeThread(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
         {
             this.nickname = nickname;
-            this.socket = socket;
+            this.ois = ois;
+            this.oos = oos;
         }
 
         @Override
         public void run()
         {
-
             InputStream is = null;
             OutputStream os = null;
             try
             {
-                is = socket.getInputStream();
-                os = socket.getOutputStream();
-                ObjectInputStream ois = new ObjectInputStream(is);
-                ObjectOutputStream oos = new ObjectOutputStream(os);
+                if (ois == null)
+                {
+                    is = socket.getInputStream();
+                    ois = new ObjectInputStream(is);
+                }
+                if (oos == null)
+                {
+                    os = socket.getOutputStream();
+                    oos = new ObjectOutputStream(os);
+                }
                 if (nickname.isEmpty())
                 {
                     Object request = ois.readObject();
                     nickname = (String) request;
                     nicknames.add(nickname);
-                    System.out.println("" + nickname);
+                    System.out.println("GameServer.HomeThread.run: Nickname=" + nickname);
                 }
 
                 Object request = ois.readObject();
                 if (request instanceof String)
                 {
                     String text = (String) request;
-                    System.out.println(""+text);
+                    System.out.println("GameServer.HomeThread.run: Text=" + text);
                     if (text.equals("TicTacToe"))
                     {
-                        ttts.addPlayer(socket, nickname);
+                        ttts.addPlayer(ois,oos, nickname);
                     }
-                    
+
                     if (text.equals("###Client###Disconnect###"))
                     {
                         //break;
@@ -216,17 +222,6 @@ public class GameServer
             } catch (ClassNotFoundException ex)
             {
                 Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
-            } finally
-            {
-                try
-                {
-                    is.close();
-                    os.close();
-
-                } catch (IOException ex)
-                {
-                    log("Communication failure: " + ex.toString());
-                }
             }
 
         }
