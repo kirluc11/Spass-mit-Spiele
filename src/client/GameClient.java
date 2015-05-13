@@ -115,6 +115,7 @@ public class GameClient
         {
             try
             {
+                System.out.println("GameClient.ClientTicTacToeThread.run: Anfang");
                 Object response = ois.readObject();
                 if(response.equals("Player1"))
                 {

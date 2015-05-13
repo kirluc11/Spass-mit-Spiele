@@ -349,7 +349,6 @@ public class TicTacToePanel extends JPanel
 
                         lb.setBackground(spieler2);
                         lb.setText("X");
-                        System.out.println("TicTacToePanel.onMouseClicked: ClickedLb" + lb.getName());
                         gc.sendObject(lb.getName());
 
                         myTurn = false;

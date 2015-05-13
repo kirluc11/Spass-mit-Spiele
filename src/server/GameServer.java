@@ -176,6 +176,7 @@ public class GameServer
         @Override
         public void run()
         {
+            System.out.println("GameServer.HomeThread.run: Anfang");
             InputStream is = null;
             OutputStream os = null;
             try
