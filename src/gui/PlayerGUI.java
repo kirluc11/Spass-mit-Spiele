@@ -125,6 +125,19 @@ public class PlayerGUI extends javax.swing.JFrame
 
     private void onHome(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onHome
     {//GEN-HEADEREND:event_onHome
+        if(gClient.isConnected())
+        {
+            try
+            {
+                gClient.sendObject("##GO##HOME##");
+            } catch (IOException ex)
+            {
+                Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex)
+            {
+                Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         showGameChooser();
     }//GEN-LAST:event_onHome
 
@@ -214,8 +227,6 @@ public class PlayerGUI extends javax.swing.JFrame
             {
                 public void run()
                 {
-
-                    new PlayerGUI();
                     new PlayerGUI();
                     new PlayerGUI();
                     new ServerGUI().setVisible(true);

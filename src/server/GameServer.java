@@ -148,7 +148,7 @@ public class GameServer
 
     public void startNewClientHomeThread(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
     {
-        new HomeThread(ois, oos, nickname);
+        new HomeThread(ois, oos, nickname).start();
     }
 
     class HomeThread extends Thread
@@ -196,15 +196,20 @@ public class GameServer
                     nicknames.add(nickname);
                     System.out.println("GameServer.HomeThread.run: Nickname=" + nickname);
                 }
-
                 Object request = ois.readObject();
+                while (request.equals("##GO##HOME##"))
+                {
+                    System.out.println("GOHOME");
+                    request = ois.readObject();
+                }
                 if (request instanceof String)
                 {
                     String text = (String) request;
                     System.out.println("GameServer.HomeThread.run: Text=" + text);
+
                     if (text.equals("TicTacToe"))
                     {
-                        ttts.addPlayer(ois,oos, nickname);
+                        ttts.addPlayer(ois, oos, nickname);
                     }
 
                     if (text.equals("###Client###Disconnect###"))

@@ -39,7 +39,6 @@ public class TicTacToeServer
         new TicTacToeThread(ois, oos, nickname).start();
     }
 
-
     class TicTacToeThread extends Thread
     {
 
@@ -59,17 +58,12 @@ public class TicTacToeServer
         @Override
         public void run()
         {
-            System.out.println("TicTacToeServer.TicTacToeThread.run: Start");
             try
             {
                 lioos.add(oos);
                 while (true)
                 {
-                    
-                    System.out.println("TicTacToeServer.TicTacToeThread.run: WhileTrueStart");
                     Object request = ois.readObject();
-
-                    System.out.println("TicTacToeServer.TicTacToeThread.run: reqest=" + request);
                     if (request instanceof String)
                     {
                         String label = (String) request;
@@ -79,34 +73,33 @@ public class TicTacToeServer
 
                             gs.log("Connection closed from: " + socket.getRemoteSocketAddress().toString());
                             break;
-                        }
-                        gs.log("recieved: from: Player " + nickname + "; Label: " + label);
-                        for (ObjectOutputStream aktoos : lioos)
+                        } else if (label.equals("##GO##HOME##"))
                         {
-                            if(aktoos!=oos)
+                            lioos.remove(oos);
+                            gs.startNewClientHomeThread(ois, oos, nickname);
+                            return;
+                        } else
+                        {
+                            gs.log("recieved: from: Player " + nickname + "; Label: " + label);
+                            for (ObjectOutputStream aktoos : lioos)
                             {
-                                aktoos.writeObject(label);
+                                if (aktoos != oos)
+                                {
+                                    aktoos.writeObject(label);
+                                }
                             }
                         }
                     }
-
-                    System.out.println("TicTacToeServer.TicTacToeThread.run: WhileTrueEnd");
                 }
 
             } catch (EOFException ex)
             {
-
-                System.out.println("TicTacToeServer.TicTacToeThread.run: EOFException");
             } catch (IOException ex)
             {
                 gs.log("Communication failure: " + ex.toString());
-
-                System.out.println("TicTacToeServer.TicTacToeThread.run: IOException");
             } catch (ClassNotFoundException ex)
             {
                 gs.log("Communication failure: " + ex.toString());
-
-                System.out.println("TicTacToeServer.TicTacToeThread.run: ClassNotFoundEx");
             }
 
         }
