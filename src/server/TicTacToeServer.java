@@ -38,12 +38,12 @@ public class TicTacToeServer
     public void addPlayer(Player player)
     {
         System.out.println("TicTacToeServer.addPlayer");
-        if(allPlayer.size()>=1)
+        if (allPlayer.size() >= 1)
         {
             Player player1 = allPlayer.getLast();
             allPlayer.removeLast();
             new TicTacToeThread(player1, player).start();
-        }else
+        } else
         {
             allPlayer.add(player);
         }
@@ -52,15 +52,13 @@ public class TicTacToeServer
     class TicTacToeThread extends Thread
     {
 
-        
         Player player1;
         Player player2;
-        
 
-        public TicTacToeThread(Player player1,Player player2)
+        public TicTacToeThread(Player player1, Player player2)
         {
-            this.player1=player1;
-            this.player2=player2;
+            this.player1 = player1;
+            this.player2 = player2;
         }
 
         @Override
@@ -68,26 +66,36 @@ public class TicTacToeServer
         {
             try
             {
+                player1.getOos().writeObject("Player1");
+                player2.getOos().writeObject("Player2");
+                Player aktPlayer = player1;
+                Player waitingPlayer = player2;
                 while (true)
                 {
-                    System.out.println("TicTacToeServer: start Thread");
-                    Object request = player1.getOis().readObject();
+
+                    Object request = aktPlayer.getOis().readObject();
                     if (request instanceof String)
                     {
                         String label = (String) request;
 
                         if (label.equals("###Client###Disconnect###"))
                         {
-
+                            waitingPlayer.getOos().writeObject("##OpponentLeft##");
                             break;
                         } else if (label.equals("##GO##HOME##"))
                         {
-                            gs.startNewClientHomeThread(player1);
-                            return;
+                            waitingPlayer.getOos().writeObject("##OpponentLeft##");
+                            gs.startNewClientHomeThread(aktPlayer);
+                            gs.startNewClientHomeThread(waitingPlayer);
+                            break;
                         } else
                         {
-                            gs.log("recieved: from: Player " + player1.getNickname() + "; Label: " + label);
-                            player2.getOos().writeObject(label);
+                            gs.log("recieved: from: Player " + aktPlayer.getNickname() + "; Label: " + label);
+                            waitingPlayer.getOos().writeObject(label);
+                            
+                            Player tempPlayer = aktPlayer;
+                            aktPlayer = waitingPlayer;
+                            waitingPlayer = tempPlayer;
                         }
                     }
                 }
@@ -101,7 +109,6 @@ public class TicTacToeServer
             {
                 gs.log("Communication failure: " + ex.toString());
             }
-            
 
         }
     }

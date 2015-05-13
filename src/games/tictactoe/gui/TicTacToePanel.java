@@ -45,8 +45,7 @@ public class TicTacToePanel extends JPanel
     private int player = 1;
     private int beginner = 1;
     private GameClient gc;
-    private boolean myTurn = true;
-
+    private boolean myTurn = false;
     private boolean gameOver;
 
     public Color getSpieler1()
@@ -88,6 +87,7 @@ public class TicTacToePanel extends JPanel
                 gameMode = dlg.getGameMode();
             }
         }
+
     }
 
     public boolean isMyTurn()
@@ -118,6 +118,11 @@ public class TicTacToePanel extends JPanel
         }
     }
 
+    private TicTacToePanel getInstance()
+    {
+        return this;
+    }
+
     private void initComponents()
     {
         this.setLayout(new GridLayout(3, 3, 1, 1));
@@ -127,6 +132,7 @@ public class TicTacToePanel extends JPanel
         popupmenu = new JPopupMenu("Game");
         miRestartSinglePlayer = new JMenuItem("New Single Player Game");
         miRestartOfflineMultiplayer = new JMenuItem("New Offline Multiplayer Game");
+        miRestartOnlineMultiplayer = new JMenuItem("New Online Multiplayer Game");
 
         miRestartSinglePlayer.addActionListener(new ActionListener()
         {
@@ -150,8 +156,40 @@ public class TicTacToePanel extends JPanel
             }
         });
 
+        miRestartOnlineMultiplayer.addActionListener(new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (gc.isConnected())
+                {
+
+                    try
+                    {
+
+                        gc.sendObject("TicTacToe");
+
+                        gc.newTicTacToeThread(labels, tttg, getInstance());
+                        gameMode = 2;
+                        restart();
+                    } catch (IOException ex)
+                    {
+                        Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex)
+                    {
+                        Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else
+                {
+                    JOptionPane.showMessageDialog(getInstance(), "Not Connected");
+                }
+            }
+        });
+
         popupmenu.add(miRestartSinglePlayer);
         popupmenu.add(miRestartOfflineMultiplayer);
+        popupmenu.add(miRestartOnlineMultiplayer);
 
         for (int i = 0; i < 9; i++)
         {
@@ -184,7 +222,7 @@ public class TicTacToePanel extends JPanel
         }
     }
 
-    private void changeLabelState(boolean b)
+    public void changeLabelState(boolean b)
     {
         for (JLabel label : labels)
         {
@@ -363,5 +401,6 @@ public class TicTacToePanel extends JPanel
     private JPopupMenu popupmenu;
     private JMenuItem miRestartSinglePlayer;
     private JMenuItem miRestartOfflineMultiplayer;
+    private JMenuItem miRestartOnlineMultiplayer;
 
 }

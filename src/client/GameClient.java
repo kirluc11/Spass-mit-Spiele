@@ -18,6 +18,7 @@ import java.net.UnknownHostException;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -114,16 +115,30 @@ public class GameClient
         {
             try
             {
+                Object response = ois.readObject();
+                if(response.equals("Player1"))
+                {
+                    tttp.setMyTurn(true);
+                    JOptionPane.showMessageDialog(tttp, "You are Player 1");
+                }else
+                {
+                    tttp.setMyTurn(false);
+                    JOptionPane.showMessageDialog(tttp, "You are Player 2");
+                }
                 while (true)
                 {
-                    System.out.println("GameClient.ClientTicTacToeThread.run: WhileTrueStart");
-                    Object response = ois.readObject();
+                    response = ois.readObject();
 
                     if (response instanceof String)
                     {
+                        
                         String aktlabel = (String) response;
-
-                        System.out.println("GameClient.ClientTicTacToeThread.run: aktLabel=" + aktlabel);
+                        if(aktlabel.equals("##OpponentLeft##"))
+                        {
+                            JOptionPane.showMessageDialog(tttp, "Opponent has left the Game");
+                            tttp.changeLabelState(false);
+                            break;
+                        }
                         for (JLabel label : labels)
                         {
                             if (label.getName().equals(aktlabel))
