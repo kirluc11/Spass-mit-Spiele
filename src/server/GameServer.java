@@ -5,6 +5,7 @@
  */
 package server;
 
+import client.Player;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -146,9 +147,9 @@ public class GameServer
 
     }
 
-    public void startNewClientHomeThread(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
+    public void startNewClientHomeThread(Player player)
     {
-        new HomeThread(ois, oos, nickname).start();
+        new HomeThread(player.getOis(), player.getOos(), player.getNickname()).start();
     }
 
     class HomeThread extends Thread
@@ -209,7 +210,7 @@ public class GameServer
 
                     if (text.equals("TicTacToe"))
                     {
-                        ttts.addPlayer(ois, oos, nickname);
+                        ttts.addPlayer(new Player(oos, ois, nickname));
                     }
 
                     if (text.equals("###Client###Disconnect###"))

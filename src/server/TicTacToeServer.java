@@ -5,6 +5,7 @@
  */
 package server;
 
+import client.Player;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,32 +28,39 @@ public class TicTacToeServer
     private GameServer gs;
 
     private LinkedList<ObjectOutputStream> lioos = new LinkedList<>();
+    private LinkedList<Player> allPlayer = new LinkedList<>();
 
     public TicTacToeServer(GameServer gs)
     {
         this.gs = gs;
     }
 
-    public void addPlayer(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
+    public void addPlayer(Player player)
     {
         System.out.println("TicTacToeServer.addPlayer");
-        new TicTacToeThread(ois, oos, nickname).start();
+        if(allPlayer.size()>=1)
+        {
+            Player player1 = allPlayer.getLast();
+            allPlayer.removeLast();
+            new TicTacToeThread(player1, player).start();
+        }else
+        {
+            allPlayer.add(player);
+        }
     }
 
     class TicTacToeThread extends Thread
     {
 
-        Socket socket;
-        String nickname;
-        String test = "";
-        ObjectInputStream ois;
-        ObjectOutputStream oos;
+        
+        Player player1;
+        Player player2;
+        
 
-        public TicTacToeThread(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
+        public TicTacToeThread(Player player1,Player player2)
         {
-            this.ois = ois;
-            this.oos = oos;
-            this.nickname = nickname;
+            this.player1=player1;
+            this.player2=player2;
         }
 
         @Override
@@ -60,10 +68,10 @@ public class TicTacToeServer
         {
             try
             {
-                lioos.add(oos);
                 while (true)
                 {
-                    Object request = ois.readObject();
+                    System.out.println("TicTacToeServer: start Thread");
+                    Object request = player1.getOis().readObject();
                     if (request instanceof String)
                     {
                         String label = (String) request;
@@ -71,23 +79,15 @@ public class TicTacToeServer
                         if (label.equals("###Client###Disconnect###"))
                         {
 
-                            gs.log("Connection closed from: " + socket.getRemoteSocketAddress().toString());
                             break;
                         } else if (label.equals("##GO##HOME##"))
                         {
-                            lioos.remove(oos);
-                            gs.startNewClientHomeThread(ois, oos, nickname);
+                            gs.startNewClientHomeThread(player1);
                             return;
                         } else
                         {
-                            gs.log("recieved: from: Player " + nickname + "; Label: " + label);
-                            for (ObjectOutputStream aktoos : lioos)
-                            {
-                                if (aktoos != oos)
-                                {
-                                    aktoos.writeObject(label);
-                                }
-                            }
+                            gs.log("recieved: from: Player " + player1.getNickname() + "; Label: " + label);
+                            player2.getOos().writeObject(label);
                         }
                     }
                 }
