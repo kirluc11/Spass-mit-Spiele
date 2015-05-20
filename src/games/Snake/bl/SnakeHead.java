@@ -11,10 +11,23 @@ import java.awt.Color;
  *
  * @author Churchy
  */
-public class SnakeHead extends SnakePart{
+public class SnakeHead extends SnakePart {
 
     public SnakeHead(Direction dir, double x, double y, double w, double h) {
         super(dir, x, y, w, h);
         color = Color.red;
-    }    
+    }
+
+    public boolean atenFood(SnakeFood food) {
+        if (((int) x == (int) food.getX() && (int) y == (int) food.getY()) 
+                || ((int) x - 1 == (int) food.getX() && (int) y - 1 == (int) food.getY()) 
+                || ((int) x + 1 == (int) food.getX() && (int) y + 1 == (int) food.getY()) 
+                || ((int) x + 1 == (int) food.getX() && (int) y == (int) food.getY()) 
+                || ((int) x - 1 == (int) food.getX() && (int) y == (int) food.getY()) 
+                || ((int) x == (int) food.getX() && (int) y + 1 == (int) food.getY())
+                || ((int) x == (int) food.getX() && (int) y - 1 == (int) food.getY())) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -13,7 +13,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -83,11 +87,12 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
                 }
             }
         }
+        snake.changeDirection(dir);
     }//GEN-LAST:event_onKeyTyped
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.setSize(500, 500);
+        frame.setSize(800, 800);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -117,29 +122,45 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
     // End of variables declaration//GEN-END:variables
     @Override
     public void run() {
-        while (true) {
-            try {
-                Thread.sleep(200);
-                repaint();
-            } catch (InterruptedException ex) {
+        try {
+            while (snake.move()) {
+                try {
+                    Thread.sleep(150);
+                    repaint();
+                } catch (InterruptedException ex) {
+                }
             }
+        } catch (IOException ex) {
+            Logger.getLogger(SnakePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
     public void paint(Graphics gr) {
         super.paint(gr);
-        Graphics2D g = (Graphics2D) gr;
-        if (snake != null) {
-            snake.changeDirection(dir);
-            snake.move();
-            LinkedList<SnakePart> snakeParts = snake.getSnakeParts();
-            for (int i = snakeParts.size() - 1; i >= 0; i--) {
-                g.setColor(snakeParts.get(i).getColor());
-                g.fill(snakeParts.get(i));
-                g.setColor(Color.lightGray);
-                g.draw(snakeParts.get(i));
+        try {
+            Graphics2D g = (Graphics2D) gr;
+            if (snake != null) {
+                if (snake.getFood() != null) {
+                    //image, 10, (getHeight() - getWidth()) / 2, getWidth() - 20, getWidth(), null
+                    g.drawImage(snake.getFood().getImg(), (int) snake.getFood().getX(), (int) snake.getFood().getY(), (int)snake.getFood().getWidth(), (int)snake.getFood().getHeight(), null);
+//                    g.setColor(snake.getFood().getColor());
+//                    g.fill(snake.getFood());
+                }
+                
+                
+                LinkedList<SnakePart> snakeParts = snake.getSnakeParts();
+                if (snakeParts != null || !snakeParts.isEmpty()) {
+                    for (int i = snakeParts.size() - 1; i >= 0; i--) {
+                        g.setColor(snakeParts.get(i).getColor());
+                        g.fill(snakeParts.get(i));
+                        g.setColor(Color.lightGray);
+                        g.draw(snakeParts.get(i));
+                    }
+                }
             }
+        } catch (Exception ex) {
+
         }
     }
 }
