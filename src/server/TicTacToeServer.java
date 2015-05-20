@@ -26,8 +26,6 @@ public class TicTacToeServer
 {
 
     private GameServer gs;
-
-    private LinkedList<ObjectOutputStream> lioos = new LinkedList<>();
     private LinkedList<Player> allPlayer = new LinkedList<>();
 
     public TicTacToeServer(GameServer gs)
@@ -66,8 +64,11 @@ public class TicTacToeServer
         {
             try
             {
+
+                System.out.println("TicTacToeServer.TicTacToeThread.run: Player names not sent");
                 player1.getOos().writeObject("Player1");
                 player2.getOos().writeObject("Player2");
+                System.out.println("TicTacToeServer.TicTacToeThread.run: Player names sent");
                 Player aktPlayer = player1;
                 Player waitingPlayer = player2;
                 while (true)
@@ -92,7 +93,7 @@ public class TicTacToeServer
                         {
                             gs.log("recieved: from: Player " + aktPlayer.getNickname() + "; Label: " + label);
                             waitingPlayer.getOos().writeObject(label);
-                            
+
                             Player tempPlayer = aktPlayer;
                             aktPlayer = waitingPlayer;
                             waitingPlayer = tempPlayer;

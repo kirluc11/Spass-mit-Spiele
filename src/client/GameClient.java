@@ -117,6 +117,7 @@ public class GameClient
             {
                 System.out.println("GameClient.ClientTicTacToeThread.run: Anfang");
                 Object response = ois.readObject();
+                System.out.println("GameClient.ClientTicTacToeThread.run: Player:"+response);
                 if(response.equals("Player1"))
                 {
                     tttp.setMyTurn(true);
