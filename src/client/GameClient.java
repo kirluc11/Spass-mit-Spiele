@@ -7,6 +7,7 @@ package client;
 
 import games.tictactoe.bl.TicTacToeGewinnabfrage;
 import games.tictactoe.gui.TicTacToePanel;
+import gui.WaitingForOpponentDLG;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -89,7 +90,10 @@ public class GameClient
 
     public void newTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp)
     {
-        new ClientTicTacToeThread(labels, tttg, tttp).start();
+        WaitingForOpponentDLG waitingDLG = new WaitingForOpponentDLG(null, true);
+        ClientTicTacToeThread ctttt = new ClientTicTacToeThread(labels, tttg, tttp, waitingDLG);
+        ctttt.start();
+        waitingDLG.setVisible(true);
     }
 
     class ClientTicTacToeThread extends Thread
@@ -100,14 +104,16 @@ public class GameClient
         TicTacToePanel tttp;
         boolean turn;
         Color labelColor;
+        WaitingForOpponentDLG waitingDLG;
         
 
-        public ClientTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp)
+        public ClientTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp,WaitingForOpponentDLG waitingDLG)
         {
             this.labels = labels;
             this.tttg = tttg;
             this.tttp = tttp;
             labelColor = tttp.getSpieler1();
+            this.waitingDLG=waitingDLG;
         }
 
         @Override
@@ -117,6 +123,7 @@ public class GameClient
             {
                 System.out.println("GameClient.ClientTicTacToeThread.run: Anfang");
                 Object response = ois.readObject();
+                waitingDLG.dispose();
                 System.out.println("GameClient.ClientTicTacToeThread.run: Player:"+response);
                 if(response.equals("Player1"))
                 {
@@ -127,7 +134,7 @@ public class GameClient
                     tttp.setMyTurn(false);
                     JOptionPane.showMessageDialog(tttp, "You are Player 2");
                 }
-                while (true)
+                while (!interrupted())
                 {
                     response = ois.readObject();
 

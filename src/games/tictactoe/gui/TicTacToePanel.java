@@ -7,6 +7,7 @@ package games.tictactoe.gui;
 import client.GameClient;
 import games.tictactoe.bl.TicTacToeGewinnabfrage;
 import games.tictactoe.bl.TicTacToeKI;
+import gui.WaitingForOpponentDLG;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -69,7 +70,8 @@ public class TicTacToePanel extends JPanel
                     try
                     {
                         gc.sendObject("TicTacToe");
-                        gc.newTicTacToeThread(labels, tttg, this);
+                        
+                        gc.newTicTacToeThread(labels, tttg, this);     
                     } catch (IOException ex)
                     {
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,7 +171,6 @@ public class TicTacToePanel extends JPanel
                     {
 
                         gc.sendObject("TicTacToe");
-
                         gc.newTicTacToeThread(labels, tttg, getInstance());
                         gameMode = 2;
                         restart();
