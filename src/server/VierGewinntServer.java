@@ -58,7 +58,7 @@ public class VierGewinntServer
         {
             try
             {
-                System.out.println("TicTacToeServer.TicTacToeThread.run: Player names not sent");
+                System.out.println("VierGewinntServer.VierGewinntThread.run: Player names not sent");
                 player1.getOos().writeObject("Player1");
                 player2.getOos().writeObject("Player2");
             } catch (IOException ex)
