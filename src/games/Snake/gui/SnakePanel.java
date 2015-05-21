@@ -38,6 +38,16 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
     public SnakePanel() {
         initComponents();
     }
+    
+    public void startGame()
+    {
+        this.initSnake();
+
+        this.requestFocus();
+
+        Thread t = new Thread(this);
+        t.start();
+    }
 
     private void initSnake() {
         snake = new Snake(this.getWidth(), this.getHeight());

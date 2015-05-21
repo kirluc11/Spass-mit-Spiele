@@ -7,6 +7,7 @@ package gui;
 
 import client.GameClient;
 import games.ArstoidStorm.gui.AsteroidStormPanel;
+import games.Snake.gui.SnakePanel;
 import games.hangman.gui.HangmanPanel;
 import games.tictactoe.gui.TicTacToePanel;
 import java.awt.BorderLayout;
@@ -63,6 +64,7 @@ public class GameChooserPanel extends javax.swing.JPanel {
         allGames.put("TicTacToe", ImageIO.read(new File(path + File.separator + "TicTacToe.png")));
         allGames.put("AsteroidStorm", ImageIO.read(new File(path + File.separator + "hangman.jpg")));
         allGames.put("4-Gewinnt", ImageIO.read(new File(path + File.separator + "vierGewinnt.png")));
+        allGames.put("Snake", ImageIO.read(new File(path + File.separator + "vierGewinnt.png")));
 
         for (String name : allGames.keySet()) {
             Image aktImage = allGames.get(name);
@@ -117,6 +119,13 @@ public class GameChooserPanel extends javax.swing.JPanel {
                 paGame.add(vg);
                 paGame.getRootPane().updateUI();
                 vg.requestFocus();
+                break;
+            case "Snake":
+                SnakePanel snake = new SnakePanel();
+                paGame.add(snake);
+                paGame.getRootPane().updateUI();
+                snake.startGame();
+                snake.requestFocus();
                 break;
         }
         
