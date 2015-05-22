@@ -216,7 +216,7 @@ public class GameServer
                         ttts.addPlayer(new Player(oos, ois, nickname));
                     }else if(text.equals("VierGewinnt"))
                     {
-                        
+                        vgs.addPlayer(new Player(oos, ois, nickname));
                     }
 
                     if (text.equals("###Client###Disconnect###"))

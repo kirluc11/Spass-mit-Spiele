@@ -55,7 +55,10 @@ public class VierGewinntPanel extends JPanel
     private int ss1;
     private int ss2;
     private GameClient gc;
+    private int gameMode = 1;
+
     private Timer addTimer = new Timer(75, new ActionListener()
+
     {
         @Override
         public void actionPerformed(ActionEvent e)
@@ -139,6 +142,28 @@ public class VierGewinntPanel extends JPanel
     {
         initComponents();
         this.gc = gc;
+        if (gc.isConnected())
+        {
+            VierGewinntNumberOfPlayerDLG dlg = new VierGewinntNumberOfPlayerDLG(null, true);
+            if (dlg.isOk())
+            {
+                gameMode = dlg.getGameMode();
+                if (gameMode == 2)
+                {
+                    try
+                    {
+                        gc.newVierGewinntThread(this);
+                        gc.sendObject("VierGewinnt");
+                    } catch (IOException ex)
+                    {
+                        Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex)
+                    {
+                        Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
         bl = new vierGewinntBL(labels);
         changePlayer(spieler == 1 ? true : false);
         lbSpieler.setText(namen[0]);
@@ -238,17 +263,37 @@ public class VierGewinntPanel extends JPanel
         }
     }
 
+    public void insertStone(int column)
+    {
+        if (numberOfClicks[column] < 6)
+        {
+            numberOfClicks[column]++;
+            countRow = 0;
+            addTimerCompleted = false;
+            addTimer.start();
+        }
+    }
+
     private void onClick(ActionEvent e)
     {
         if (!over && addTimerCompleted)
         {
             column = Integer.parseInt(e.getActionCommand());
-            if (numberOfClicks[column] < 6)
+            insertStone(column);
+            
+            if (gameMode == 2)
             {
-                numberOfClicks[column]++;
-                countRow = 0;
-                addTimerCompleted = false;
-                addTimer.start();
+                try
+                {
+                    System.out.println("VierGewinntPanel.onClick: sendObject");
+                    gc.sendObject(column);
+                } catch (IOException ex)
+                {
+                    Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex)
+                {
+                    Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
@@ -273,7 +318,6 @@ public class VierGewinntPanel extends JPanel
             JOptionPane.showMessageDialog(this, "Unendschieden", "Ups", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
 
     private VierGewinntLabelPanel pnLbs;
     private JPanel pnBts;

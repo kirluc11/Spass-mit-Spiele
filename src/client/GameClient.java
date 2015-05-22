@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import vierGewinnt.gui.VierGewinntPanel;
 
 /**
  *
@@ -171,17 +172,58 @@ public class GameClient
     }
     
     
-    public void newVierGewinntThread()
+    public void newVierGewinntThread(VierGewinntPanel vgp)
     {
-        
+       new ClientVierGewinntThread(vgp).start();
     }
     
     class ClientVierGewinntThread extends Thread
     {
+        
+        private VierGewinntPanel vgp;
+        
+        public ClientVierGewinntThread(VierGewinntPanel vgp)
+        {
+            this.vgp = vgp;
+        }
+        
+        
         @Override
         public void run()
         {
-            super.run(); //To change body of generated methods, choose Tools | Templates.
+            try
+            {
+                System.out.println("GameClient.ClientVierGewinntThread.run: Anfang");
+                Object response = ois.readObject();
+                System.out.println("GameClient.ClientVierGewinntThread.run: Player:"+response);
+               
+                while (!interrupted())
+                {
+                    response = ois.readObject();
+
+                    if (response instanceof String)
+                    {
+                        String aktlabel = (String) response;
+                        if(aktlabel.equals("##OpponentLeft##"))
+                        {
+                            JOptionPane.showMessageDialog(vgp, "Opponent has left the Game");
+                            
+                            break;
+                        }
+                    }else if(response instanceof Integer)
+                    {
+                       int column = (int) response;
+                       vgp.insertStone(column);
+                       //???????????????
+                    }
+                }
+            } catch (IOException ex)
+            {
+
+            } catch (ClassNotFoundException ex)
+            {
+                System.out.println(ex.toString());
+            }
         }
 
     }

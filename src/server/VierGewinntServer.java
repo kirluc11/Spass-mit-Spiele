@@ -39,8 +39,8 @@ public class VierGewinntServer
             allPlayer.add(player);
         }
     }
-    
-        public void startNewGame(Player player1, Player player2) throws IOException
+
+    public void startNewGame(Player player1, Player player2) throws IOException
     {
         System.out.println("VierGewinntServer.startNewGame: Player names not sent");
         player1.getOos().writeObject("Player1");
@@ -52,7 +52,7 @@ public class VierGewinntServer
 
     class VierGewinntPlayerThread extends Thread
     {
-        
+
         Player player1;
         Player player2;
 
@@ -61,8 +61,7 @@ public class VierGewinntServer
             this.player1 = player1;
             this.player2 = player2;
         }
-        
-        
+
         @Override
         public void run()
         {
@@ -75,25 +74,27 @@ public class VierGewinntServer
                     Object request = player1.getOis().readObject();
                     if (request instanceof String)
                     {
-                        String label = (String) request;
+                        String text = (String) request;
 
-                        if (label.equals("###Client###Disconnect###"))
+                        if (text.equals("###Client###Disconnect###"))
                         {
 
                             player2.getOos().writeObject("##OpponentLeft##");
                             break;
 
-                        } else if (label.equals("##GO##HOME##"))
+                        } else if (text.equals("##GO##HOME##"))
                         {
                             player2.getOos().writeObject("##OpponentLeft##");
                             gs.startNewClientHomeThread(player1);
                             gs.startNewClientHomeThread(player2);
                             break;
-                        } else
-                        {
-                            gs.log("recieved: from: Player " + player1.getNickname() + "; Label: " + label);
-                            player2.getOos().writeObject(label);
                         }
+                    } else if (request instanceof Integer)
+                    {
+                        //asdddddddddddddddddd
+                        int column = (int) request;
+                        gs.log("recieved: from: Player " + player1.getNickname() + "; column: " + column);
+                        player2.getOos().writeObject(column);
                     }
                 }
             } catch (IOException ex)
@@ -104,7 +105,6 @@ public class VierGewinntServer
                 Logger.getLogger(TicTacToeServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
+
     }
 }

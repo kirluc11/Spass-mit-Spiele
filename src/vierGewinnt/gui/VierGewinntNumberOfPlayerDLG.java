@@ -50,25 +50,25 @@ public class VierGewinntNumberOfPlayerDLG extends javax.swing.JDialog
     {
 
         jPanel1 = new javax.swing.JPanel();
-        lbSingle = new javax.swing.JLabel();
+        lbMulti = new javax.swing.JLabel();
         lbOnline = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        lbSingle.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        lbSingle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbSingle.setText("Singleplayer");
-        lbSingle.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        lbSingle.addMouseListener(new java.awt.event.MouseAdapter()
+        lbMulti.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        lbMulti.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbMulti.setText("Singleplayer");
+        lbMulti.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        lbMulti.addMouseListener(new java.awt.event.MouseAdapter()
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
             {
                 onMouseClicked(evt);
             }
         });
-        jPanel1.add(lbSingle);
+        jPanel1.add(lbMulti);
 
         lbOnline.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lbOnline.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -89,10 +89,10 @@ public class VierGewinntNumberOfPlayerDLG extends javax.swing.JDialog
     }// </editor-fold>//GEN-END:initComponents
 
     private void onMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onMouseClicked
-        if (((JLabel) evt.getSource()).getText().equals(lbSingle.getText()))
+        if (((JLabel) evt.getSource()).getText().equals(lbMulti.getText()))
         {
             ok = true;
-            gameMode = 0;
+            gameMode = 1;
             dispose();
         } else if (((JLabel) evt.getSource()).getText().equals(lbOnline.getText()))
         {
@@ -105,7 +105,7 @@ public class VierGewinntNumberOfPlayerDLG extends javax.swing.JDialog
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbMulti;
     private javax.swing.JLabel lbOnline;
-    private javax.swing.JLabel lbSingle;
     // End of variables declaration//GEN-END:variables
 }
