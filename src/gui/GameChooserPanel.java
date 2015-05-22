@@ -64,7 +64,7 @@ public class GameChooserPanel extends javax.swing.JPanel {
         allGames.put("TicTacToe", ImageIO.read(new File(path + File.separator + "TicTacToe.png")));
         allGames.put("AsteroidStorm", ImageIO.read(new File(path + File.separator + "hangman.jpg")));
         allGames.put("4-Gewinnt", ImageIO.read(new File(path + File.separator + "vierGewinnt.png")));
-        allGames.put("Snake", ImageIO.read(new File(path + File.separator + "vierGewinnt.png")));
+        allGames.put("Snake", ImageIO.read(new File(path + File.separator + "Snake.png")));
 
         for (String name : allGames.keySet()) {
             Image aktImage = allGames.get(name);
