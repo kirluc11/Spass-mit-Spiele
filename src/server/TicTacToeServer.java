@@ -33,27 +33,37 @@ public class TicTacToeServer
         this.gs = gs;
     }
 
-    public void addPlayer(Player player)
+    public void addPlayer(Player player) throws IOException
     {
         System.out.println("TicTacToeServer.addPlayer");
         if (allPlayer.size() >= 1)
         {
             Player player1 = allPlayer.getLast();
             allPlayer.removeLast();
-            new TicTacToeThread(player1, player).start();
+            startNewGame(player, player1);
         } else
         {
             allPlayer.add(player);
         }
     }
 
-    class TicTacToeThread extends Thread
+    public void startNewGame(Player player1, Player player2) throws IOException
+    {
+        System.out.println("TicTacToeServer.startNewGame: Player names not sent");
+        player1.getOos().writeObject("Player1");
+        player2.getOos().writeObject("Player2");
+        System.out.println("TicTacToeServer.startNewGame: Player names sent");
+        new TicTacToePlayerThread(player1, player2).start();
+        new TicTacToePlayerThread(player2, player1).start();
+    }
+
+    class TicTacToePlayerThread extends Thread
     {
 
         Player player1;
         Player player2;
 
-        public TicTacToeThread(Player player1, Player player2)
+        public TicTacToePlayerThread(Player player1, Player player2)
         {
             this.player1 = player1;
             this.player2 = player2;
@@ -62,56 +72,46 @@ public class TicTacToeServer
         @Override
         public void run()
         {
+
+            System.out.println("TicTacToeServer.TicTacToePlayerThread.run: start");
             try
             {
-
-                System.out.println("TicTacToeServer.TicTacToeThread.run: Player names not sent");
-                player1.getOos().writeObject("Player1");
-                player2.getOos().writeObject("Player2");
-                System.out.println("TicTacToeServer.TicTacToeThread.run: Player names sent");
-                Player aktPlayer = player1;
-                Player waitingPlayer = player2;
                 while (true)
                 {
 
-                    Object request = aktPlayer.getOis().readObject();
+                    Object request = player1.getOis().readObject();
                     if (request instanceof String)
                     {
                         String label = (String) request;
 
                         if (label.equals("###Client###Disconnect###"))
                         {
-                            waitingPlayer.getOos().writeObject("##OpponentLeft##");
+
+                            player2.getOos().writeObject("##OpponentLeft##");
                             break;
+
                         } else if (label.equals("##GO##HOME##"))
                         {
-                            waitingPlayer.getOos().writeObject("##OpponentLeft##");
-                            gs.startNewClientHomeThread(aktPlayer);
-                            gs.startNewClientHomeThread(waitingPlayer);
+                            player2.getOos().writeObject("##OpponentLeft##");
+                            gs.startNewClientHomeThread(player1);
+                            gs.startNewClientHomeThread(player2);
                             break;
                         } else
                         {
-                            gs.log("recieved: from: Player " + aktPlayer.getNickname() + "; Label: " + label);
-                            waitingPlayer.getOos().writeObject(label);
-
-                            Player tempPlayer = aktPlayer;
-                            aktPlayer = waitingPlayer;
-                            waitingPlayer = tempPlayer;
+                            gs.log("recieved: from: Player " + player1.getNickname() + "; Label: " + label);
+                            player2.getOos().writeObject(label);
                         }
                     }
                 }
-
-            } catch (EOFException ex)
-            {
             } catch (IOException ex)
             {
-                gs.log("Communication failure: " + ex.toString());
+                Logger.getLogger(TicTacToeServer.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex)
             {
-                gs.log("Communication failure: " + ex.toString());
+                Logger.getLogger(TicTacToeServer.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
+
     }
 
 }

@@ -169,4 +169,21 @@ public class GameClient
 
         }
     }
+    
+    
+    public void newVierGewinntThread()
+    {
+        
+    }
+    
+    class ClientVierGewinntThread extends Thread
+    {
+        @Override
+        public void run()
+        {
+            super.run(); //To change body of generated methods, choose Tools | Templates.
+        }
+
+    }
+    
 }

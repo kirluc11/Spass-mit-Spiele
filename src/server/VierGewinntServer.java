@@ -26,27 +26,37 @@ public class VierGewinntServer
         this.gs = gs;
     }
 
-    public void addPlayer(Player player)
+    public void addPlayer(Player player) throws IOException
     {
         System.out.println("VierGewinntServer.addPlayer");
         if (allPlayer.size() >= 1)
         {
             Player player1 = allPlayer.getLast();
             allPlayer.removeLast();
-            new VierGewinntThread(player1, player).start();
+            startNewGame(player, player1);
         } else
         {
             allPlayer.add(player);
         }
     }
+    
+        public void startNewGame(Player player1, Player player2) throws IOException
+    {
+        System.out.println("VierGewinntServer.startNewGame: Player names not sent");
+        player1.getOos().writeObject("Player1");
+        player2.getOos().writeObject("Player2");
+        System.out.println("VierGewinntServer.startNewGame: Player names sent");
+        new VierGewinntPlayerThread(player1, player2).start();
+        new VierGewinntPlayerThread(player2, player1).start();
+    }
 
-    class VierGewinntThread extends Thread
+    class VierGewinntPlayerThread extends Thread
     {
         
         Player player1;
         Player player2;
 
-        public VierGewinntThread(Player player1, Player player2)
+        public VierGewinntPlayerThread(Player player1, Player player2)
         {
             this.player1 = player1;
             this.player2 = player2;
@@ -56,14 +66,42 @@ public class VierGewinntServer
         @Override
         public void run()
         {
+            System.out.println("VierGewinntServer.VierGewinntPlayerThread.run: start");
             try
             {
-                System.out.println("VierGewinntServer.VierGewinntThread.run: Player names not sent");
-                player1.getOos().writeObject("Player1");
-                player2.getOos().writeObject("Player2");
+                while (true)
+                {
+
+                    Object request = player1.getOis().readObject();
+                    if (request instanceof String)
+                    {
+                        String label = (String) request;
+
+                        if (label.equals("###Client###Disconnect###"))
+                        {
+
+                            player2.getOos().writeObject("##OpponentLeft##");
+                            break;
+
+                        } else if (label.equals("##GO##HOME##"))
+                        {
+                            player2.getOos().writeObject("##OpponentLeft##");
+                            gs.startNewClientHomeThread(player1);
+                            gs.startNewClientHomeThread(player2);
+                            break;
+                        } else
+                        {
+                            gs.log("recieved: from: Player " + player1.getNickname() + "; Label: " + label);
+                            player2.getOos().writeObject(label);
+                        }
+                    }
+                }
             } catch (IOException ex)
             {
-                Logger.getLogger(VierGewinntServer.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TicTacToeServer.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex)
+            {
+                Logger.getLogger(TicTacToeServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         

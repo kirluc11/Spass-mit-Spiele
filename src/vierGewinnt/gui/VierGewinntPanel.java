@@ -4,6 +4,7 @@
  */
 package vierGewinnt.gui;
 
+import client.GameClient;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -32,14 +33,18 @@ import vierGewinnt.bl.vierGewinntBL;
  *
  * @author Lukas
  */
-public class VierGewinntPanel extends JPanel {
-    
+public class VierGewinntPanel extends JPanel
+{
+
     public static Color spieler1 = Color.red;
     public static Color spieler2 = Color.yellow;
     private JLabel[][] labels = new JLabel[6][7];
     private int[] numberOfClicks = new int[7];
     private JButton[] buttons = new JButton[7];
-    private final String[] namen = {"Spiele 1", "Spieler 2"};
+    private final String[] namen =
+    {
+        "Spiele 1", "Spieler 2"
+    };
     private int lastGameStartedWith = 1;
     private int spieler = 1;
     private vierGewinntBL bl;
@@ -49,25 +54,35 @@ public class VierGewinntPanel extends JPanel {
     private int countRow;
     private int ss1;
     private int ss2;
-    private Timer addTimer = new Timer(75, new ActionListener() {
+    private GameClient gc;
+    private Timer addTimer = new Timer(75, new ActionListener()
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            if (countRow == 0) {
-                if (spieler == 1) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (countRow == 0)
+            {
+                if (spieler == 1)
+                {
                     labels[countRow][column].setBackground(spieler1);
-                } else {
+                } else
+                {
                     labels[countRow][column].setBackground(spieler2);
                 }
-            } else {
+            } else
+            {
                 labels[countRow - 1][column].setBackground(Color.black);
-                if (spieler == 1) {
+                if (spieler == 1)
+                {
                     labels[countRow][column].setBackground(spieler1);
-                } else {
+                } else
+                {
                     labels[countRow][column].setBackground(spieler2);
                 }
             }
             pnLbs.repaint();
-            if (countRow == 6 - numberOfClicks[column]) {
+            if (countRow == 6 - numberOfClicks[column])
+            {
                 addTimerCompleted = true;
                 isOver();
                 spieler *= -1;
@@ -77,27 +92,37 @@ public class VierGewinntPanel extends JPanel {
             countRow++;
         }
     });
-    private Timer restartTimer = new Timer(75, new ActionListener() {
+    private Timer restartTimer = new Timer(75, new ActionListener()
+    {
         private int count = 0;
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-            if (bl.isEverythingBlack()) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (bl.isEverythingBlack())
+            {
                 count = 6;
-            } else {
-                for (int i = 5; i >= 0; i--) {
-                    for (int j = 6; j >= 0; j--) {
-                        if (i <= count) {
+            } else
+            {
+                for (int i = 5; i >= 0; i--)
+                {
+                    for (int j = 6; j >= 0; j--)
+                    {
+                        if (i <= count)
+                        {
                             labels[i][j].setBackground(Color.black);
-                        } else {
+                        } else
+                        {
                             labels[i][j].setBackground(labels[i - 1][j].getBackground());
                         }
                     }
                 }
             }
             pnLbs.repaint();
-            if (count == 6) {
-                for (int i = 0; i < numberOfClicks.length; i++) {
+            if (count == 6)
+            {
+                for (int i = 0; i < numberOfClicks.length; i++)
+                {
                     numberOfClicks[i] = 0;
                 }
                 spieler = (lastGameStartedWith *= -1);
@@ -110,8 +135,10 @@ public class VierGewinntPanel extends JPanel {
         }
     });
 
-    public VierGewinntPanel() {
+    public VierGewinntPanel(GameClient gc)
+    {
         initComponents();
+        this.gc = gc;
         bl = new vierGewinntBL(labels);
         changePlayer(spieler == 1 ? true : false);
         lbSpieler.setText(namen[0]);
@@ -119,7 +146,8 @@ public class VierGewinntPanel extends JPanel {
         this.setVisible(true);
     }
 
-    private void initComponents() {
+    private void initComponents()
+    {
         this.setLayout(new BorderLayout());
 
         panel = new JPanel(new BorderLayout());
@@ -130,18 +158,22 @@ public class VierGewinntPanel extends JPanel {
         popupmenu = new JPopupMenu("Game");
         miRestart = new JMenuItem("New Game");
 
-        miRestart.addActionListener(new ActionListener() {
+        miRestart.addActionListener(new ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 restart();
             }
         });
 
         popupmenu.add(miRestart);
 
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
                 JLabel lb = new JLabel();
                 lb.setOpaque(true);
                 lb.setBackground(Color.black);
@@ -152,15 +184,18 @@ public class VierGewinntPanel extends JPanel {
             }
         }
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++)
+        {
             JButton bt = new JButton("V");
             bt.setActionCommand(i + "");
             bt.setBackground(Color.white);
             bt.setFont(new Font("Courier New", Font.BOLD, 20));
             bt.setComponentPopupMenu(popupmenu);
-            bt.addActionListener(new ActionListener() {
+            bt.addActionListener(new ActionListener()
+            {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(ActionEvent e)
+                {
                     onClick(e);
                 }
             });
@@ -180,18 +215,22 @@ public class VierGewinntPanel extends JPanel {
         this.add(panel, BorderLayout.NORTH);
     }
 
-    private void restart() {
+    private void restart()
+    {
         over = true;
         restartTimer.start();
     }
 
-    private void changePlayer(boolean spieler1) {
-        if (spieler1) {
+    private void changePlayer(boolean spieler1)
+    {
+        if (spieler1)
+        {
             Color col = new Color(255 - VierGewinntPanel.spieler1.getRed(), 255 - VierGewinntPanel.spieler1.getGreen(), 255 - VierGewinntPanel.spieler1.getBlue());
             lbSpieler.setBackground(VierGewinntPanel.spieler1);
             lbSpieler.setForeground(col);
             lbSpieler.setText(namen[0]);
-        } else {
+        } else
+        {
             Color col = new Color(255 - spieler2.getRed(), 255 - spieler2.getGreen(), 255 - spieler2.getBlue());
             lbSpieler.setBackground(spieler2);
             lbSpieler.setForeground(col);
@@ -199,10 +238,13 @@ public class VierGewinntPanel extends JPanel {
         }
     }
 
-    private void onClick(ActionEvent e) {
-        if (!over && addTimerCompleted) {
+    private void onClick(ActionEvent e)
+    {
+        if (!over && addTimerCompleted)
+        {
             column = Integer.parseInt(e.getActionCommand());
-            if (numberOfClicks[column] < 6) {
+            if (numberOfClicks[column] < 6)
+            {
                 numberOfClicks[column]++;
                 countRow = 0;
                 addTimerCompleted = false;
@@ -211,27 +253,28 @@ public class VierGewinntPanel extends JPanel {
         }
     }
 
-    private void isOver() {
-        if ((over = bl.isOver())) {
+    private void isOver()
+    {
+        if ((over = bl.isOver()))
+        {
             String name = "";
-            if (spieler == 1) {
+            if (spieler == 1)
+            {
                 name = namen[0];
                 ss1++;
-            } else {
+            } else
+            {
                 name = namen[1];
                 ss2++;
             }
             JOptionPane.showMessageDialog(this, name + " hat gewonnen!", "Hurra", JOptionPane.INFORMATION_MESSAGE);
-        } else if ((over = bl.isUnendschieden())) {
+        } else if ((over = bl.isUnendschieden()))
+        {
             JOptionPane.showMessageDialog(this, "Unendschieden", "Ups", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    public static void main(String[] args) {
-        JFrame bla = new JFrame("banane");
-        bla.getContentPane().add(new VierGewinntPanel());
-        bla.setVisible(true);
-    }
+
     private VierGewinntLabelPanel pnLbs;
     private JPanel pnBts;
     private JPanel panel;
