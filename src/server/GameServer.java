@@ -38,6 +38,7 @@ public class GameServer
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss'>'");
     private LinkedList<String> nicknames = new LinkedList<>();
     private TicTacToeServer ttts;
+    private VierGewinntServer vgs;
 
     public void setPORTNR(int PORTNR)
     {
@@ -48,6 +49,7 @@ public class GameServer
     {
         this.logArea = logArea;
         ttts = new TicTacToeServer(this);
+        vgs = new VierGewinntServer(this);
     }
 
     public void startServer()
@@ -212,6 +214,9 @@ public class GameServer
                     if (text.equals("TicTacToe"))
                     {
                         ttts.addPlayer(new Player(oos, ois, nickname));
+                    }else if(text.equals("VierGewinnt"))
+                    {
+                        
                     }
 
                     if (text.equals("###Client###Disconnect###"))

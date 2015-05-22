@@ -38,10 +38,10 @@ public class WaitingForOpponentDLG extends javax.swing.JDialog
         setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         setUndecorated(true);
         setResizable(false);
-        getContentPane().setLayout(new java.awt.GridLayout());
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         lbWaiting.setBackground(new java.awt.Color(255, 255, 255));
-        lbWaiting.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lbWaiting.setFont(new java.awt.Font("Tahoma", 1, 30)); // NOI18N
         lbWaiting.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbWaiting.setText("Waiting for Opponent....");
         lbWaiting.setOpaque(true);

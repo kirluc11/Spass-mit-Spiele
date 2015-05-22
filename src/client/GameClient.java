@@ -42,7 +42,7 @@ public class GameClient
 
     public void setAddress(String inetAdress) throws UnknownHostException
     {
-        address = InetAddress.getLocalHost();
+        address = InetAddress.getByName(inetAdress);
     }
 
     public void setNickname(String nickname) throws IOException
