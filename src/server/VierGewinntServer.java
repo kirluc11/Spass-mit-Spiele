@@ -91,7 +91,6 @@ public class VierGewinntServer
                         }
                     } else if (request instanceof Integer)
                     {
-                        //asdddddddddddddddddd
                         int column = (int) request;
                         gs.log("recieved: from: Player " + player1.getNickname() + "; column: " + column);
                         player2.getOos().writeObject(column);
