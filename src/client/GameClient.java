@@ -195,8 +195,18 @@ public class GameClient
             {
                 System.out.println("GameClient.ClientVierGewinntThread.run: Anfang");
                 Object response = ois.readObject();
+                
                 System.out.println("GameClient.ClientVierGewinntThread.run: Player:"+response);
-               
+                if(response.equals("Player1"))
+                {
+                    vgp.setTurn(true);
+                    JOptionPane.showMessageDialog(vgp, "You are Player 1");
+                }else
+                {
+                    vgp.setTurn(false);
+                    JOptionPane.showMessageDialog(vgp, "You are Player 2");
+                }
+                
                 while (!interrupted())
                 {
                     response = ois.readObject();
@@ -214,7 +224,7 @@ public class GameClient
                     {
                        int column = (int) response;
                        vgp.insertStone(column);
-                       //???????????????
+                       vgp.setTurn(true);
                     }
                 }
             } catch (IOException ex)

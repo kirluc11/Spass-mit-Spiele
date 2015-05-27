@@ -261,6 +261,7 @@ public class PlayerGUI extends javax.swing.JFrame
                 public void run()
                 {
                     new PlayerGUI();
+                    new PlayerGUI();
                     new ServerGUI().setVisible(true);
                 }
             });
