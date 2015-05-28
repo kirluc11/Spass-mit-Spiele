@@ -139,8 +139,8 @@ public class VierGewinntPanel extends JPanel {
                 if (gameMode == 2) {
                     try {
                         turn=false;
-                        gc.newVierGewinntThread(this);
                         gc.sendObject("VierGewinnt");
+                        gc.newVierGewinntThread(this);
                     } catch (IOException ex) {
                         Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {

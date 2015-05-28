@@ -174,17 +174,22 @@ public class GameClient
     
     public void newVierGewinntThread(VierGewinntPanel vgp)
     {
-       new ClientVierGewinntThread(vgp).start();
+        System.out.println("GameClient.newVierGewinntThread: start");
+        WaitingForOpponentDLG waitingDLG = new WaitingForOpponentDLG(null, true);
+       new ClientVierGewinntThread(vgp,waitingDLG).start();
+        waitingDLG.setVisible(true);
     }
     
     class ClientVierGewinntThread extends Thread
     {
         
         private VierGewinntPanel vgp;
+        private WaitingForOpponentDLG waitingDLG;
         
-        public ClientVierGewinntThread(VierGewinntPanel vgp)
+        public ClientVierGewinntThread(VierGewinntPanel vgp, WaitingForOpponentDLG waitingDLG)
         {
             this.vgp = vgp;
+            this.waitingDLG = waitingDLG;
         }
         
         
@@ -195,7 +200,7 @@ public class GameClient
             {
                 System.out.println("GameClient.ClientVierGewinntThread.run: Anfang");
                 Object response = ois.readObject();
-                
+                waitingDLG.dispose();
                 System.out.println("GameClient.ClientVierGewinntThread.run: Player:"+response);
                 if(response.equals("Player1"))
                 {
@@ -207,8 +212,9 @@ public class GameClient
                     JOptionPane.showMessageDialog(vgp, "You are Player 2");
                 }
                 
-                while (!interrupted())
+                while (true)
                 {
+                    System.out.println("GameClient.ClientVierGewinntThread.run: WhileTrue beginn");
                     response = ois.readObject();
 
                     if (response instanceof String)
@@ -217,7 +223,9 @@ public class GameClient
                         if(aktlabel.equals("##OpponentLeft##"))
                         {
                             JOptionPane.showMessageDialog(vgp, "Opponent has left the Game");
-                            
+                            break;
+                        }else if(aktlabel.equals("##I##Left##"))
+                        {
                             break;
                         }
                     }else if(response instanceof Integer)

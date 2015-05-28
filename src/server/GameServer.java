@@ -123,8 +123,9 @@ public class GameServer
                 try
                 {
                     Socket socket = server.accept();
-
+                    socket.setSoTimeout(2000);
                     log("Connection established with: " + socket.getRemoteSocketAddress().toString());
+
                     new HomeThread(socket).start();
 
                 } catch (SocketTimeoutException ex)
@@ -193,6 +194,7 @@ public class GameServer
                     os = socket.getOutputStream();
                     oos = new ObjectOutputStream(os);
                 }
+
                 if (nickname.isEmpty())
                 {
                     Object request = ois.readObject();
@@ -200,28 +202,40 @@ public class GameServer
                     nicknames.add(nickname);
                     System.out.println("GameServer.HomeThread.run: Nickname=" + nickname);
                 }
-                Object request = ois.readObject();
-                while (request.equals("##GO##HOME##"))
-                {
-                    System.out.println("GOHOME");
-                    request = ois.readObject();
-                }
-                if (request instanceof String)
-                {
-                    String text = (String) request;
-                    System.out.println("GameServer.HomeThread.run: Text=" + text);
 
-                    if (text.equals("TicTacToe"))
+                while (true)
+                {
+                    try
                     {
-                        ttts.addPlayer(new Player(oos, ois, nickname));
-                    }else if(text.equals("VierGewinnt"))
-                    {
-                        vgs.addPlayer(new Player(oos, ois, nickname));
-                    }
+                        Object request = ois.readObject();
+                        while (request.equals("##GO##HOME##"))
+                        {
+                            System.out.println("GOHOME");
+                            request = ois.readObject();
+                        }
+                        if (request instanceof String)
+                        {
+                            String text = (String) request;
+                            System.out.println("GameServer.HomeThread.run: Text=" + text);
 
-                    if (text.equals("###Client###Disconnect###"))
+                            if (text.equals("TicTacToe"))
+                            {
+                                ttts.addPlayer(new Player(oos, ois, nickname));
+                                break;
+                            } else if (text.equals("VierGewinnt"))
+                            {
+                                vgs.addPlayer(new Player(oos, ois, nickname));
+                                break;
+                            }
+
+                            if (text.equals("###Client###Disconnect###"))
+                            {
+                                break;
+                            }
+                        }
+                    } catch (SocketTimeoutException ex)
                     {
-                        //break;
+                        log("Timeout from GameChoose");
                     }
                 }
 
