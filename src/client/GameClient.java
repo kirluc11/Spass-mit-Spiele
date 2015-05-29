@@ -52,6 +52,7 @@ public class GameClient
         oos.writeObject(nickname);
     }
 
+
     public void startClient() throws IOException
     {
         if (socket == null || socket.isClosed())

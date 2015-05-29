@@ -45,6 +45,11 @@ public class GameServer
         this.PORTNR = PORTNR;
     }
 
+    /**
+     * logArea is used to write on it
+     * @param logArea
+     * @throws IOException 
+     */
     public GameServer(JTextComponent logArea) throws IOException
     {
         this.logArea = logArea;
@@ -52,6 +57,9 @@ public class GameServer
         vgs = new VierGewinntServer(this);
     }
 
+    /**
+     * Starts a new Server if server isn't running
+     */
     public void startServer()
     {
         if (st == null || !st.isAlive())
@@ -72,7 +80,9 @@ public class GameServer
         }
 
     }
-
+    /**
+     * Stops the Server if server is running
+     */
     public void stopServer() throws IOException
     {
 
@@ -88,6 +98,10 @@ public class GameServer
 
     }
 
+    /**
+     * Writes the logText into the logArea or into console
+     * @param logText 
+     */
     public void log(String logText)
     {
         Date date = new Date();
@@ -106,6 +120,7 @@ public class GameServer
         }
     }
 
+    
     class ServerThread extends Thread
     {
 
@@ -114,6 +129,10 @@ public class GameServer
             this.setPriority(Thread.MIN_PRIORITY + 2);
         }
 
+        /**
+         * Is waiting for clients to connect
+         * Adds client to HomeThread if connect
+         */
         @Override
         public void run()
         {
@@ -150,11 +169,18 @@ public class GameServer
 
     }
 
+    /**
+     * Starts a new ClientHomeThread uses player to start thread.
+     * @param player 
+     */
     public void startNewClientHomeThread(Player player)
     {
         new HomeThread(player.getOis(), player.getOos(), player.getNickname()).start();
     }
 
+    /**
+     * Thread which is running when player is connected but isn't playing an online game.
+     */
     class HomeThread extends Thread
     {
 
@@ -164,11 +190,21 @@ public class GameServer
         ObjectInputStream ois = null;
         ObjectOutputStream oos = null;
 
+        /**
+         * For first connect from player.
+         * @param socket 
+         */
         public HomeThread(Socket socket)
         {
             this.socket = socket;
         }
 
+        /**
+         * For clients who returned from a game.
+         * @param ois
+         * @param oos
+         * @param nickname 
+         */
         public HomeThread(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
         {
             this.nickname = nickname;
@@ -176,6 +212,9 @@ public class GameServer
             this.oos = oos;
         }
 
+        /**
+         * Is waiting for response from client to add him to selected gameserver.
+         */
         @Override
         public void run()
         {
@@ -194,7 +233,7 @@ public class GameServer
                     os = socket.getOutputStream();
                     oos = new ObjectOutputStream(os);
                 }
-
+                //If first connect nickname is empty and needs to be set 
                 if (nickname.isEmpty())
                 {
                     Object request = ois.readObject();
@@ -208,6 +247,7 @@ public class GameServer
                     try
                     {
                         Object request = ois.readObject();
+                        //Checks if client is pressing home but is already in Home
                         while (request.equals("##GO##HOME##"))
                         {
                             System.out.println("GOHOME");
@@ -217,7 +257,7 @@ public class GameServer
                         {
                             String text = (String) request;
                             System.out.println("GameServer.HomeThread.run: Text=" + text);
-
+                            //Puts client to game he selected
                             if (text.equals("TicTacToe"))
                             {
                                 ttts.addPlayer(new Player(oos, ois, nickname));
@@ -235,7 +275,7 @@ public class GameServer
                         }
                     } catch (SocketTimeoutException ex)
                     {
-                        log("Timeout from GameChoose");
+                        //log("Timeout from GameChoose");
                     }
                 }
 
@@ -247,7 +287,7 @@ public class GameServer
                 log("Communication failure: " + ex.toString());
             } catch (ClassNotFoundException ex)
             {
-                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+                log("Communication failure: " + ex.toString());
             }
 
         }

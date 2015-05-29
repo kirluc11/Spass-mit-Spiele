@@ -20,27 +20,41 @@ public class VierGewinntServer
 {
 
     private GameServer gs;
-    private LinkedList<Player> allPlayer = new LinkedList<>();
+    private LinkedList<Player> waitingList = new LinkedList<>();
 
     public VierGewinntServer(GameServer gs)
     {
         this.gs = gs;
     }
 
+    /**
+     * If enought player are connected
+     * a game will be created.
+     * Else adds player to waitingList.
+     * @param player
+     * @throws IOException 
+     */
     public void addPlayer(Player player) throws IOException
     {
-        System.out.println("VierGewinntServer.addPlayer: ListLenght: "+allPlayer.size());
-        if (allPlayer.size() >= 1)
+        System.out.println("VierGewinntServer.addPlayer: ListLenght: "+waitingList.size());
+        if (waitingList.size() >= 1)
         {
-            Player player1 = allPlayer.getLast();
-            allPlayer.removeLast();
+            Player player1 = waitingList.getLast();
+            waitingList.removeLast();
             startNewGame(player, player1);
         } else
         {
-            allPlayer.add(player);
+            waitingList.add(player);
         }
     }
 
+    /**
+     * If two player are connected this method puts them into one game and
+     * starts for each player one VierGewinntPlayerThread
+     * @param player1
+     * @param player2
+     * @throws IOException 
+     */
     public void startNewGame(Player player1, Player player2) throws IOException
     {
         System.out.println("VierGewinntServer.startNewGame: Player names not sent");
@@ -55,6 +69,10 @@ public class VierGewinntServer
         vgpt2.start();
     }
 
+    
+    /**
+     * Class for communication between 2 VierGewinnt playing Clients
+     */
     class VierGewinntPlayerThread extends Thread
     {
 
@@ -68,13 +86,19 @@ public class VierGewinntServer
             this.player2 = player2;
         }
 
+        /**
+         * Sets the other player thread to be able to interrupt it if player leaves
+         * @param otherPlayerThread 
+         */
         public void setOtherPlayerThread(VierGewinntPlayerThread otherPlayerThread)
         {
             this.otherPlayerThread = otherPlayerThread;
         }
 
         
-        
+        /**
+         * Is reading information from one player and transmits them to other player
+         */
         @Override
         public void run()
         {
