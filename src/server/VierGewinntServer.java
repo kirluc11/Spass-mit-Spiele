@@ -83,7 +83,7 @@ public class VierGewinntServer
             {
                 while (!interrupted())
                 {
-                    System.out.println("VierGewinntServer.VierGewinntPlayerThread.run: start");
+                    System.out.println("VierGewinntServer.VierGewinntPlayerThread.run: in not interrepted");
                     try
                     {
                     Object request = player1.getOis().readObject();

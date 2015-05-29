@@ -148,6 +148,9 @@ public class GameClient
                             JOptionPane.showMessageDialog(tttp, "Opponent has left the Game");
                             tttp.changeLabelState(false);
                             break;
+                        }else if(aktlabel.equals("##I##Left##"))
+                        {
+                            break;
                         }
                         for (JLabel label : labels)
                         {
@@ -222,6 +225,7 @@ public class GameClient
                         String aktlabel = (String) response;
                         if(aktlabel.equals("##OpponentLeft##"))
                         {
+                            vgp.setTurn(false);
                             JOptionPane.showMessageDialog(vgp, "Opponent has left the Game");
                             break;
                         }else if(aktlabel.equals("##I##Left##"))
