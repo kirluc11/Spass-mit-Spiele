@@ -11,10 +11,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
+ * Inner panel of the game Asteroid Storm
  *
  * @author Marcel
  */
-public class AsteroidStormInnerPanel extends JPanel implements Runnable {
+public class AsteroidStormInnerPanel extends JPanel implements Runnable
+{
 
     private int x;
     private int y;
@@ -27,68 +29,106 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable {
     private boolean aus = false;
     private int speed = 5;
 
-    public boolean isAus() {
+    /**
+     * Returns bool If the game has ended true else false
+     *
+     * @return
+     */
+    public boolean isAus()
+    {
         return aus;
     }
 
-    public void setAus(boolean aus) {
+    /**
+     * Used to set boolean if game has ended
+     *
+     * @param aus
+     */
+    public void setAus(boolean aus)
+    {
         this.aus = aus;
     }
 
-    public void setCoordY(int coordY) {
-        for (int i = 0; i < this.coordY.length; i++) {
+    public void setCoordY(int coordY)
+    {
+        for (int i = 0; i < this.coordY.length; i++)
+        {
             this.coordY[i] = coordY;
         }
     }
 
-    public AsteroidStormInnerPanel() {
+    public AsteroidStormInnerPanel()
+    {
         this.setOpaque(true);
         this.setBackground(Color.black);
         repaint();
     }
 
-    public void setNumberX(int numberX) {
+    /**
+     * Sets the x coordinate of the player
+     *
+     * @param numberX
+     */
+    public void setNumberX(int numberX)
+    {
         this.numberX = numberX;
         repaint();
     }
 
-    public void setNumberY(int numberY) {
+    /**
+     * Sets the y coordinate of the player
+     *
+     * @param numberY
+     */
+    public void setNumberY(int numberY)
+    {
         this.numberY = numberY;
-        
         repaint();
     }
 
-    public void setSpeed(int speed) {
+    /**
+     * Sets the speed of the game
+     *
+     * @param speed
+     */
+    public void setSpeed(int speed)
+    {
         this.speed = speed;
     }
 
-    
-    
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
         super.paint(g);
         x = this.getWidth();
         y = this.getHeight();
         g.setColor(Color.white);
-        g.fillRect(x / 2 + numberX, y / 2 + numberY, x/20, y/20);
+        g.fillRect(x / 2 + numberX, y / 2 + numberY, x / 20, y / 20);
         g.setColor(col);
-        for (int i = 0; i < coordX.length; i++) {
-            g.fillRect(coordX[i], coordY[i], x/10, y/10);
+        for (int i = 0; i < coordX.length; i++)
+        {
+            g.fillRect(coordX[i], coordY[i], x / 10, y / 10);
         }
-
-
 
     }
 
-    public void collision() {
-        
-        for (int l = 0; l < coordX.length; l++) {
-            for (int i = 0; i < x/10; i++) {
-                for (int j = 0; j < y/10; j++) {
+    /**
+     * Detects collision between player and other hazards
+     */
+    public void collision()
+    {
+
+        for (int l = 0; l < coordX.length; l++)
+        {
+            for (int i = 0; i < x / 10; i++)
+            {
+                for (int j = 0; j < y / 10; j++)
+                {
                     if ((x / 2 + numberX == coordX[l] + i && y / 2 + numberY == coordY[l] + j)
-                            || (x / 2 + numberX + x/20 == coordX[l] + i && y / 2 + numberY == coordY[l] + j)
-                            || (x / 2 + numberX + x/20 == coordX[l] + i && y / 2 + numberY + y/20 == coordY[l] + j)
-                            || (x / 2 + numberX == coordX[l] + i && y / 2 + numberY + y/20 == coordY[l] + j)) {
+                            || (x / 2 + numberX + x / 20 == coordX[l] + i && y / 2 + numberY == coordY[l] + j)
+                            || (x / 2 + numberX + x / 20 == coordX[l] + i && y / 2 + numberY + y / 20 == coordY[l] + j)
+                            || (x / 2 + numberX == coordX[l] + i && y / 2 + numberY + y / 20 == coordY[l] + j))
+                    {
                         aus = true;
                         JOptionPane.showMessageDialog(this, "GAME OVER!!");
                         return;
@@ -98,35 +138,43 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Moves the hazards from upside down
+     */
     @Override
-    public void run() {
-        for (int i = 0; i < coordX.length; i++) {
+    public void run()
+    {
+        for (int i = 0; i < coordX.length; i++)
+        {
             coordX[i] = ran.nextInt(470);
         }
         col = new Color(ran.nextInt(256), ran.nextInt(256), ran.nextInt(256));
-
-
-        while (!Thread.interrupted() && !aus) {
-            for (int i = 0; i < coordX.length; i++) {
+        while (!Thread.interrupted() && !aus)
+        {
+            for (int i = 0; i < coordX.length; i++)
+            {
                 int j = coordX[i];
-                if (coordY[i] < y) {
+                if (coordY[i] < y)
+                {
                     coordY[i]++;
-                } else if (y != 0) {
+                } else if (y != 0)
+                {
                     col = new Color(ran.nextInt(256), ran.nextInt(256), ran.nextInt(256));
                     coordY[i] = 0;
-                    if (i == 0&&speed>2) {
+                    if (i == 0 && speed > 2)
+                    {
                         speed--;
                     }
                     coordX[i] = ran.nextInt(x - 30);
                 }
-
             }
-
             repaint();
             collision();
-            try {
+            try
+            {
                 Thread.sleep(speed);
-            } catch (InterruptedException ex) {
+            } catch (InterruptedException ex)
+            {
                 break;
             }
         }

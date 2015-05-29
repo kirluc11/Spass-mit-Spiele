@@ -36,16 +36,30 @@ public class GameClient
     private ObjectInputStream ois = null;
     private String nickname;
 
+    /**
+     * Sets port user wants to connect to
+     * @param PORTNR 
+     */
     public void setPORTNR(int PORTNR)
     {
         this.PORTNR = PORTNR;
     }
 
-    public void setAddress(String inetAdress) throws UnknownHostException
+    /**
+     * Sets address client wants to connect to
+     * @param inetAddress
+     * @throws UnknownHostException 
+     */
+    public void setAddress(String inetAddress) throws UnknownHostException
     {
-        address = InetAddress.getByName(inetAdress);
+        address = InetAddress.getByName(inetAddress);
     }
 
+    /**
+     * Sets nickname of the client and writes it to the server
+     * @param nickname
+     * @throws IOException 
+     */
     public void setNickname(String nickname) throws IOException
     {
         this.nickname = nickname;
@@ -53,9 +67,13 @@ public class GameClient
     }
 
 
+    /**
+     * Connects client with server if he isn't connected
+     * @throws IOException 
+     */
     public void startClient() throws IOException
     {
-        if (socket == null || socket.isClosed())
+        if (!isConnected())
         {
             socket = new Socket(address, PORTNR);
             OutputStream os = socket.getOutputStream();
@@ -65,9 +83,13 @@ public class GameClient
 
     }
 
+    /**
+     * Disconnects client from server if he is connected
+     * @throws IOException 
+     */
     public void stopClient() throws IOException
     {
-        if (socket != null && !socket.isClosed())
+        if (isConnected())
         {
             oos.writeObject("###Client###Disconnect###");
             oos.close();
@@ -76,6 +98,10 @@ public class GameClient
         }
     }
 
+    /**
+     * Returns true if client is connected, false if not
+     * @return 
+     */
     public boolean isConnected()
     {
         if (socket != null && !socket.isClosed())
@@ -85,11 +111,23 @@ public class GameClient
         return false;
     }
 
+    /**
+     * Sends Object to the server
+     * @param request
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public void sendObject(Object request) throws IOException, ClassNotFoundException
     {
         oos.writeObject(request);
     }
 
+    /**
+     * Creates a new ClientTicTacToeThread
+     * @param labels
+     * @param tttg
+     * @param tttp 
+     */
     public void newTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp)
     {
         WaitingForOpponentDLG waitingDLG = new WaitingForOpponentDLG(null, true);
@@ -98,6 +136,9 @@ public class GameClient
         waitingDLG.setVisible(true);
     }
 
+    /**
+     * Class used for online TicTacToe games
+     */
     class ClientTicTacToeThread extends Thread
     {
 
@@ -118,6 +159,9 @@ public class GameClient
             this.waitingDLG=waitingDLG;
         }
 
+        /**
+         * Is waiting for information from server and react depending on the information
+         */
         @Override
         public void run()
         {
@@ -175,7 +219,10 @@ public class GameClient
         }
     }
     
-    
+    /**
+     * Creates a new ClientVierGewinntThread
+     * @param vgp 
+     */
     public void newVierGewinntThread(VierGewinntPanel vgp)
     {
         System.out.println("GameClient.newVierGewinntThread: start");
@@ -183,7 +230,9 @@ public class GameClient
        new ClientVierGewinntThread(vgp,waitingDLG).start();
         waitingDLG.setVisible(true);
     }
-    
+    /**
+     * Class used for online VierGewinnt games
+     */
     class ClientVierGewinntThread extends Thread
     {
         
@@ -196,7 +245,9 @@ public class GameClient
             this.waitingDLG = waitingDLG;
         }
         
-        
+        /**
+         * Is waiting for information from server and react depending on the information
+         */
         @Override
         public void run()
         {

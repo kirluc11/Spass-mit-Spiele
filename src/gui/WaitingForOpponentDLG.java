@@ -6,7 +6,7 @@
 package gui;
 
 /**
- *
+ * Called from client which has to wait for opponent
  * @author user
  */
 public class WaitingForOpponentDLG extends javax.swing.JDialog
