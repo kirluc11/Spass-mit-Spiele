@@ -13,7 +13,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Churchy
  */
-public class SnakePart extends Ellipse2D.Double implements Directions {
+public class SnakePart extends Rectangle2D.Double implements Directions {
 
     Color color = Color.YELLOW;
     double w;
