@@ -5,6 +5,7 @@ package games.hangman.gui;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import gui.PlayerGUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -17,7 +18,8 @@ import javax.swing.border.TitledBorder;
  *
  * @author user
  */
-public class HangmanPanel extends javax.swing.JPanel {
+public class HangmanPanel extends javax.swing.JPanel
+{
 
     /**
      * Creates new form HangmanPanel
@@ -27,24 +29,29 @@ public class HangmanPanel extends javax.swing.JPanel {
     char[] c;
     private String output = "";
     private char[] c1;
+    private PlayerGUI pgui;
     //Variable to check if the player has won
     private int lenght = 0;
     private boolean gameRunning;
     private HashSet<Character> usedChar;
 
-    public HangmanPanel() {
+    public HangmanPanel(PlayerGUI pgui)
+    {
+        this.pgui = pgui;
         initComponents();
         this.setBorder(new TitledBorder(new EmptyBorder(5, 0, 0, 0), "Hangman", TitledBorder.CENTER, TitledBorder.ABOVE_TOP));
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
         super.paint(g);
         Graphics gp = paZeichne.getGraphics();
         gp.setColor(Color.white);
         int x = paZeichne.getWidth();
         int y = paZeichne.getHeight();
-        switch (art) {
+        switch (art)
+        {
             case 1:
                 gp.drawLine(x / 3, y - y / 8, (x / 3) * 2, y - y / 8);
                 break;
@@ -135,33 +142,42 @@ public class HangmanPanel extends javax.swing.JPanel {
         }
     }
 
-    public void startGame() {
-        while (inp.isEmpty()) {
-            inp = JOptionPane.showInputDialog("Please enter a word:");
-            if (inp == null) {
-                break;
-            }
+    public void startGame()
+    {
+
+        InputWordDLG iwdlg = new InputWordDLG(null, true);
+        iwdlg.setVisible(true);
+        if (iwdlg.isOk())
+        {
+            inp = iwdlg.getWord();
+        }else
+        {
+            pgui.showGameChooser();
         }
-        if (inp != null) {
+
+        if (inp != null)
+        {
             inp = inp.trim();
             c = new char[inp.length()];
             c1 = new char[inp.length()];
             inp = inp.toUpperCase();
-            for (int i = 0; i < c1.length; i++) {
+            for (int i = 0; i < c1.length; i++)
+            {
                 c1[i] = inp.charAt(i);
             }
-            for (int i = 0; i < c.length; i++) {
-                if(c1[i] == ' ')
+            for (int i = 0; i < c.length; i++)
+            {
+                if (c1[i] == ' ')
                 {
                     lenght++;
                     c[i] = ' ';
-                }
-                else
+                } else
                 {
                     c[i] = '_';
                 }
             }
-            for (int i1 = 0; i1 < c.length; i1++) {
+            for (int i1 = 0; i1 < c.length; i1++)
+            {
                 output += c[i1] + " ";
             }
             lbAnzeige.setText(output);
@@ -171,7 +187,8 @@ public class HangmanPanel extends javax.swing.JPanel {
         ftfInput.requestFocus();
     }
 
-    public void restartGame() {
+    public void restartGame()
+    {
         art = 0;
         lenght = 0;
         inp = "";
@@ -180,18 +197,21 @@ public class HangmanPanel extends javax.swing.JPanel {
         startGame();
     }
 
-
-   
-    public void searchLetter(char searchLetter) {
+    public void searchLetter(char searchLetter)
+    {
         ftfInput.setText("");
-        if (!usedChar.contains(searchLetter)) {
+        if (!usedChar.contains(searchLetter))
+        {
             usedChar.add(searchLetter);
             boolean boo = true;
 
-            for (int i1 = 0; i1 < c1.length; i1++) {
-                if (c[i1] == searchLetter) {
+            for (int i1 = 0; i1 < c1.length; i1++)
+            {
+                if (c[i1] == searchLetter)
+                {
                     boo = false;
-                } else if (c1[i1] == searchLetter) {
+                } else if (c1[i1] == searchLetter)
+                {
                     c[i1] = searchLetter;
                     lenght += 1;
                     boo = false;
@@ -199,26 +219,31 @@ public class HangmanPanel extends javax.swing.JPanel {
             }
 
             output = "";
-            for (int i = 0; i < c.length; i++) {
+            for (int i = 0; i < c.length; i++)
+            {
                 output += c[i] + " ";
             }
 
-            if (boo == true) {
+            if (boo == true)
+            {
                 art += 1;
             }
 
             repaint();
-            if (art == 10) {
+            if (art == 10)
+            {
                 JOptionPane.showMessageDialog(null, "Game Over\n The word was '" + inp + "'", "", JOptionPane.ERROR_MESSAGE);
                 gameRunning = false;
             }
             lbAnzeige.setText(output);
-            if (lenght == inp.length()) {
+            if (lenght == inp.length())
+            {
                 JOptionPane.showMessageDialog(null, "Congratulation!!\n You won :DD");
                 gameRunning = false;
             }
 
-        } else {
+        } else
+        {
             JOptionPane.showMessageDialog(null, "Letter already used");
         }
 
@@ -297,10 +322,13 @@ public class HangmanPanel extends javax.swing.JPanel {
 
     private void onClicked(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onClicked
     {//GEN-HEADEREND:event_onClicked
-        if (gameRunning) {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (gameRunning)
+        {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+            {
                 String input = ftfInput.getText();
-                if (!input.equals(" ") && !input.isEmpty()) {
+                if (!input.equals(" ") && !input.isEmpty())
+                {
                     input = input.toUpperCase();
                     char ch = input.charAt(0);
                     searchLetter(ch);
