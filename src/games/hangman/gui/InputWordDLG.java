@@ -25,7 +25,9 @@ public class InputWordDLG extends javax.swing.JDialog
     {
         super(parent, modal);
         initComponents();
+        this.setSize(400,150);
         this.setLocationRelativeTo(parent);
+        
 
     }
 
@@ -70,6 +72,7 @@ public class InputWordDLG extends javax.swing.JDialog
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Enter a word");
+        setUndecorated(true);
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -97,6 +100,7 @@ public class InputWordDLG extends javax.swing.JDialog
     private void onChoose(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onChoose
     {//GEN-HEADEREND:event_onChoose
         String text = tfInput.getText();
+        text =  text.trim();
         if (text.length() <= 0 || text.length() >= 20)
         {
             JOptionPane.showMessageDialog(this, "Length must be between 0 and 20");
