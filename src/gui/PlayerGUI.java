@@ -50,6 +50,13 @@ public class PlayerGUI extends javax.swing.JFrame
         pnGame.updateUI();
     }
 
+    public void setAktPanel(JPanel aktPanel)
+    {
+        this.aktPanel = aktPanel;
+    }
+    
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -93,39 +93,41 @@ public class GameChooserPanel extends javax.swing.JPanel {
             this.add(paTempGame);
         }
     }
+    
+    public void aktualisierePaGame(JPanel aktGame)
+    {
+        pgui.setAktPanel(aktGame);
+        paGame.add(aktGame);
+        paGame.repaint();
+        paGame.getRootPane().updateUI();
+    }
 
     public void changeGame(String name) throws IOException, ClassNotFoundException {
         paGame.removeAll();
+        
         switch (name) {
             case "Hangman":
                 HangmanPanel paHang = new HangmanPanel(pgui);
-                paGame.add(paHang);
-                paGame.repaint();
-                paGame.getRootPane().updateUI();
+                aktualisierePaGame(paHang);
                 paHang.startGame();
                 break;
             case "TicTacToe":
-                paGame.add(new TicTacToePanel(gc));
-                paGame.repaint();
-                paGame.getRootPane().updateUI();
+                TicTacToePanel tttp = new TicTacToePanel(gc);
+                aktualisierePaGame(tttp);
                 break;
             case "AsteroidStorm":
                 AsteroidStormPanel asp = new AsteroidStormPanel();
-                paGame.add(asp);
-                paGame.repaint();
-                paGame.getRootPane().updateUI();
+                aktualisierePaGame(asp);
                 asp.requestFocus();
                 break;
             case "4-Gewinnt":
-                VierGewinntPanel vg = new VierGewinntPanel(gc);
-                paGame.add(vg);
-                paGame.getRootPane().updateUI();
-                vg.requestFocus();
+                VierGewinntPanel vgp = new VierGewinntPanel(gc);
+                aktualisierePaGame(vgp);
+                vgp.requestFocus();
                 break;
             case "Snake":
                 SnakePanel snake = new SnakePanel();
-                paGame.add(snake);
-                paGame.getRootPane().updateUI();
+                aktualisierePaGame(snake);
                 snake.startGame();
                 snake.requestFocus();
                 break;
