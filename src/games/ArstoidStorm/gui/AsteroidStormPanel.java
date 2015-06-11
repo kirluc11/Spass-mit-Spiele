@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Main panel of the game Asteroid Storm
  * @author user
  */
 public class AsteroidStormPanel extends javax.swing.JPanel {
@@ -32,6 +32,9 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Starts a new Game
+     */
     public void startGame() {
 
         thread = new Thread((Runnable) asip);
@@ -70,6 +73,12 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         setLayout(new java.awt.GridLayout());
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This method is called if player presses a key
+     * and depending on which key he is pressing 
+     * the player move
+     * @param evt 
+     */
     private void onMove(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onMove
     {//GEN-HEADEREND:event_onMove
 
@@ -97,6 +106,10 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_onMove
 
+    /**
+     * Restarts the whole game
+     * @param evt 
+     */
     private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
     {//GEN-HEADEREND:event_onRestart
 
