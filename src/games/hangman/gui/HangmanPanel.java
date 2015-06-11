@@ -5,6 +5,7 @@ package games.hangman.gui;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import gui.PlayerGUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -28,13 +29,15 @@ public class HangmanPanel extends javax.swing.JPanel
     char[] c;
     private String output = "";
     private char[] c1;
+    private PlayerGUI pgui;
     //Variable to check if the player has won
     private int lenght = 0;
     private boolean gameRunning;
     private HashSet<Character> usedChar;
 
-    public HangmanPanel()
+    public HangmanPanel(PlayerGUI pgui)
     {
+        this.pgui = pgui;
         initComponents();
         this.setBorder(new TitledBorder(new EmptyBorder(5, 0, 0, 0), "Hangman", TitledBorder.CENTER, TitledBorder.ABOVE_TOP));
     }
@@ -141,15 +144,17 @@ public class HangmanPanel extends javax.swing.JPanel
 
     public void startGame()
     {
-        while (inp.isEmpty())
+
+        InputWordDLG iwdlg = new InputWordDLG(null, true);
+        iwdlg.setVisible(true);
+        if (iwdlg.isOk())
         {
-            InputWordDLG iwdlg = new InputWordDLG(null, true);
-            iwdlg.setVisible(true);
-            if (iwdlg.isOk())
-            {
-                inp = iwdlg.getWord();
-            }
+            inp = iwdlg.getWord();
+        }else
+        {
+            pgui.showGameChooser();
         }
+
         if (inp != null)
         {
             inp = inp.trim();

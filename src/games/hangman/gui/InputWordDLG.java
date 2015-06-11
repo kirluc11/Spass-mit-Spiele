@@ -77,6 +77,13 @@ public class InputWordDLG extends javax.swing.JDialog
         jPanel1.setLayout(new java.awt.GridLayout(1, 2));
 
         jButton1.setText("Cancel");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                onCancel(evt);
+            }
+        });
         jPanel1.add(jButton1);
 
         jButton2.setText("Choose");
@@ -117,6 +124,11 @@ public class InputWordDLG extends javax.swing.JDialog
             }
         }
     }//GEN-LAST:event_onChoose
+
+    private void onCancel(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onCancel
+    {//GEN-HEADEREND:event_onCancel
+        this.dispose();
+    }//GEN-LAST:event_onCancel
 
     public static void main(String[] args)
     {

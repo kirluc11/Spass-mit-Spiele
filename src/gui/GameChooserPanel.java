@@ -35,10 +35,12 @@ public class GameChooserPanel extends javax.swing.JPanel {
     private HashMap<String, Image> allGames = new HashMap<String, Image>();
     private JPanel paGame;
     private GameClient gc;
+    private PlayerGUI pgui;
 
-    public GameChooserPanel(JPanel paGame,GameClient gc) {
+    public GameChooserPanel(JPanel paGame,GameClient gc, PlayerGUI pgui) {
         this.paGame = paGame;
         this.gc = gc;
+        this.pgui = pgui;
         initComponents();
         try {
             this.gameAdding();
@@ -96,7 +98,7 @@ public class GameChooserPanel extends javax.swing.JPanel {
         paGame.removeAll();
         switch (name) {
             case "Hangman":
-                HangmanPanel paHang = new HangmanPanel();
+                HangmanPanel paHang = new HangmanPanel(pgui);
                 paGame.add(paHang);
                 paGame.repaint();
                 paGame.getRootPane().updateUI();
