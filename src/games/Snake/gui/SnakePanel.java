@@ -29,8 +29,9 @@ import javax.swing.border.TitledBorder;
  */
 public class SnakePanel extends javax.swing.JPanel implements Runnable, Directions {
 
-    Snake snake;
-    Direction dir = Direction.RIGHT;
+    private Snake snake;
+    private Direction dir = Direction.RIGHT;
+    private Thread thread;
 
     /**
      * Creates new form SnakePanel
@@ -45,8 +46,8 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
 
         this.requestFocus();
 
-        Thread t = new Thread(this);
-        t.start();
+        thread = new Thread(this);
+        thread.start();
     }
 
     private void initSnake() {
@@ -127,13 +128,20 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         t.start();
     }
 
+    public void endGame()
+    {
+        thread.interrupt();
+    }
+    
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
     @Override
     public void run() {
         try {
-            while (snake.move()) {
+            while (snake.move()&&!Thread.interrupted()) {
                 try {
                     Thread.sleep(150);
                     repaint();

@@ -7,6 +7,7 @@ package gui;
 
 import client.GameClient;
 import games.ArstoidStorm.gui.AsteroidStormPanel;
+import games.Snake.gui.SnakePanel;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -150,6 +151,10 @@ public class PlayerGUI extends javax.swing.JFrame
             {
                 AsteroidStormPanel asp = (AsteroidStormPanel) aktPanel;
                 asp.endGame();
+            }else if(aktPanel instanceof SnakePanel)
+            {
+                SnakePanel sp = (SnakePanel) aktPanel;
+                sp.endGame();
             }
             showGameChooser();
         }
