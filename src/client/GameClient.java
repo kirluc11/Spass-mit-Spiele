@@ -24,7 +24,7 @@ import vierGewinnt.gui.VierGewinntPanel;
 
 /**
  *
- * @author user
+ * @author Marcel, Lukas
  */
 public class GameClient
 {

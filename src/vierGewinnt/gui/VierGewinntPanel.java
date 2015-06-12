@@ -32,7 +32,7 @@ import vierGewinnt.bl.vierGewinntBL;
 
 /**
  *
- * @author Lukas
+ * @author Lukas, Marcel
  */
 public class VierGewinntPanel extends JPanel {
 

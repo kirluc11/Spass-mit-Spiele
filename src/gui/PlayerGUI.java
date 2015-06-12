@@ -19,7 +19,7 @@ import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
 /**
  *
- * @author Churchy
+ * @author Lukas, Marcel
  */
 public class PlayerGUI extends javax.swing.JFrame
 {
