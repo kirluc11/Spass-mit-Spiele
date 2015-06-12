@@ -64,8 +64,6 @@ public class VierGewinntPanel extends JPanel {
     private Timer addTimer = new Timer(75, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("6 - " + numberOfClicks[column] + " = " + (6 - numberOfClicks[column]));
-            System.out.println("countRow " + countRow + "\n");
             if (6 - numberOfClicks[column] == 0) {
                 countRow = 0;
             }
@@ -240,7 +238,6 @@ public class VierGewinntPanel extends JPanel {
         if (numberOfClicks[column] < 6) {
             this.column = column;
             numberOfClicks[column] += 1;
-            System.out.println(this.toString() + ":   " + column);
             //countRow = 0;
             addTimerCompleted = false;
             addTimer.start();
@@ -255,7 +252,6 @@ public class VierGewinntPanel extends JPanel {
             if (insertStone(column)) {
                 if (gameMode == 2) {
                     try {
-                        System.out.println("VierGewinntPanel.onClick: sendObject");
                         gc.sendObject(column);
                         turn = false;
                     } catch (IOException ex) {
