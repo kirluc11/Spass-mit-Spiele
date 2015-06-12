@@ -7,6 +7,7 @@ package games.tictactoe.gui;
 import client.GameClient;
 import games.tictactoe.bl.TicTacToeGewinnabfrage;
 import games.tictactoe.bl.TicTacToeKI;
+import gui.PlayerGUI;
 import gui.WaitingForOpponentDLG;
 import java.awt.Color;
 import java.awt.Font;
@@ -48,22 +49,26 @@ public class TicTacToePanel extends JPanel
     private GameClient gc;
     private boolean myTurn = false;
     private boolean gameOver;
+    private PlayerGUI pgui;
+    private boolean ok=true;
 
     public Color getSpieler1()
     {
         return spieler1;
     }
 
-    public TicTacToePanel(GameClient gc)
+    public TicTacToePanel(GameClient gc, PlayerGUI pgui)
     {
         this.initComponents();
         this.gc = gc;
         tttg = new TicTacToeGewinnabfrage(labels);
         if (gc.isConnected())
         {
+            
             NumberOfPlayerOnlineDLG onlinedlg = new NumberOfPlayerOnlineDLG(null, true);
             if (onlinedlg.isOk())
             {
+                
                 gameMode = onlinedlg.getGameMode();
                 if (gameMode == 2)
                 {
@@ -80,6 +85,11 @@ public class TicTacToePanel extends JPanel
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+            }else
+            {
+                ok=false;
+                pgui.showGameChooser();
+                
             }
         } else
         {
@@ -87,10 +97,21 @@ public class TicTacToePanel extends JPanel
             if (dlg.isOk())
             {
                 gameMode = dlg.getGameMode();
+            }else
+            {
+                ok=false;
+                pgui.showGameChooser();
             }
         }
 
     }
+
+    public boolean isOk()
+    {
+        return ok;
+    }
+    
+    
 
     public boolean isMyTurn()
     {

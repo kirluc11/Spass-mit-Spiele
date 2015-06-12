@@ -46,7 +46,7 @@ public class PlayerGUI extends javax.swing.JFrame
     public void showGameChooser()
     {
         GameChooserPanel gcp = new GameChooserPanel(pnGame, gClient, this);
-        aktPanel = gcp;
+        setAktPanel(gcp);
         pnGame.removeAll();
         pnGame.add(gcp);
         pnGame.updateUI();
