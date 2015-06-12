@@ -30,21 +30,25 @@ import vierGewinnt.gui.VierGewinntPanel;
  *
  * @author user
  */
-public class GameChooserPanel extends javax.swing.JPanel {
+public class GameChooserPanel extends javax.swing.JPanel
+{
 
     private HashMap<String, Image> allGames = new HashMap<String, Image>();
     private JPanel paGame;
     private GameClient gc;
     private PlayerGUI pgui;
 
-    public GameChooserPanel(JPanel paGame,GameClient gc, PlayerGUI pgui) {
+    public GameChooserPanel(JPanel paGame, GameClient gc, PlayerGUI pgui)
+    {
         this.paGame = paGame;
         this.gc = gc;
         this.pgui = pgui;
         initComponents();
-        try {
+        try
+        {
             this.gameAdding();
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
             Logger.getLogger(GameChooserPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -52,11 +56,13 @@ public class GameChooserPanel extends javax.swing.JPanel {
     /**
      * Creates new form GameChooserPanel
      */
-    public GameChooserPanel() {
+    public GameChooserPanel()
+    {
 
     }
 
-    public void gameAdding() throws IOException {
+    public void gameAdding() throws IOException
+    {
         String path = System.getProperty("user.dir")
                 + File.separator + "src"
                 + File.separator + "res"
@@ -68,13 +74,16 @@ public class GameChooserPanel extends javax.swing.JPanel {
         allGames.put("4-Gewinnt", ImageIO.read(new File(path + File.separator + "vierGewinnt.png")));
         allGames.put("Snake", ImageIO.read(new File(path + File.separator + "Snake.png")));
 
-        for (String name : allGames.keySet()) {
+        for (String name : allGames.keySet())
+        {
             Image aktImage = allGames.get(name);
             ImageComponent paTempGame = new ImageComponent(aktImage);
-            paTempGame.addMouseListener(new MouseAdapter() {
+            paTempGame.addMouseListener(new MouseAdapter()
+            {
 
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mouseClicked(MouseEvent e)
+                {
                     JPanel clickedPanel = (JPanel) e.getComponent();
                     try
                     {
@@ -94,61 +103,72 @@ public class GameChooserPanel extends javax.swing.JPanel {
         }
     }
 
-    public void changeGame(String name) throws IOException, ClassNotFoundException {
+    public void aktualisierePaGame(JPanel aktGame)
+    {
+        pgui.setAktPanel(aktGame);
+        paGame.add(aktGame);
+        paGame.repaint();
+        paGame.getRootPane().updateUI();
+    }
+
+    public void changeGame(String name) throws IOException, ClassNotFoundException
+    {
         paGame.removeAll();
-        switch (name) {
+
+        switch (name)
+        {
             case "Hangman":
                 HangmanPanel paHang = new HangmanPanel(pgui);
-                paGame.add(paHang);
-                paGame.repaint();
-                paGame.getRootPane().updateUI();
+                aktualisierePaGame(paHang);
                 paHang.startGame();
                 break;
             case "TicTacToe":
-                paGame.add(new TicTacToePanel(gc));
-                paGame.repaint();
-                paGame.getRootPane().updateUI();
+                TicTacToePanel tttp = new TicTacToePanel(gc, pgui);
+                if (tttp.isOk())
+                {
+                    aktualisierePaGame(tttp);
+                }
                 break;
             case "AsteroidStorm":
                 AsteroidStormPanel asp = new AsteroidStormPanel();
-                paGame.add(asp);
-                paGame.repaint();
-                paGame.getRootPane().updateUI();
+                aktualisierePaGame(asp);
                 asp.requestFocus();
                 break;
             case "4-Gewinnt":
-                VierGewinntPanel vg = new VierGewinntPanel(gc);
-                paGame.add(vg);
-                paGame.getRootPane().updateUI();
-                vg.requestFocus();
+                VierGewinntPanel vgp = new VierGewinntPanel(gc);
+                aktualisierePaGame(vgp);
+                vgp.requestFocus();
                 break;
             case "Snake":
                 SnakePanel snake = new SnakePanel();
-                paGame.add(snake);
-                paGame.getRootPane().updateUI();
+                aktualisierePaGame(snake);
                 snake.startGame();
                 snake.requestFocus();
                 break;
         }
-        
-        
+
     }
 
     //Used for changing Picture size
-    class ImageComponent extends JPanel {
+    class ImageComponent extends JPanel
+    {
 
         private Image image;
 
-        public ImageComponent(Image image) {
+        public ImageComponent(Image image)
+        {
             this.image = image;
         }
 
         @Override
-        protected void paintComponent(Graphics g) {
+        protected void paintComponent(Graphics g)
+        {
             super.paintComponent(g);
-            if (getHeight() < getWidth()) {
+            if (getHeight() < getWidth())
+            {
                 g.drawImage(image, (getWidth() - getHeight()) / 2, 10, getHeight(), getHeight() - 20, null);
-            } else {
+            } else
+            {
                 g.drawImage(image, 10, (getHeight() - getWidth()) / 2, getWidth() - 20, getWidth(), null);
             }
         }
@@ -161,7 +181,8 @@ public class GameChooserPanel extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Game Chooser"));
         setLayout(new java.awt.GridLayout(3, 3));

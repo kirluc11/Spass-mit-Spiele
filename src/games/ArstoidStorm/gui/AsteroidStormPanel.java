@@ -41,6 +41,11 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         thread.start();
 
     }
+    
+    public void endGame()
+    {
+        thread.interrupt();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

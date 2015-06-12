@@ -6,6 +6,8 @@
 package gui;
 
 import client.GameClient;
+import games.ArstoidStorm.gui.AsteroidStormPanel;
+import games.Snake.gui.SnakePanel;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -43,11 +45,16 @@ public class PlayerGUI extends javax.swing.JFrame
 
     public void showGameChooser()
     {
-        GameChooserPanel gcp = new GameChooserPanel(pnGame, gClient,this);
-        aktPanel = gcp;
+        GameChooserPanel gcp = new GameChooserPanel(pnGame, gClient, this);
+        setAktPanel(gcp);
         pnGame.removeAll();
         pnGame.add(gcp);
         pnGame.updateUI();
+    }
+
+    public void setAktPanel(JPanel aktPanel)
+    {
+        this.aktPanel = aktPanel;
     }
 
     /**
@@ -125,20 +132,33 @@ public class PlayerGUI extends javax.swing.JFrame
 
     private void onHomeBT(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onHomeBT
     {//GEN-HEADEREND:event_onHomeBT
-        if (gClient.isConnected())
+        if (!(aktPanel instanceof GameChooserPanel))
         {
-            try
+            if (gClient.isConnected())
             {
-                gClient.sendObject("##GO##HOME##");
-            } catch (IOException ex)
-            {
-                Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex)
-            {
-                Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                try
+                {
+                    gClient.sendObject("##GO##HOME##");
+                } catch (IOException ex)
+                {
+                    Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex)
+                {
+                    Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            if(aktPanel instanceof AsteroidStormPanel)
+            {
+                AsteroidStormPanel asp = (AsteroidStormPanel) aktPanel;
+                asp.endGame();
+            }else if(aktPanel instanceof SnakePanel)
+            {
+                SnakePanel sp = (SnakePanel) aktPanel;
+                sp.endGame();
+            }
+            showGameChooser();
         }
-        showGameChooser();
+
     }//GEN-LAST:event_onHomeBT
 
     private void onDisConnect(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onDisConnect
