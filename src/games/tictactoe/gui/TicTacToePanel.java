@@ -50,7 +50,7 @@ public class TicTacToePanel extends JPanel
     private boolean myTurn = false;
     private boolean gameOver;
     private PlayerGUI pgui;
-    private boolean ok=true;
+    private boolean ok = true;
 
     public Color getSpieler1()
     {
@@ -64,19 +64,19 @@ public class TicTacToePanel extends JPanel
         tttg = new TicTacToeGewinnabfrage(labels);
         if (gc.isConnected())
         {
-            
+
             NumberOfPlayerOnlineDLG onlinedlg = new NumberOfPlayerOnlineDLG(null, true);
             if (onlinedlg.isOk())
             {
-                
+
                 gameMode = onlinedlg.getGameMode();
                 if (gameMode == 2)
                 {
                     try
                     {
                         gc.sendObject("TicTacToe");
-                        
-                        gc.newTicTacToeThread(labels, tttg, this);     
+
+                        gc.newTicTacToeThread(labels, tttg, this);
                     } catch (IOException ex)
                     {
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,11 +85,11 @@ public class TicTacToePanel extends JPanel
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            }else
+            } else
             {
-                ok=false;
+                ok = false;
                 pgui.showGameChooser();
-                
+
             }
         } else
         {
@@ -97,9 +97,9 @@ public class TicTacToePanel extends JPanel
             if (dlg.isOk())
             {
                 gameMode = dlg.getGameMode();
-            }else
+            } else
             {
-                ok=false;
+                ok = false;
                 pgui.showGameChooser();
             }
         }
@@ -110,8 +110,6 @@ public class TicTacToePanel extends JPanel
     {
         return ok;
     }
-    
-    
 
     public boolean isMyTurn()
     {
@@ -146,6 +144,26 @@ public class TicTacToePanel extends JPanel
         return this;
     }
 
+    public void sendGoHome()
+    {
+        if (gc.isConnected())
+        {
+            try
+            {
+                if (gameMode == 2 && !gameOver)
+                {
+                    gc.sendObject("##GO##HOME##");
+                }
+            } catch (IOException ex)
+            {
+                Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex)
+            {
+                Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     private void initComponents()
     {
         this.setLayout(new GridLayout(3, 3, 1, 1));
@@ -163,6 +181,7 @@ public class TicTacToePanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                sendGoHome();
                 gameMode = 0;
                 restart();
             }
@@ -174,6 +193,7 @@ public class TicTacToePanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                sendGoHome();
                 gameMode = 1;
                 restart();
             }
@@ -187,10 +207,9 @@ public class TicTacToePanel extends JPanel
             {
                 if (gc.isConnected())
                 {
-
                     try
                     {
-
+                        sendGoHome();
                         gc.sendObject("TicTacToe");
                         gc.newTicTacToeThread(labels, tttg, getInstance());
                         gameMode = 2;
