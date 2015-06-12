@@ -66,8 +66,7 @@ public class VierGewinntPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             System.out.println("6 - " + numberOfClicks[column] + " = " + (6 - numberOfClicks[column]));
             System.out.println("countRow " + countRow + "\n");
-            if(6 - numberOfClicks[column] == 0)
-            {
+            if (6 - numberOfClicks[column] == 0) {
                 countRow = 0;
             }
             if (countRow == 0) {
@@ -237,7 +236,7 @@ public class VierGewinntPanel extends JPanel {
         }
     }
 
-    public void insertStone(int column) {
+    public boolean insertStone(int column) {
         if (numberOfClicks[column] < 6) {
             this.column = column;
             numberOfClicks[column] += 1;
@@ -245,23 +244,25 @@ public class VierGewinntPanel extends JPanel {
             //countRow = 0;
             addTimerCompleted = false;
             addTimer.start();
+            return true;
         }
+        return false;
     }
 
     private void onClick(ActionEvent e) {
         if (!over && addTimerCompleted && turn) {
             column = Integer.parseInt(e.getActionCommand());
-            insertStone(column);
-
-            if (gameMode == 2) {
-                try {
-                    System.out.println("VierGewinntPanel.onClick: sendObject");
-                    gc.sendObject(column);
-                    turn = false;
-                } catch (IOException ex) {
-                    Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+            if (insertStone(column)) {
+                if (gameMode == 2) {
+                    try {
+                        System.out.println("VierGewinntPanel.onClick: sendObject");
+                        gc.sendObject(column);
+                        turn = false;
+                    } catch (IOException ex) {
+                        Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
