@@ -57,16 +57,19 @@ public class VierGewinntPanel extends JPanel {
     private int gameMode = 1;
     private boolean turn;
 
-    public void setTurn(boolean turn)
-    {
+    public void setTurn(boolean turn) {
         this.turn = turn;
     }
 
-    
-    
     private Timer addTimer = new Timer(75, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            System.out.println("6 - " + numberOfClicks[column] + " = " + (6 - numberOfClicks[column]));
+            System.out.println("countRow " + countRow + "\n");
+            if(6 - numberOfClicks[column] == 0)
+            {
+                countRow = 0;
+            }
             if (countRow == 0) {
                 if (spieler == 1) {
                     labels[countRow][column].setBackground(spieler1);
@@ -82,9 +85,7 @@ public class VierGewinntPanel extends JPanel {
                 }
             }
             pnLbs.repaint();
-            System.out.println(column);
-            System.out.println("6 - " + numberOfClicks[column] + " = " + (6 - numberOfClicks[column]));
-            if (countRow == 6 - numberOfClicks[column]) {
+            if (countRow == 6 - numberOfClicks[column] || 6 - numberOfClicks[column] == 0) {
                 addTimerCompleted = true;
                 isOver();
                 spieler *= -1;
@@ -131,14 +132,14 @@ public class VierGewinntPanel extends JPanel {
     public VierGewinntPanel(GameClient gc) {
         initComponents();
         this.gc = gc;
-        turn=true;
+        turn = true;
         if (gc.isConnected()) {
             VierGewinntNumberOfPlayerDLG dlg = new VierGewinntNumberOfPlayerDLG(null, true);
             if (dlg.isOk()) {
                 gameMode = dlg.getGameMode();
                 if (gameMode == 2) {
                     try {
-                        turn=false;
+                        turn = false;
                         gc.sendObject("VierGewinnt");
                         gc.newVierGewinntThread(this);
                     } catch (IOException ex) {
@@ -248,8 +249,7 @@ public class VierGewinntPanel extends JPanel {
     }
 
     private void onClick(ActionEvent e) {
-        if (!over && addTimerCompleted&&turn) 
-        {
+        if (!over && addTimerCompleted && turn) {
             column = Integer.parseInt(e.getActionCommand());
             insertStone(column);
 
@@ -257,7 +257,7 @@ public class VierGewinntPanel extends JPanel {
                 try {
                     System.out.println("VierGewinntPanel.onClick: sendObject");
                     gc.sendObject(column);
-                    turn=false;
+                    turn = false;
                 } catch (IOException ex) {
                     Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {

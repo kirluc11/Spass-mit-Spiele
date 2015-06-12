@@ -100,6 +100,11 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         snake.changeDirection(dir);
     }//GEN-LAST:event_onKeyTyped
 
+    public void restart()
+    {
+        initSnake();
+    }
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setSize(800, 800);
