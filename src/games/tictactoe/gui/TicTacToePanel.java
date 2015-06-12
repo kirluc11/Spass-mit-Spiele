@@ -150,7 +150,7 @@ public class TicTacToePanel extends JPanel
         {
             try
             {
-                if (gameMode == 2 && !gameOver)
+                if (gameMode == 2)
                 {
                     gc.sendObject("##GO##HOME##");
                 }

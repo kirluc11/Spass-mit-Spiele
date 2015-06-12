@@ -5,6 +5,7 @@
 package vierGewinnt.gui;
 
 import client.GameClient;
+import gui.PlayerGUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -42,7 +43,7 @@ public class VierGewinntPanel extends JPanel {
     private JButton[] buttons = new JButton[7];
     private final String[] namen
             = {
-                "Spiele 1", "Spieler 2"
+                "Player 1", "Player 2"
             };
     private int lastGameStartedWith = 1;
     private int spieler = 1;
@@ -56,10 +57,18 @@ public class VierGewinntPanel extends JPanel {
     private GameClient gc;
     private int gameMode = 1;
     private boolean turn;
+    private PlayerGUI pgui;
+    private boolean ok = true;
 
     public void setTurn(boolean turn) {
         this.turn = turn;
     }
+
+    public boolean isOk()
+    {
+        return ok;
+    }
+    
 
     private Timer addTimer = new Timer(75, new ActionListener() {
         @Override
@@ -125,10 +134,13 @@ public class VierGewinntPanel extends JPanel {
             count++;
         }
     });
+    
+    
 
-    public VierGewinntPanel(GameClient gc) {
+    public VierGewinntPanel(GameClient gc,PlayerGUI pgui) {
         initComponents();
         this.gc = gc;
+        this.pgui = pgui;
         turn = true;
         if (gc.isConnected()) {
             VierGewinntNumberOfPlayerDLG dlg = new VierGewinntNumberOfPlayerDLG(null, true);
@@ -145,6 +157,10 @@ public class VierGewinntPanel extends JPanel {
                         Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+            }else
+            {
+                ok = false;
+                pgui.showGameChooser();
             }
         }
         bl = new vierGewinntBL(labels);
@@ -152,6 +168,31 @@ public class VierGewinntPanel extends JPanel {
         lbSpieler.setText(namen[0]);
         changePlayer(true);
         this.setVisible(true);
+    }
+    
+     public void sendGoHome()
+    {
+        if (gc.isConnected())
+        {
+            try
+            {
+                if (gameMode == 2)
+                {
+                    gc.sendObject("##GO##HOME##");
+                }
+            } catch (IOException ex)
+            {
+                Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex)
+            {
+                Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+     
+     private VierGewinntPanel getInstance()
+    {
+        return this;
     }
 
     private void initComponents() {
@@ -163,17 +204,48 @@ public class VierGewinntPanel extends JPanel {
         pnBts = new JPanel(new GridLayout(1, 7, 2, 1));
 
         popupmenu = new JPopupMenu("Game");
-        miRestart = new JMenuItem("New Game");
+        miRestartOfflineM = new JMenuItem("New offline Multiplayergame");
+        miRestartOnline= new JMenuItem("New online Game");
 
-        miRestart.addActionListener(new ActionListener() {
+        miRestartOfflineM.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                sendGoHome();
                 restart();
             }
         });
+        
+        miRestartOnline.addActionListener(new ActionListener() {
 
-        popupmenu.add(miRestart);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (gc.isConnected())
+                {
+                    try
+                    {
+                        sendGoHome();
+                        turn = false;
+                        gc.sendObject("VierGewinnt");
+                        gc.newVierGewinntThread(getInstance());
+                        gameMode = 2;
+                        restart();
+                    } catch (IOException ex)
+                    {
+                        Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex)
+                    {
+                        Logger.getLogger(VierGewinntPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else
+                {
+                    JOptionPane.showMessageDialog(getInstance(), "Not Connected");
+                }
+            }
+        });
+
+        popupmenu.add(miRestartOfflineM);
+        popupmenu.add(miRestartOnline);
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
@@ -286,7 +358,8 @@ public class VierGewinntPanel extends JPanel {
     private JLabel lbSpieler;
     private JMenuBar mb;
     private JMenu menu;
-    private JMenuItem miRestart;
+    private JMenuItem miRestartOfflineM;
+    private JMenuItem miRestartOnline;
     private JMenuItem miHelp;
     private JPopupMenu popupmenu;
     private JMenuItem miNewGame;

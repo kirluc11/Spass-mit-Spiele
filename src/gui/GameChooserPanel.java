@@ -135,9 +135,12 @@ public class GameChooserPanel extends javax.swing.JPanel
                 asp.requestFocus();
                 break;
             case "4-Gewinnt":
-                VierGewinntPanel vgp = new VierGewinntPanel(gc);
-                aktualisierePaGame(vgp);
-                vgp.requestFocus();
+                VierGewinntPanel vgp = new VierGewinntPanel(gc, pgui);
+                if (vgp.isOk())
+                {
+                    aktualisierePaGame(vgp);
+                    vgp.requestFocus();
+                }
                 break;
             case "Snake":
                 SnakePanel snake = new SnakePanel();
