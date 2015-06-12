@@ -13,7 +13,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -25,7 +24,7 @@ import javax.swing.border.TitledBorder;
 
 /**
  *
- * @author Churchy
+ * @author Lukas, Marcel
  */
 public class SnakePanel extends javax.swing.JPanel implements Runnable, Directions {
 

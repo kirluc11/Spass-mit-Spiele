@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Class to handle variables of connected clients
- * @author user
+ * @author Marcel
  */
 public class Player
 {

@@ -25,7 +25,7 @@ import javax.swing.text.JTextComponent;
 
 /**
  *
- * @author user
+ * @author Marcel
  */
 public class GameServer
 {
@@ -267,7 +267,6 @@ public class GameServer
                                 vgs.addPlayer(new Player(oos, ois, nickname));
                                 break;
                             }
-
                             if (text.equals("###Client###Disconnect###"))
                             {
                                 break;

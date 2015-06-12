@@ -16,7 +16,7 @@ import javax.swing.border.TitledBorder;
 
 /**
  *
- * @author user
+ * @author Marcel, Lukas
  */
 public class HangmanPanel extends javax.swing.JPanel
 {

@@ -7,7 +7,7 @@ package games.Snake.bl;
 
 /**
  *
- * @author Churchy
+ * @author Lukas
  */
 public interface Directions {
 

@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author user
+ * @author Marcel, Lukas
  */
 public class VierGewinntServer
 {

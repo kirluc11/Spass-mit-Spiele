@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author Churchy
+ * @author Marcel
  */
 public class VierGewinntNumberOfPlayerDLG extends javax.swing.JDialog
 {

@@ -9,7 +9,7 @@ import java.awt.Color;
 
 /**
  *
- * @author Churchy
+ * @author Lukas
  */
 public class SnakeHead extends SnakePart {
 

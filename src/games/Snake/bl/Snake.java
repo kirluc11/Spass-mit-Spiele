@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Churchy
+ * @author Lukas
  */
 public class Snake implements Directions, Runnable {
 

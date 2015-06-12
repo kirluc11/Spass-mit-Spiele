@@ -36,10 +36,8 @@ public class PlayerGUI extends javax.swing.JFrame
         initComponents();
         this.setSize(600, 600);
         this.setLocationRelativeTo(null);
-        //HangmanPanel hmp = new HangmanPanel();
         this.setVisible(true);
         gClient = new GameClient();
-        //hmp.startGame();
         showGameChooser();
     }
 

@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 
 /**
  *
- * @author Churchy
+ * @author Lukas
  */
 public class SnakePart extends Rectangle2D.Double implements Directions {
 
