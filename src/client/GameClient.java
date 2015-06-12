@@ -37,7 +37,7 @@ public class GameClient
     private String nickname;
 
     /**
-     * Sets port user wants to connect to
+     * Sets the port the user wants to connect to
      * @param PORTNR 
      */
     public void setPORTNR(int PORTNR)
@@ -46,7 +46,7 @@ public class GameClient
     }
 
     /**
-     * Sets address client wants to connect to
+     * Sets the address the client wants to connect to
      * @param inetAddress
      * @throws UnknownHostException 
      */
@@ -56,7 +56,7 @@ public class GameClient
     }
 
     /**
-     * Sets nickname of the client and writes it to the server
+     * Sets the nickname of the client and writes it to the server
      * @param nickname
      * @throws IOException 
      */
@@ -68,7 +68,7 @@ public class GameClient
 
 
     /**
-     * Connects client with server if he isn't connected
+     * Connects the client with server if he isn't already connected
      * @throws IOException 
      */
     public void startClient() throws IOException
@@ -84,7 +84,7 @@ public class GameClient
     }
 
     /**
-     * Disconnects client from server if he is connected
+     * Disconnects the client from server if he is connected
      * @throws IOException 
      */
     public void stopClient() throws IOException
@@ -99,7 +99,7 @@ public class GameClient
     }
 
     /**
-     * Returns true if client is connected, false if not
+     * Returns true if the client is connected, false if not
      * @return 
      */
     public boolean isConnected()
@@ -112,7 +112,7 @@ public class GameClient
     }
 
     /**
-     * Sends Object to the server
+     * Sends request object to the server
      * @param request
      * @throws IOException
      * @throws ClassNotFoundException 

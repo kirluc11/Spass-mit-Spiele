@@ -76,6 +76,7 @@ public class PlayerGUI extends javax.swing.JFrame
         pnGame = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         pnTop.setLayout(new java.awt.BorderLayout());
 
