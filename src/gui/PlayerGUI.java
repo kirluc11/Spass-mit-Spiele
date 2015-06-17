@@ -194,7 +194,7 @@ public class PlayerGUI extends javax.swing.JFrame
                     }
                 }
 
-                String nickname = JOptionPane.showInputDialog("Please enter nickname");
+                
                 String portString = tfPort.getText();
                 if (!inetAddress.isEmpty() && !portString.isEmpty())
                 {
@@ -203,7 +203,7 @@ public class PlayerGUI extends javax.swing.JFrame
                         gClient.setPORTNR(Integer.parseInt(portString));
                         gClient.setAddress(inetAddress);
                         gClient.startClient();
-                        gClient.setNickname(nickname);
+                        gClient.setNickname();
                         connected = true;
                         btConnect.setText("Disconnect");
                     } catch (IOException ex)

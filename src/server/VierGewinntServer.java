@@ -58,9 +58,9 @@ public class VierGewinntServer
     public void startNewGame(Player player1, Player player2) throws IOException
     {
         System.out.println("VierGewinntServer.startNewGame: Player names not sent");
-        player1.getOos().writeObject("Player1");
-        player2.getOos().writeObject("Player2");
-        System.out.println("VierGewinntServer.startNewGame: Player names sent");
+        player1.getOos().writeObject("Player1##"+player2.getNickname());
+        player2.getOos().writeObject("Player2##"+player1.getNickname());
+        System.out.println("VierGewinntServer.startNewGame:"+player1.getNickname()+" VS "+player2.getNickname());
         VierGewinntPlayerThread vgpt1 = new VierGewinntPlayerThread(player1, player2);
         VierGewinntPlayerThread vgpt2 = new VierGewinntPlayerThread(player2, player1);
         vgpt1.setOtherPlayerThread(vgpt2);
