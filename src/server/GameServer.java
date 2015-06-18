@@ -145,7 +145,7 @@ public class GameServer
                 {
                     Socket socket = server.accept();
                     socket.setSoTimeout(2000);
-                    
+                    log("Connection established with: " + socket.getRemoteSocketAddress().toString());
 
                     new HomeThread(socket).start();
 
@@ -270,7 +270,7 @@ public class GameServer
                     }
 
                 }
-                log("Connection established with: "+nickname+" (" + socket.getRemoteSocketAddress().toString()+")");
+                
 
                 while (true)
                 {
@@ -286,7 +286,7 @@ public class GameServer
                         if (request instanceof String)
                         {
                             String text = (String) request;
-                            System.out.println("GameServer.HomeThread.run: Text=" + text);
+                            System.out.println("GameServer.HomeThread.run:"+nickname+" Text=" + text);
                             //Puts client to game he selected
                             if (text.equals("TicTacToe"))
                             {

@@ -360,7 +360,7 @@ public class TicTacToePanel extends JPanel
 
                         if (tttg.isOver())
                         {
-                            String gewinner = tttg.getSieger() == 0 ? "X" : "Y";
+                            String gewinner = tttg.getSieger() == 0 ? "X" : "O";
                             JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                             beginner *= -1;
 

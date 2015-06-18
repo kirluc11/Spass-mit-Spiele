@@ -154,6 +154,10 @@ public class VierGewinntPanel extends JPanel
                 {
                     spieler = (lastGameStartedWith *= -1);
                 }
+//                else
+//                {
+//                    spieler=1;
+//                }
                 changePlayer(spieler == 1 ? true : false);
                 over = false;
                 count = 0;
