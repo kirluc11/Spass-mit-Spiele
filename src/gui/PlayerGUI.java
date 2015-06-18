@@ -146,11 +146,11 @@ public class PlayerGUI extends javax.swing.JFrame
                     Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            if(aktPanel instanceof AsteroidStormPanel)
+            if (aktPanel instanceof AsteroidStormPanel)
             {
                 AsteroidStormPanel asp = (AsteroidStormPanel) aktPanel;
                 asp.endGame();
-            }else if(aktPanel instanceof SnakePanel)
+            } else if (aktPanel instanceof SnakePanel)
             {
                 SnakePanel sp = (SnakePanel) aktPanel;
                 sp.endGame();
@@ -194,7 +194,6 @@ public class PlayerGUI extends javax.swing.JFrame
                     }
                 }
 
-                
                 String portString = tfPort.getText();
                 if (!inetAddress.isEmpty() && !portString.isEmpty())
                 {
@@ -203,9 +202,15 @@ public class PlayerGUI extends javax.swing.JFrame
                         gClient.setPORTNR(Integer.parseInt(portString));
                         gClient.setAddress(inetAddress);
                         gClient.startClient();
-                        gClient.setNickname();
-                        connected = true;
-                        btConnect.setText("Disconnect");
+                        boolean connectSuccesfull = gClient.setNickname();
+                        if (connectSuccesfull)
+                        {
+                            connected = true;
+                            btConnect.setText("Disconnect");
+                        }else
+                        {
+                            gClient.stopClient();
+                        }
                     } catch (IOException ex)
                     {
                         JOptionPane.showMessageDialog(this, "An error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);

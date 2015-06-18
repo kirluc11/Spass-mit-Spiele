@@ -248,7 +248,7 @@ public class VierGewinntPanel extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 sendGoHome();
-                setNamen(new String[]{"Player1","Player2"});
+                setNamen(new String[]{"Player 1","Player 2"});
                 setTurn(true);
                 restart();
             }

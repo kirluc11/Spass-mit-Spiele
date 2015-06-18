@@ -5,6 +5,7 @@
  */
 package client;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -55,5 +56,9 @@ public class Player
         this.nickname = nickname;
     }
     
-    
+    public void closePlayer() throws IOException
+    {
+        oos.close();
+        ois.close();
+    }
 }

@@ -145,7 +145,7 @@ public class GameServer
                 {
                     Socket socket = server.accept();
                     socket.setSoTimeout(2000);
-                    log("Connection established with: " + socket.getRemoteSocketAddress().toString());
+                    
 
                     new HomeThread(socket).start();
 
@@ -249,6 +249,11 @@ public class GameServer
                     {
                         Object request = ois.readObject();
                         nickname = (String) request;
+                        if(nickname.equals("##Cancel##"))
+                        {
+                            System.out.println("GameServer.HomeThread.run: stop");
+                            return;
+                        }
                         if (!nicknames.contains(nickname))
                         {
                             nicknames.add(nickname);
@@ -265,6 +270,7 @@ public class GameServer
                     }
 
                 }
+                log("Connection established with: "+nickname+" (" + socket.getRemoteSocketAddress().toString()+")");
 
                 while (true)
                 {
@@ -293,6 +299,10 @@ public class GameServer
                             }
                             if (text.equals("###Client###Disconnect###"))
                             {
+                                nicknames.remove(nickname);
+                                log(nickname+" disconnected");
+                                ois.close();
+                                oos.close();
                                 break;
                             }
                         }
@@ -312,7 +322,7 @@ public class GameServer
             {
                 log("Communication failure: " + ex.toString());
             }
-
+            
         }
     }
 

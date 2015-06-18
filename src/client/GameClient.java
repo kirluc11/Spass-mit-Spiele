@@ -63,15 +63,23 @@ public class GameClient
      * @param nickname
      * @throws IOException
      */
-    public void setNickname() throws IOException, ClassNotFoundException
+    public boolean setNickname() throws IOException, ClassNotFoundException
     {
         boolean notAvailable = true;
+        boolean connected = true;
         while (notAvailable)
         {
             nickname = JOptionPane.showInputDialog("Please enter nickname");
+            if(nickname==null)
+            {
+                oos.writeObject("##Cancel##");
+                connected=false;
+                break;
+            }
             oos.writeObject(nickname);
             notAvailable = (boolean) ois.readObject();
         }
+        return connected;
     }
 
     public String getNickname()
