@@ -7,6 +7,7 @@ package games.BoxJumper.bl;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 
 /**
  *
@@ -22,5 +23,26 @@ public class Box extends Rectangle2D.Double {
 
     public void move(double distance) {
         this.x -= distance;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Box other = (Box) obj;
+        if (!Objects.equals(this.color, other.color)) {
+            return false;
+        }
+        return true;
     }
 }

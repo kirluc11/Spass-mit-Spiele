@@ -31,20 +31,25 @@ import static vierGewinnt.gui.VierGewinntPanel.spieler2;
  */
 public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
+    private Thread thread;
+
     private BoxJumper boxJumper = new BoxJumper();
 
     private final Color groundColor = Color.DARK_GRAY;
     private final int DIV = 20;
     private final int POSITION_OF_GROUND = 5;
-    
+
     private double w;
     private double h;
-    
+
     private Set<Box> boxes = new HashSet<>();
 
     private boolean jump;
     private boolean up = true;
     private int heightOfJump = 0;
+    private int jumpTime = 20;
+
+    private int score;
 
     private Timer addTimer = new Timer(10, new ActionListener() {
         @Override
@@ -61,7 +66,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     }
 
     public void restart() {
-        Thread thread = new Thread(this);
+        thread = new Thread(this);
         thread.start();
     }
 
@@ -72,8 +77,8 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
         w = this.getWidth() / DIV;
         h = this.getHeight() / DIV;
-        
-        double jumpMultiplier = h / 5;
+
+        double jumpMultiplier = h / 10;
 
         g.setColor(groundColor);
         g.fill(new Rectangle2D.Double(0, h * (DIV - POSITION_OF_GROUND), this.getWidth(), h));
@@ -84,7 +89,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
             } else {
                 heightOfJump++;
             }
-            if (heightOfJump == -10) {
+            if (heightOfJump == -jumpTime) {
                 up = false;
             }
             if (heightOfJump == 0) {
@@ -93,18 +98,22 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
             }
 
         }
-        
+
         for (Box box : boxes) {
-            box.move(w/4);
+            box.move(w / 4);
             g.setColor(box.getColor());
             g.fill(box);
-            if(box.intersects(boxJumper))
-            {
-                System.out.println("Tot");
+            if (box.getX() < 0) {
+                boxes.remove(box);
+                score++;
+            } else if (box.intersects(boxJumper)) {
+                thread.interrupt();
             }
         }
 
         boxJumper.setFrame(w * 2, h * (DIV - POSITION_OF_GROUND - 1) + jumpMultiplier * heightOfJump, w, h);
+
+        g.drawString(score + "", (float) w * 2, (float) h * 2);
 
         g.setColor(boxJumper.getColor());
         g.fill(boxJumper);
@@ -115,9 +124,8 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
             jump = true;
         }
     }
-    
-    public void addBox()
-    {
+
+    public void addBox() {
         Box box = new Box();
         box.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
         boxes.add(box);
@@ -126,20 +134,21 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     @Override
     public void run() {
         int count = 0;
-        while (!Thread.interrupted()) {
-            try {
+        try {
+            while (!Thread.interrupted()) {
                 Thread.sleep(15);
                 count++;
-            } catch (InterruptedException ex) {
+                repaint();
+//                if (count % 10 == 0) {
+//                    jump();
+//                }
+                if (count % 50 == 0) {
+                    addBox();
+                }
+
             }
-            repaint();
-            if (count % 10 == 0) {
-                jump();
-            }
-            if(count % 50 == 0)
-            {
-                addBox();
-            }
+        } catch (InterruptedException ex) {
+            System.out.println(ex.toString());
         }
     }
 
@@ -172,10 +181,9 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
     private void onMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onMove
         if ((evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W)) {
-            } else if ((evt.getKeyCode() == KeyEvent.VK_DOWN || evt.getKeyCode() == KeyEvent.VK_S)) {
-            } else if ((evt.getKeyCode() == KeyEvent.VK_RIGHT || evt.getKeyCode() == KeyEvent.VK_D)) {
-            } else if ((evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_A)) {
-            }
+            System.out.println("jump");
+            jump();
+        }
     }//GEN-LAST:event_onMove
 
     public static void main(String[] args) {
@@ -199,9 +207,9 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
         bjp.restart();
 
-        /*bjp.requestFocus();
+        bjp.requestFocus();
 
-         Thread t = new Thread(bjp);
+        /*Thread t = new Thread(bjp);
          t.start();*/
     }
 
