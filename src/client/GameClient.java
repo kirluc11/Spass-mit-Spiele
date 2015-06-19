@@ -297,7 +297,7 @@ public class GameClient
                         nickname, text[1]
                     });
                     vgp.setTurn(true);
-                    JOptionPane.showMessageDialog(vgp, "You are Player 1");
+                    JOptionPane.showMessageDialog(vgp, "Your opponent is "+text[1]);
                 } else
                 {
                     vgp.setNamen(new String[]
@@ -305,7 +305,7 @@ public class GameClient
                         text[1], nickname
                     });
                     vgp.setTurn(false);
-                    JOptionPane.showMessageDialog(vgp, "You are Player 2");
+                    JOptionPane.showMessageDialog(vgp, "Your opponent is "+text[1]);
                 }
 
                 while (true)

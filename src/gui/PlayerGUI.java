@@ -77,6 +77,13 @@ public class PlayerGUI extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            public void windowClosing(java.awt.event.WindowEvent evt)
+            {
+                onClosing(evt);
+            }
+        });
 
         pnTop.setLayout(new java.awt.BorderLayout());
 
@@ -236,6 +243,21 @@ public class PlayerGUI extends javax.swing.JFrame
             JOptionPane.showMessageDialog(this, ex.getMessage(), "IP-ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_onDisConnect
+
+    private void onClosing(java.awt.event.WindowEvent evt)//GEN-FIRST:event_onClosing
+    {//GEN-HEADEREND:event_onClosing
+       if(gClient.isConnected())
+       {
+           try
+           {
+               gClient.stopClient();
+           } catch (IOException ex)
+           {
+               System.out.println(ex.toString());
+           }
+ 
+       }
+    }//GEN-LAST:event_onClosing
 
     /**
      * @param args the command line arguments
