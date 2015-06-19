@@ -113,7 +113,8 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         }
 
         try {
-            for (Box box : boxes) {
+            for (int i = boxes.size()-1; i >= 0; i--) {
+                Box box = boxes.get(i);
                 box.move(w / 4);
                 g.setColor(box.getColor());
                 g.fill(box);
@@ -154,7 +155,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     @Override
     public void run() {
         int og = 100;
-        int ug = 50;
+        int ug = 30;
         int count = 0;
         int rn = rand.nextInt(og - ug + 1) + ug;
         try {
