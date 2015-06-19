@@ -7,6 +7,7 @@ package games.ArstoidStorm.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -28,6 +29,8 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
     private Color col = new Color(234, 122, 50);
     private boolean aus = false;
     private int speed = 5;
+    private JLabel lbScore;
+    private int score=0;
 
     /**
      * Returns bool If the game has ended true else false
@@ -39,6 +42,12 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
         return aus;
     }
 
+   public void addScore()
+   {
+       score++;
+       lbScore.setText(""+score);
+   }
+    
     /**
      * Used to set boolean if game has ended
      *
@@ -57,8 +66,9 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
         }
     }
 
-    public AsteroidStormInnerPanel()
+    public AsteroidStormInnerPanel(JLabel lbScore)
     {
+        this.lbScore = lbScore;
         this.setOpaque(true);
         this.setBackground(Color.black);
         repaint();
@@ -160,6 +170,7 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
                     coordY[i]++;
                 } else if (y != 0)
                 {
+                    addScore();
                     col = new Color(ran.nextInt(256), ran.nextInt(256), ran.nextInt(256));
                     coordY[i] = 0;
                     if (i == 0 && speed > 2)
@@ -179,5 +190,6 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
                 break;
             }
         }
+        
     }
 }
