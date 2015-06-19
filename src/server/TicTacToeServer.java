@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author user
+ * @author Marcel
  */
 public class TicTacToeServer
 {
@@ -61,7 +61,7 @@ public class TicTacToeServer
         System.out.println("TicTacToeServer.startNewGame: Player names not sent");
         player1.getOos().writeObject("Player1");
         player2.getOos().writeObject("Player2");
-        System.out.println("TicTacToeServer.startNewGame: Player names sent");
+        gs.log("New TicTacToe game: "+player1.getNickname() +"  VS "+player2.getNickname());
         TicTacToePlayerThread tttpt1 = new TicTacToePlayerThread(player1, player2);
         TicTacToePlayerThread tttpt2 = new TicTacToePlayerThread(player2, player1);
         tttpt1.setOtherPlayerThread(tttpt2);
@@ -117,9 +117,11 @@ public class TicTacToeServer
 
                             if (label.equals("###Client###Disconnect###"))
                             {
+                                gs.log(player1.getNickname()+" disconnected");
                                 player2.getOos().writeObject("##OpponentLeft##");
                                 player1.getOos().writeObject("##I##Left##");
                                 otherPlayerThread.interrupt();
+                                player1.closePlayer();
                                 break;
 
                             } else if (label.equals("##GO##HOME##"))

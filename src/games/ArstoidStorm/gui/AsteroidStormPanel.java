@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  * Main panel of the game Asteroid Storm
- * @author user
+ * @author Marcel
  */
 public class AsteroidStormPanel extends javax.swing.JPanel {
 

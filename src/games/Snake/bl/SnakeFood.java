@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author Churchy
+ * @author Lukas
  */
 public class SnakeFood extends Ellipse2D.Double {
 

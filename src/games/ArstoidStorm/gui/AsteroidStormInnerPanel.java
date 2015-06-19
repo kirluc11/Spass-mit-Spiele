@@ -113,7 +113,7 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
     }
 
     /**
-     * Detects collision between player and other hazards
+     * Detects collision between the player and other hazards
      */
     public void collision()
     {

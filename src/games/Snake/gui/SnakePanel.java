@@ -13,7 +13,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -25,7 +24,7 @@ import javax.swing.border.TitledBorder;
 
 /**
  *
- * @author Churchy
+ * @author Lukas, Marcel
  */
 public class SnakePanel extends javax.swing.JPanel implements Runnable, Directions {
 
@@ -61,11 +60,28 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
+
+        pmRestart = new javax.swing.JPopupMenu();
+        miRestart = new javax.swing.JMenuItem();
+
+        miRestart.setText("Restart");
+        miRestart.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                onRestart(evt);
+            }
+        });
+        pmRestart.add(miRestart);
 
         setBackground(new java.awt.Color(0, 0, 0));
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+        setComponentPopupMenu(pmRestart);
+        addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyTyped(java.awt.event.KeyEvent evt)
+            {
                 onKeyTyped(evt);
             }
         });
@@ -101,10 +117,15 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         snake.changeDirection(dir);
     }//GEN-LAST:event_onKeyTyped
 
-    public void restart()
-    {
-        initSnake();
-    }
+    private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
+    {//GEN-HEADEREND:event_onRestart
+        if(!thread.interrupted())
+        {
+            endGame();
+        }
+        startGame();
+    }//GEN-LAST:event_onRestart
+
     
     public static void main(String[] args) {
         JFrame frame = new JFrame();
@@ -142,6 +163,8 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem miRestart;
+    private javax.swing.JPopupMenu pmRestart;
     // End of variables declaration//GEN-END:variables
     @Override
     public void run() {
@@ -155,6 +178,9 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
             }
         } catch (IOException ex) {
             Logger.getLogger(SnakePanel.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(NullPointerException ex)
+        {
+            //System.out.println(ex.toString());
         }
     }
 

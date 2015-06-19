@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Churchy
+ * @author Marcel
  */
 public class InputWordDLG extends javax.swing.JDialog
 {
@@ -19,7 +19,7 @@ public class InputWordDLG extends javax.swing.JDialog
     private String word;
 
     /**
-     * Creates new form AnzSpielerDLG
+     * Creates new form InputWordDLG
      */
     public InputWordDLG(java.awt.Frame parent, boolean modal)
     {

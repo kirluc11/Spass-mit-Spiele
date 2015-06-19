@@ -25,7 +25,7 @@ import javax.swing.text.JTextComponent;
 
 /**
  *
- * @author user
+ * @author Marcel
  */
 public class GameServer
 {
@@ -47,8 +47,9 @@ public class GameServer
 
     /**
      * logArea is used to write on it
+     *
      * @param logArea
-     * @throws IOException 
+     * @throws IOException
      */
     public GameServer(JTextComponent logArea) throws IOException
     {
@@ -80,6 +81,7 @@ public class GameServer
         }
 
     }
+
     /**
      * Stops the Server if server is running
      */
@@ -100,7 +102,8 @@ public class GameServer
 
     /**
      * Writes the logText into the logArea or into console
-     * @param logText 
+     *
+     * @param logText
      */
     public void log(String logText)
     {
@@ -120,7 +123,6 @@ public class GameServer
         }
     }
 
-    
     class ServerThread extends Thread
     {
 
@@ -130,8 +132,8 @@ public class GameServer
         }
 
         /**
-         * Is waiting for clients to connect
-         * Adds client to HomeThread if connect
+         * Is waiting for clients to connect Adds client to HomeThread if
+         * connect
          */
         @Override
         public void run()
@@ -171,7 +173,8 @@ public class GameServer
 
     /**
      * Starts a new ClientHomeThread uses player to start thread.
-     * @param player 
+     *
+     * @param player
      */
     public void startNewClientHomeThread(Player player)
     {
@@ -179,7 +182,8 @@ public class GameServer
     }
 
     /**
-     * Thread which is running when player is connected but isn't playing an online game.
+     * Thread which is running when player is connected but isn't playing an
+     * online game.
      */
     class HomeThread extends Thread
     {
@@ -192,7 +196,8 @@ public class GameServer
 
         /**
          * For first connect from player.
-         * @param socket 
+         *
+         * @param socket
          */
         public HomeThread(Socket socket)
         {
@@ -201,9 +206,10 @@ public class GameServer
 
         /**
          * For clients who returned from a game.
+         *
          * @param ois
          * @param oos
-         * @param nickname 
+         * @param nickname
          */
         public HomeThread(ObjectInputStream ois, ObjectOutputStream oos, String nickname)
         {
@@ -213,7 +219,8 @@ public class GameServer
         }
 
         /**
-         * Is waiting for response from client to add him to selected gameserver.
+         * Is waiting for response from client to add him to selected
+         * gameserver.
          */
         @Override
         public void run()
@@ -233,14 +240,37 @@ public class GameServer
                     os = socket.getOutputStream();
                     oos = new ObjectOutputStream(os);
                 }
-                //If first connect nickname is empty and needs to be set 
-                if (nickname.isEmpty())
+                //If it's the first connect nickname is empty and needs to be set 
+                
+                while (nickname.isEmpty())
                 {
-                    Object request = ois.readObject();
-                    nickname = (String) request;
-                    nicknames.add(nickname);
-                    System.out.println("GameServer.HomeThread.run: Nickname=" + nickname);
+                    boolean notAvailable = true;
+                    try
+                    {
+                        Object request = ois.readObject();
+                        nickname = (String) request;
+                        if(nickname.equals("##Cancel##"))
+                        {
+                            System.out.println("GameServer.HomeThread.run: stop");
+                            return;
+                        }
+                        if (!nicknames.contains(nickname))
+                        {
+                            nicknames.add(nickname);
+                            System.out.println("GameServer.HomeThread.run: Nickname=" + nickname);
+                            notAvailable = false;
+                        }else
+                        {
+                            nickname="";
+                        }
+                        oos.writeObject(notAvailable);
+                    } catch (SocketTimeoutException ex)
+                    {
+                        //log("Timeout from GameChoose");
+                    }
+
                 }
+                
 
                 while (true)
                 {
@@ -256,7 +286,7 @@ public class GameServer
                         if (request instanceof String)
                         {
                             String text = (String) request;
-                            System.out.println("GameServer.HomeThread.run: Text=" + text);
+                            System.out.println("GameServer.HomeThread.run:"+nickname+" Text=" + text);
                             //Puts client to game he selected
                             if (text.equals("TicTacToe"))
                             {
@@ -267,9 +297,12 @@ public class GameServer
                                 vgs.addPlayer(new Player(oos, ois, nickname));
                                 break;
                             }
-
                             if (text.equals("###Client###Disconnect###"))
                             {
+                                nicknames.remove(nickname);
+                                log(nickname+" disconnected");
+                                ois.close();
+                                oos.close();
                                 break;
                             }
                         }
@@ -289,7 +322,7 @@ public class GameServer
             {
                 log("Communication failure: " + ex.toString());
             }
-
+            
         }
     }
 

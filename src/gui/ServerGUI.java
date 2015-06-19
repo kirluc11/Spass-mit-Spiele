@@ -15,7 +15,7 @@ import server.GameServer;
 
 /**
  *
- * @author user
+ * @author Marcel
  */
 public class ServerGUI extends javax.swing.JFrame
 {

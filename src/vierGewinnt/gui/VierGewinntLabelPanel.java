@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Churchy
+ * @author Lukas
  */
 public class VierGewinntLabelPanel extends JPanel {
 

@@ -24,7 +24,7 @@ import vierGewinnt.gui.VierGewinntPanel;
 
 /**
  *
- * @author user
+ * @author Marcel, Lukas
  */
 public class GameClient
 {
@@ -37,8 +37,9 @@ public class GameClient
     private String nickname;
 
     /**
-     * Sets port user wants to connect to
-     * @param PORTNR 
+     * Sets the port the user wants to connect to
+     *
+     * @param PORTNR
      */
     public void setPORTNR(int PORTNR)
     {
@@ -46,9 +47,10 @@ public class GameClient
     }
 
     /**
-     * Sets address client wants to connect to
+     * Sets the address the client wants to connect to
+     *
      * @param inetAddress
-     * @throws UnknownHostException 
+     * @throws UnknownHostException
      */
     public void setAddress(String inetAddress) throws UnknownHostException
     {
@@ -56,20 +58,39 @@ public class GameClient
     }
 
     /**
-     * Sets nickname of the client and writes it to the server
+     * Sets the nickname of the client and writes it to the server
+     *
      * @param nickname
-     * @throws IOException 
+     * @throws IOException
      */
-    public void setNickname(String nickname) throws IOException
+    public boolean setNickname() throws IOException, ClassNotFoundException
     {
-        this.nickname = nickname;
-        oos.writeObject(nickname);
+        boolean notAvailable = true;
+        boolean connected = true;
+        while (notAvailable)
+        {
+            nickname = JOptionPane.showInputDialog("Please enter nickname");
+            if(nickname==null)
+            {
+                oos.writeObject("##Cancel##");
+                connected=false;
+                break;
+            }
+            oos.writeObject(nickname);
+            notAvailable = (boolean) ois.readObject();
+        }
+        return connected;
     }
 
+    public String getNickname()
+    {
+        return nickname;
+    }
 
     /**
-     * Connects client with server if he isn't connected
-     * @throws IOException 
+     * Connects the client with server if he isn't already connected
+     *
+     * @throws IOException
      */
     public void startClient() throws IOException
     {
@@ -84,8 +105,9 @@ public class GameClient
     }
 
     /**
-     * Disconnects client from server if he is connected
-     * @throws IOException 
+     * Disconnects the client from server if he is connected
+     *
+     * @throws IOException
      */
     public void stopClient() throws IOException
     {
@@ -99,8 +121,9 @@ public class GameClient
     }
 
     /**
-     * Returns true if client is connected, false if not
-     * @return 
+     * Returns true if the client is connected, false if not
+     *
+     * @return
      */
     public boolean isConnected()
     {
@@ -112,10 +135,11 @@ public class GameClient
     }
 
     /**
-     * Sends Object to the server
+     * Sends request object to the server
+     *
      * @param request
      * @throws IOException
-     * @throws ClassNotFoundException 
+     * @throws ClassNotFoundException
      */
     public void sendObject(Object request) throws IOException, ClassNotFoundException
     {
@@ -124,9 +148,10 @@ public class GameClient
 
     /**
      * Creates a new ClientTicTacToeThread
+     *
      * @param labels
      * @param tttg
-     * @param tttp 
+     * @param tttp
      */
     public void newTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp)
     {
@@ -148,19 +173,19 @@ public class GameClient
         boolean turn;
         Color labelColor;
         WaitingForOpponentDLG waitingDLG;
-        
 
-        public ClientTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp,WaitingForOpponentDLG waitingDLG)
+        public ClientTicTacToeThread(LinkedList<JLabel> labels, TicTacToeGewinnabfrage tttg, TicTacToePanel tttp, WaitingForOpponentDLG waitingDLG)
         {
             this.labels = labels;
             this.tttg = tttg;
             this.tttp = tttp;
             labelColor = tttp.getSpieler1();
-            this.waitingDLG=waitingDLG;
+            this.waitingDLG = waitingDLG;
         }
 
         /**
-         * Is waiting for information from server and react depending on the information
+         * Is waiting for information from server and react depending on the
+         * information
          */
         @Override
         public void run()
@@ -170,12 +195,12 @@ public class GameClient
                 System.out.println("GameClient.ClientTicTacToeThread.run: Anfang");
                 Object response = ois.readObject();
                 waitingDLG.dispose();
-                System.out.println("GameClient.ClientTicTacToeThread.run: Player:"+response);
-                if(response.equals("Player1"))
+                System.out.println("GameClient.ClientTicTacToeThread.run: Player:" + response);
+                if (response.equals("Player1"))
                 {
                     tttp.setMyTurn(true);
                     JOptionPane.showMessageDialog(tttp, "You are Player 1");
-                }else
+                } else
                 {
                     tttp.setMyTurn(false);
                     JOptionPane.showMessageDialog(tttp, "You are Player 2");
@@ -186,15 +211,17 @@ public class GameClient
 
                     if (response instanceof String)
                     {
-                        
+
                         String aktlabel = (String) response;
-                        if(aktlabel.equals("##OpponentLeft##"))
+                        if (aktlabel.equals("##OpponentLeft##"))
                         {
                             JOptionPane.showMessageDialog(tttp, "Opponent has left the Game");
+                            tttp.setMyTurn(false);
                             tttp.changeLabelState(false);
                             break;
-                        }else if(aktlabel.equals("##I##Left##"))
+                        } else if (aktlabel.equals("##I##Left##"))
                         {
+                            tttp.setMyTurn(false);
                             break;
                         }
                         for (JLabel label : labels)
@@ -218,35 +245,39 @@ public class GameClient
 
         }
     }
-    
+
     /**
      * Creates a new ClientVierGewinntThread
-     * @param vgp 
+     *
+     * @param vgp
      */
     public void newVierGewinntThread(VierGewinntPanel vgp)
     {
         System.out.println("GameClient.newVierGewinntThread: start");
         WaitingForOpponentDLG waitingDLG = new WaitingForOpponentDLG(null, true);
-       new ClientVierGewinntThread(vgp,waitingDLG).start();
+        new ClientVierGewinntThread(vgp, waitingDLG).start();
         waitingDLG.setVisible(true);
+        
     }
+
     /**
      * Class used for online VierGewinnt games
      */
     class ClientVierGewinntThread extends Thread
     {
-        
+
         private VierGewinntPanel vgp;
         private WaitingForOpponentDLG waitingDLG;
-        
+
         public ClientVierGewinntThread(VierGewinntPanel vgp, WaitingForOpponentDLG waitingDLG)
         {
             this.vgp = vgp;
             this.waitingDLG = waitingDLG;
         }
-        
+
         /**
-         * Is waiting for information from server and react depending on the information
+         * Is waiting for information from server and react depending on the
+         * information
          */
         @Override
         public void run()
@@ -255,18 +286,28 @@ public class GameClient
             {
                 System.out.println("GameClient.ClientVierGewinntThread.run: Anfang");
                 Object response = ois.readObject();
-                waitingDLG.dispose();
-                System.out.println("GameClient.ClientVierGewinntThread.run: Player:"+response);
-                if(response.equals("Player1"))
-                {
-                    vgp.setTurn(true);
-                    JOptionPane.showMessageDialog(vgp, "You are Player 1");
-                }else
-                {
-                    vgp.setTurn(false);
-                    JOptionPane.showMessageDialog(vgp, "You are Player 2");
-                }
                 
+                waitingDLG.dispose();
+                System.out.println("GameClient.ClientVierGewinntThread.run: Player:" + response);
+                String[] text = ((String) response).split("##");
+                if (text[0].equals("Player1"))
+                {
+                    vgp.setNamen(new String[]
+                    {
+                        nickname, text[1]
+                    });
+                    vgp.setTurn(true);
+                    JOptionPane.showMessageDialog(vgp, "Your opponent is "+text[1]);
+                } else
+                {
+                    vgp.setNamen(new String[]
+                    {
+                        text[1], nickname
+                    });
+                    vgp.setTurn(false);
+                    JOptionPane.showMessageDialog(vgp, "Your opponent is "+text[1]);
+                }
+
                 while (true)
                 {
                     System.out.println("GameClient.ClientVierGewinntThread.run: WhileTrue beginn");
@@ -275,20 +316,21 @@ public class GameClient
                     if (response instanceof String)
                     {
                         String aktlabel = (String) response;
-                        if(aktlabel.equals("##OpponentLeft##"))
+                        if (aktlabel.equals("##OpponentLeft##"))
                         {
                             vgp.setTurn(false);
                             JOptionPane.showMessageDialog(vgp, "Opponent has left the Game");
                             break;
-                        }else if(aktlabel.equals("##I##Left##"))
+                        } else if (aktlabel.equals("##I##Left##"))
                         {
+                            vgp.setTurn(false);
                             break;
                         }
-                    }else if(response instanceof Integer)
+                    } else if (response instanceof Integer)
                     {
-                       int column = (int) response;
-                       vgp.insertStone(column);
-                       vgp.setTurn(true);
+                        int column = (int) response;
+                        vgp.insertStone(column);
+                        vgp.setTurn(true);
                     }
                 }
             } catch (IOException ex)
@@ -301,5 +343,5 @@ public class GameClient
         }
 
     }
-    
+
 }

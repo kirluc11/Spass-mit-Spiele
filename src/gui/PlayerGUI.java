@@ -19,7 +19,7 @@ import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
 /**
  *
- * @author Churchy
+ * @author Lukas, Marcel
  */
 public class PlayerGUI extends javax.swing.JFrame
 {
@@ -36,10 +36,8 @@ public class PlayerGUI extends javax.swing.JFrame
         initComponents();
         this.setSize(600, 600);
         this.setLocationRelativeTo(null);
-        //HangmanPanel hmp = new HangmanPanel();
         this.setVisible(true);
         gClient = new GameClient();
-        //hmp.startGame();
         showGameChooser();
     }
 
@@ -78,6 +76,14 @@ public class PlayerGUI extends javax.swing.JFrame
         pnGame = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            public void windowClosing(java.awt.event.WindowEvent evt)
+            {
+                onClosing(evt);
+            }
+        });
 
         pnTop.setLayout(new java.awt.BorderLayout());
 
@@ -147,11 +153,11 @@ public class PlayerGUI extends javax.swing.JFrame
                     Logger.getLogger(PlayerGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            if(aktPanel instanceof AsteroidStormPanel)
+            if (aktPanel instanceof AsteroidStormPanel)
             {
                 AsteroidStormPanel asp = (AsteroidStormPanel) aktPanel;
                 asp.endGame();
-            }else if(aktPanel instanceof SnakePanel)
+            } else if (aktPanel instanceof SnakePanel)
             {
                 SnakePanel sp = (SnakePanel) aktPanel;
                 sp.endGame();
@@ -195,7 +201,6 @@ public class PlayerGUI extends javax.swing.JFrame
                     }
                 }
 
-                String nickname = JOptionPane.showInputDialog("Please enter nickname");
                 String portString = tfPort.getText();
                 if (!inetAddress.isEmpty() && !portString.isEmpty())
                 {
@@ -204,9 +209,15 @@ public class PlayerGUI extends javax.swing.JFrame
                         gClient.setPORTNR(Integer.parseInt(portString));
                         gClient.setAddress(inetAddress);
                         gClient.startClient();
-                        gClient.setNickname(nickname);
-                        connected = true;
-                        btConnect.setText("Disconnect");
+                        boolean connectSuccesfull = gClient.setNickname();
+                        if (connectSuccesfull)
+                        {
+                            connected = true;
+                            btConnect.setText("Disconnect");
+                        }else
+                        {
+                            gClient.stopClient();
+                        }
                     } catch (IOException ex)
                     {
                         JOptionPane.showMessageDialog(this, "An error occurred", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -232,6 +243,21 @@ public class PlayerGUI extends javax.swing.JFrame
             JOptionPane.showMessageDialog(this, ex.getMessage(), "IP-ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_onDisConnect
+
+    private void onClosing(java.awt.event.WindowEvent evt)//GEN-FIRST:event_onClosing
+    {//GEN-HEADEREND:event_onClosing
+       if(gClient.isConnected())
+       {
+           try
+           {
+               gClient.stopClient();
+           } catch (IOException ex)
+           {
+               System.out.println(ex.toString());
+           }
+ 
+       }
+    }//GEN-LAST:event_onClosing
 
     /**
      * @param args the command line arguments

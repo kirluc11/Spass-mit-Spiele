@@ -32,7 +32,7 @@ import javax.swing.border.TitledBorder;
 
 /**
  *
- * @author Lukas
+ * @author Lukas, Marcel
  */
 public class TicTacToePanel extends JPanel
 {
@@ -119,23 +119,26 @@ public class TicTacToePanel extends JPanel
     public void setMyTurn(boolean myTurn)
     {
         this.myTurn = myTurn;
-        if (tttg.isOver())
+        if (!gameOver)
         {
-            String gewinner = tttg.getSieger() == 0 ? "X" : "O";
-            JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
-            beginner *= -1;
+            if (tttg.isOver())
+            {
+                String gewinner = tttg.getSieger() == 0 ? "X" : "O";
+                JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
+                beginner *= -1;
 
-            changeLabelState(false);
-            gameOver = true;
+                changeLabelState(false);
+                gameOver = true;
 
-        } else if (tttg.isUnendschieden())
-        {
-            JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
-            beginner *= -1;
+            } else if (tttg.isUnendschieden())
+            {
+                JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
+                beginner *= -1;
 
-            changeLabelState(false);
-            gameOver = true;
+                changeLabelState(false);
+                gameOver = true;
 
+            }
         }
     }
 
@@ -150,7 +153,7 @@ public class TicTacToePanel extends JPanel
         {
             try
             {
-                if (gameMode == 2 && !gameOver)
+                if (gameMode == 2)
                 {
                     gc.sendObject("##GO##HOME##");
                 }
@@ -357,7 +360,7 @@ public class TicTacToePanel extends JPanel
 
                         if (tttg.isOver())
                         {
-                            String gewinner = tttg.getSieger() == 0 ? "X" : "Y";
+                            String gewinner = tttg.getSieger() == 0 ? "X" : "O";
                             JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                             beginner *= -1;
 

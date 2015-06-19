@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author Churchy
+ * @author Lukas
  */
 public class NumberOfPlayerDLG extends javax.swing.JDialog
 {

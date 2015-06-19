@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author user
+ * @author Marcel, Lukas
  */
 public class VierGewinntServer
 {
@@ -58,9 +58,9 @@ public class VierGewinntServer
     public void startNewGame(Player player1, Player player2) throws IOException
     {
         System.out.println("VierGewinntServer.startNewGame: Player names not sent");
-        player1.getOos().writeObject("Player1");
-        player2.getOos().writeObject("Player2");
-        System.out.println("VierGewinntServer.startNewGame: Player names sent");
+        player1.getOos().writeObject("Player1##"+player2.getNickname());
+        player2.getOos().writeObject("Player2##"+player1.getNickname());
+        gs.log("New Connect Four Game: "+player1.getNickname()+" VS "+player2.getNickname());
         VierGewinntPlayerThread vgpt1 = new VierGewinntPlayerThread(player1, player2);
         VierGewinntPlayerThread vgpt2 = new VierGewinntPlayerThread(player2, player1);
         vgpt1.setOtherPlayerThread(vgpt2);
@@ -117,9 +117,12 @@ public class VierGewinntServer
 
                         if (text.equals("###Client###Disconnect###"))
                         {
+                            
+                            gs.log(player1.getNickname()+" disconnected");
                             player2.getOos().writeObject("##OpponentLeft##");
                             player1.getOos().writeObject("##I##Left##");
                             otherPlayerThread.interrupt();
+                            player1.closePlayer();
                             break;
 
                         } else if (text.equals("##GO##HOME##"))

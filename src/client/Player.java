@@ -5,12 +5,13 @@
  */
 package client;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
  * Class to handle variables of connected clients
- * @author user
+ * @author Marcel
  */
 public class Player
 {
@@ -55,5 +56,9 @@ public class Player
         this.nickname = nickname;
     }
     
-    
+    public void closePlayer() throws IOException
+    {
+        oos.close();
+        ois.close();
+    }
 }
