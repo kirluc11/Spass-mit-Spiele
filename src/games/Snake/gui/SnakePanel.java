@@ -60,11 +60,28 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
+
+        pmRestart = new javax.swing.JPopupMenu();
+        miRestart = new javax.swing.JMenuItem();
+
+        miRestart.setText("Restart");
+        miRestart.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                onMiRestart(evt);
+            }
+        });
+        pmRestart.add(miRestart);
 
         setBackground(new java.awt.Color(0, 0, 0));
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+        setComponentPopupMenu(pmRestart);
+        addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyTyped(java.awt.event.KeyEvent evt)
+            {
                 onKeyTyped(evt);
             }
         });
@@ -99,6 +116,15 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         }
         snake.changeDirection(dir);
     }//GEN-LAST:event_onKeyTyped
+
+    private void onMiRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onMiRestart
+    {//GEN-HEADEREND:event_onMiRestart
+        if(!thread.interrupted())
+        {
+            endGame();
+        }
+        startGame();
+    }//GEN-LAST:event_onMiRestart
 
     public void restart()
     {
@@ -141,11 +167,13 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem miRestart;
+    private javax.swing.JPopupMenu pmRestart;
     // End of variables declaration//GEN-END:variables
     @Override
     public void run() {
         try {
-            while (snake.move()&&!Thread.interrupted()) {
+            while (!Thread.interrupted()&&snake.move()) {
                 try {
                     Thread.sleep(150);
                     repaint();
@@ -153,7 +181,10 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(SnakePanel.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }catch(NullPointerException ex)
+        {
+            //System.out.println(ex.toString());
         }
     }
 
