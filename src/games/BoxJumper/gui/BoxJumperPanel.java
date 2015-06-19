@@ -9,21 +9,19 @@ import games.BoxJumper.bl.Box;
 import games.BoxJumper.bl.BoxJumper;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ConcurrentModificationException;
+import java.util.LinkedList;
+import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import static vierGewinnt.gui.VierGewinntPanel.spieler1;
-import static vierGewinnt.gui.VierGewinntPanel.spieler2;
 
 /**
  * @since 12.06.2015
@@ -42,7 +40,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     private double w;
     private double h;
 
-    private Set<Box> boxes = new HashSet<>();
+    private LinkedList<Box> boxes = new LinkedList<>();
 
     private boolean jump;
     private boolean up = true;
@@ -50,6 +48,10 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     private int jumpTime = 20;
 
     private int score;
+
+    private Random rand = new Random();
+
+    private boolean start = false;
 
     private Timer addTimer = new Timer(10, new ActionListener() {
         @Override
@@ -66,6 +68,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     }
 
     public void restart() {
+        start = true;
         thread = new Thread(this);
         thread.start();
     }
@@ -78,10 +81,18 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         w = this.getWidth() / DIV;
         h = this.getHeight() / DIV;
 
-        double jumpMultiplier = h / 10;
+        double jumpMultiplier = h / 7;
 
         g.setColor(groundColor);
         g.fill(new Rectangle2D.Double(0, h * (DIV - POSITION_OF_GROUND), this.getWidth(), h));
+
+        if (start) {
+            Box startBox = new Box();
+            startBox.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
+            boxes.clear();
+            boxes.add(startBox);
+            start = false;
+        }
 
         if (jump) {
             if (up) {
@@ -99,20 +110,27 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
         }
 
-        for (Box box : boxes) {
-            box.move(w / 4);
-            g.setColor(box.getColor());
-            g.fill(box);
-            if (box.getX() < 0) {
-                boxes.remove(box);
-                score++;
-            } else if (box.intersects(boxJumper)) {
-                thread.interrupt();
+        try {
+            for (Box box : boxes) {
+                box.move(w / 4);
+                g.setColor(box.getColor());
+                g.fill(box);
+                if (box.getX() < -w * 2) {
+                    boxes.remove(box);
+                    score++;
+                } else if (box.intersects(boxJumper)) {
+                    thread.interrupt();
+                    break;
+                }
             }
+        } catch (ConcurrentModificationException cme) {
+           
         }
 
         boxJumper.setFrame(w * 2, h * (DIV - POSITION_OF_GROUND - 1) + jumpMultiplier * heightOfJump, w, h);
 
+        g.setFont(new Font("Open Sans Extrabold", Font.PLAIN, 50));
+        g.setColor(groundColor);
         g.drawString(score + "", (float) w * 2, (float) h * 2);
 
         g.setColor(boxJumper.getColor());
@@ -126,14 +144,29 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     }
 
     public void addBox() {
+        int rn = rand.nextInt(10) + 1;
+
         Box box = new Box();
-        box.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
+        switch (rn) {
+//            case 1:
+//                box.setFrame(boxes.getLast().getX()+w, h * (DIV - POSITION_OF_GROUND - 1), w, h);
+//                break;
+//            case 2:
+//                box.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
+//                break;
+            default:
+                box.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
+                break;
+        }
         boxes.add(box);
     }
 
     @Override
     public void run() {
+        int og = 150;
+        int ug = 50;
         int count = 0;
+        int rn = rand.nextInt(og - ug + 1) + ug;
         try {
             while (!Thread.interrupted()) {
                 Thread.sleep(15);
@@ -142,13 +175,18 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 //                if (count % 10 == 0) {
 //                    jump();
 //                }
-                if (count % 50 == 0) {
+                if (count == rn) {
                     addBox();
+                    rn = rand.nextInt(og - ug + 1) + ug;
+                    if(rn % 10 == 0)
+                    {
+                        rn = 12;
+                    }
+                    count = 0;
                 }
 
             }
         } catch (InterruptedException ex) {
-            System.out.println(ex.toString());
         }
     }
 
@@ -181,7 +219,6 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
     private void onMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onMove
         if ((evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W)) {
-            System.out.println("jump");
             jump();
         }
     }//GEN-LAST:event_onMove
