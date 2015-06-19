@@ -33,7 +33,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
     private BoxJumper boxJumper = new BoxJumper();
 
-    private final Color groundColor = Color.DARK_GRAY;
+    private final Color groundColor = Color.BLUE;
     private final int DIV = 20;
     private final int POSITION_OF_GROUND = 5;
 
@@ -65,10 +65,12 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
      */
     public BoxJumperPanel() {
         initComponents();
+        this.setComponentPopupMenu(jPopupMenu1);
     }
 
     public void restart() {
         start = true;
+        score = 0;
         thread = new Thread(this);
         thread.start();
     }
@@ -84,7 +86,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         double jumpMultiplier = h / 7;
 
         g.setColor(groundColor);
-        g.fill(new Rectangle2D.Double(0, h * (DIV - POSITION_OF_GROUND), this.getWidth(), h));
+        g.fill(new Rectangle2D.Double(0, h * (DIV - POSITION_OF_GROUND), this.getWidth(), POSITION_OF_GROUND*h+h));
 
         if (start) {
             Box startBox = new Box();
@@ -124,14 +126,14 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
                 }
             }
         } catch (ConcurrentModificationException cme) {
-           
+
         }
 
         boxJumper.setFrame(w * 2, h * (DIV - POSITION_OF_GROUND - 1) + jumpMultiplier * heightOfJump, w, h);
 
-        g.setFont(new Font("Open Sans Extrabold", Font.PLAIN, 50));
+        g.setFont(new Font("Open Sans Extrabold", Font.PLAIN, 170));
         g.setColor(groundColor);
-        g.drawString(score + "", (float) w * 2, (float) h * 2);
+        g.drawString(score + "", (float) w * DIV / 4, (float) h * DIV / 3);
 
         g.setColor(boxJumper.getColor());
         g.fill(boxJumper);
@@ -144,26 +146,14 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     }
 
     public void addBox() {
-        int rn = rand.nextInt(10) + 1;
-
         Box box = new Box();
-        switch (rn) {
-//            case 1:
-//                box.setFrame(boxes.getLast().getX()+w, h * (DIV - POSITION_OF_GROUND - 1), w, h);
-//                break;
-//            case 2:
-//                box.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
-//                break;
-            default:
-                box.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
-                break;
-        }
+        box.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
         boxes.add(box);
     }
 
     @Override
     public void run() {
-        int og = 150;
+        int og = 100;
         int ug = 50;
         int count = 0;
         int rn = rand.nextInt(og - ug + 1) + ug;
@@ -178,8 +168,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
                 if (count == rn) {
                     addBox();
                     rn = rand.nextInt(og - ug + 1) + ug;
-                    if(rn % 10 == 0)
-                    {
+                    if (rn % 10 == 0) {
                         rn = 12;
                     }
                     count = 0;
@@ -199,6 +188,18 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        miRestart = new javax.swing.JMenuItem();
+
+        miRestart.setText("Restart");
+        miRestart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onMiRestart(evt);
+            }
+        });
+        jPopupMenu1.add(miRestart);
+
+        setBackground(new java.awt.Color(0, 0, 0));
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 onMove(evt);
@@ -222,6 +223,10 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
             jump();
         }
     }//GEN-LAST:event_onMove
+
+    private void onMiRestart(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onMiRestart
+        restart();
+    }//GEN-LAST:event_onMiRestart
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
@@ -251,5 +256,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JMenuItem miRestart;
     // End of variables declaration//GEN-END:variables
 }

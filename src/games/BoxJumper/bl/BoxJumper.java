@@ -14,7 +14,7 @@ import java.awt.geom.Rectangle2D;
  */
 public class BoxJumper extends Rectangle2D.Double{
     
-    private final Color color = Color.BLACK;
+    private final Color color = Color.ORANGE;
 
     public Color getColor() {
         return color;

@@ -7,6 +7,7 @@ package gui;
 
 import client.GameClient;
 import games.ArstoidStorm.gui.AsteroidStormPanel;
+import games.BoxJumper.gui.BoxJumperPanel;
 import games.Snake.gui.SnakePanel;
 import games.hangman.gui.HangmanPanel;
 import games.tictactoe.gui.TicTacToePanel;
@@ -73,6 +74,7 @@ public class GameChooserPanel extends javax.swing.JPanel
         allGames.put("AsteroidStorm", ImageIO.read(new File(path + File.separator + "hangman.png")));
         allGames.put("4-Gewinnt", ImageIO.read(new File(path + File.separator + "vierGewinnt.png")));
         allGames.put("Snake", ImageIO.read(new File(path + File.separator + "Snake.png")));
+        allGames.put("Boxjumper", ImageIO.read(new File(path + File.separator + "Snake.png")));
 
         for (String name : allGames.keySet())
         {
@@ -147,6 +149,12 @@ public class GameChooserPanel extends javax.swing.JPanel
                 aktualisierePaGame(snake);
                 snake.startGame();
                 snake.requestFocus();
+                break;
+            case "Boxjumper":
+                BoxJumperPanel boxjumper = new BoxJumperPanel();
+                aktualisierePaGame(boxjumper);
+                boxjumper.restart();
+                boxjumper.requestFocus();
                 break;
         }
 

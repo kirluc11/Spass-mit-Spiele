@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class Snake implements Directions, Runnable {
 
-    private final int divider = 10;
+    private final int divider = 20;
 
     private double windowWidth;
     private double windowHeight;
