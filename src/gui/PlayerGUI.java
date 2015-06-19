@@ -7,6 +7,7 @@ package gui;
 
 import client.GameClient;
 import games.ArstoidStorm.gui.AsteroidStormPanel;
+import games.BoxJumper.gui.BoxJumperPanel;
 import games.Snake.gui.SnakePanel;
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -161,6 +162,10 @@ public class PlayerGUI extends javax.swing.JFrame
             {
                 SnakePanel sp = (SnakePanel) aktPanel;
                 sp.endGame();
+            }else if(aktPanel instanceof BoxJumperPanel)
+            {
+                BoxJumperPanel bjp = (BoxJumperPanel) aktPanel;
+                //Interrupt Thread
             }
             showGameChooser();
         }
