@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
@@ -41,7 +42,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     private double h;
 
     private LinkedList<Box> boxes = new LinkedList<>();
-
+    
     private boolean jump;
     private boolean up = true;
     private int heightOfJump = 0;
@@ -99,6 +100,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         if (jump) {
             if (up) {
                 heightOfJump--;
+                
             } else {
                 heightOfJump++;
             }
@@ -130,6 +132,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         }
 
         boxJumper.setFrame(w * 2, h * (DIV - POSITION_OF_GROUND - 1) + jumpMultiplier * heightOfJump, w, h);
+
 
         g.setFont(new Font("Open Sans Extrabold", Font.PLAIN, 170));
         g.setColor(groundColor);
