@@ -14,7 +14,7 @@ import java.awt.Color;
 public class SnakeHead extends SnakePart {
 
     /**
-     * Params areDirection, position and size of the head
+     * Params are direction, position and size of the head
      * @param dir
      * @param x
      * @param y

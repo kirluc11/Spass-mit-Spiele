@@ -20,6 +20,10 @@ public class vierGewinntBL {
         this.labels = labels;
     }
 
+    /**
+     * Checks if the game is over and returns true if it is
+     * @return 
+     */
     public boolean isOver() {
         Color col = null;
         int count = 0;
@@ -231,6 +235,10 @@ public class vierGewinntBL {
         return false;
     }
 
+    /**
+     * Checks if it's a draw
+     * @return 
+     */
     public boolean isUnendschieden() {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
@@ -241,7 +249,10 @@ public class vierGewinntBL {
         }
         return true;
     }
-    
+    /**
+     * Checks if every panel is black
+     * @return 
+     */
     public boolean isEverythingBlack()
     {
         for (int i = 0; i < 6; i++) {

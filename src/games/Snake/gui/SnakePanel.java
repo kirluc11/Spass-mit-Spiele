@@ -39,6 +39,9 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         initComponents();
     }
     
+    /**
+     * Starts a new snake game
+     */
     public void startGame()
     {
         this.initSnake();
@@ -49,6 +52,9 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         thread.start();
     }
 
+    /**
+     * Initializes the snake
+     */
     private void initSnake() {
         snake = new Snake(this.getWidth(), this.getHeight());
     }
@@ -98,6 +104,10 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Key typed event which changes the direction of the snake
+     * @param evt 
+     */
     private void onKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onKeyTyped
         if (evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W || (evt.getKeyChar() + "").equalsIgnoreCase("w")) {
             dir = Direction.UP;
@@ -117,6 +127,10 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         snake.changeDirection(dir);
     }//GEN-LAST:event_onKeyTyped
 
+    /**
+     * Restarts the snake game
+     * @param evt 
+     */
     private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
     {//GEN-HEADEREND:event_onRestart
         if(!thread.interrupted())
@@ -183,7 +197,7 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
             //System.out.println(ex.toString());
         }
     }
-
+    
     @Override
     public void paint(Graphics gr) {
         super.paint(gr);
