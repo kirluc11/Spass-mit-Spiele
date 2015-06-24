@@ -15,15 +15,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 /**
+ * Main panel of the game Hangman
  *
  * @author Marcel, Lukas
  */
 public class HangmanPanel extends javax.swing.JPanel
 {
 
-    /**
-     * Creates new form HangmanPanel
-     */
+    
     private int art = 0;
     private String inp = "";
     char[] c;
@@ -33,6 +32,7 @@ public class HangmanPanel extends javax.swing.JPanel
     //Variable to check if the player has won
     private int lenght = 0;
     private boolean gameRunning;
+    //To save already tried letters
     private HashSet<Character> usedChar;
 
     public HangmanPanel(PlayerGUI pgui)
@@ -41,7 +41,12 @@ public class HangmanPanel extends javax.swing.JPanel
         initComponents();
         this.setBorder(new TitledBorder(new EmptyBorder(5, 0, 0, 0), "Hangman", TitledBorder.CENTER, TitledBorder.ABOVE_TOP));
     }
-
+    
+    
+    /**
+     * This class draws the lines of the hanged man
+     * @param g 
+     */
     @Override
     public void paint(Graphics g)
     {
@@ -142,6 +147,9 @@ public class HangmanPanel extends javax.swing.JPanel
         }
     }
 
+    /**
+     * Starts the whole game
+     */
     public void startGame()
     {
 
@@ -150,7 +158,7 @@ public class HangmanPanel extends javax.swing.JPanel
         if (iwdlg.isOk())
         {
             inp = iwdlg.getWord();
-        }else
+        } else
         {
             pgui.showGameChooser();
         }
@@ -187,6 +195,9 @@ public class HangmanPanel extends javax.swing.JPanel
         ftfInput.requestFocus();
     }
 
+    /**
+     * Sets all parameter to a start value restarts the game 
+     */
     public void restartGame()
     {
         art = 0;
@@ -197,6 +208,10 @@ public class HangmanPanel extends javax.swing.JPanel
         startGame();
     }
 
+    /**
+     * Compares the searchLetter with usedChar and if it isn't used looks up if the letter is in the word
+     * @param searchLetter 
+     */
     public void searchLetter(char searchLetter)
     {
         ftfInput.setText("");
@@ -256,7 +271,8 @@ public class HangmanPanel extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         pmGame = new javax.swing.JPopupMenu();
         miRestart = new javax.swing.JMenuItem();
@@ -267,8 +283,10 @@ public class HangmanPanel extends javax.swing.JPanel
         ftfInput = new javax.swing.JFormattedTextField();
 
         miRestart.setText("Restart");
-        miRestart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        miRestart.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 onRestart(evt);
             }
         });
@@ -304,15 +322,19 @@ public class HangmanPanel extends javax.swing.JPanel
         paBottom.setLayout(new java.awt.GridLayout(1, 1));
 
         ftfInput.setBorder(javax.swing.BorderFactory.createTitledBorder("Input"));
-        try {
+        try
+        {
             ftfInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("L")));
-        } catch (java.text.ParseException ex) {
+        } catch (java.text.ParseException ex)
+        {
             ex.printStackTrace();
         }
         ftfInput.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        ftfInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                onClicked(evt);
+        ftfInput.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                onKeyReleased(evt);
             }
         });
         paBottom.add(ftfInput);
@@ -320,8 +342,12 @@ public class HangmanPanel extends javax.swing.JPanel
         add(paBottom, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void onClicked(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onClicked
-    {//GEN-HEADEREND:event_onClicked
+    /**
+     * Is called when player releases a key, if key was enter it reads the text of the input field 
+     * @param evt 
+     */
+    private void onKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_onKeyReleased
+    {//GEN-HEADEREND:event_onKeyReleased
         if (gameRunning)
         {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER)
@@ -335,8 +361,12 @@ public class HangmanPanel extends javax.swing.JPanel
                 }
             }
         }
-    }//GEN-LAST:event_onClicked
+    }//GEN-LAST:event_onKeyReleased
 
+    /**
+     * Function of menuItem Restart, it restarts the game
+     * @param evt 
+     */
     private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
     {//GEN-HEADEREND:event_onRestart
         restartGame();

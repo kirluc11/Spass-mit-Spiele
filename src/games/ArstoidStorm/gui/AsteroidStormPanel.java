@@ -9,12 +9,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.border.LineBorder;
 
 /**
  * Main panel of the game Asteroid Storm
- * @author Marcel
+ * @author Marcel, Lukas
  */
 public class AsteroidStormPanel extends javax.swing.JPanel {
 
@@ -126,8 +128,8 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
      * Restarts the whole game
      * @param evt 
      */
-    private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
-    {//GEN-HEADEREND:event_onRestart
+    private void onRestart(java.awt.event.ActionEvent evt)
+    {
 
         thread.interrupt();
         asip.setAus(false);
@@ -138,11 +140,10 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         asip.setCoordY(0);
         asip.setSpeed(5);
         startGame();
-    }//GEN-LAST:event_onRestart
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem miRestart;
-    private javax.swing.JPopupMenu pmRestart;
+    private JMenuItem miRestart;
+    private JPopupMenu pmRestart;
     private JLabel lbScore;
-    // End of variables declaration//GEN-END:variables
+    
 }
