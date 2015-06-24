@@ -29,6 +29,14 @@ public class SnakeFood extends Ellipse2D.Double {
 
     Image img;
 
+    /**
+     * Params are position and size of the food
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @throws IOException 
+     */
     public SnakeFood(double x, double y, double w, double h) throws IOException {
         super(x, y, w, h);
         this.img = ImageIO.read(new File(path + File.separator + "wurst.png"));
@@ -36,14 +44,27 @@ public class SnakeFood extends Ellipse2D.Double {
         this.h = h;
     }
 
+    
+    /**
+     * Returns the color of the food
+     * @return 
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Returns the selected image
+     * @return 
+     */
     public Image getImg() {
         return img;
     }
 
+    /**
+     * Sets the selected image
+     * @param img 
+     */
     public void setImg(Image img) {
         this.img = img;
     }
