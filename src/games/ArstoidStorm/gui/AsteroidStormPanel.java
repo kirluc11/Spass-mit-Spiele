@@ -139,6 +139,8 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         asip.setNumberY(numberY);
         asip.setCoordY(0);
         asip.setSpeed(5);
+        asip.setScore(0);
+        lbScore.setText("0");
         startGame();
     }
 

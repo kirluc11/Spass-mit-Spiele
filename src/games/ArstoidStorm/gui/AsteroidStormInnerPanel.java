@@ -43,6 +43,17 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
     }
 
     /**
+     * Sets the score of the player
+     * @param score 
+     */
+    public void setScore(int score)
+    {
+        this.score = score;
+    }
+    
+    
+
+    /**
      * Increases the score by 1 and sets the text of the Scorepanel
      */
    public void addScore()
