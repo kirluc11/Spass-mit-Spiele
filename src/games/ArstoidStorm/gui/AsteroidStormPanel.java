@@ -90,6 +90,21 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         this.add(lbScore,BorderLayout.NORTH);
 
     }
+    
+    public void restartGame()
+    {
+        thread.interrupt();
+        asip.setAus(false);
+        numberX = 0;
+        numberY = 0;
+        asip.setNumberX(numberX);
+        asip.setNumberY(numberY);
+        asip.setCoordY(0);
+        asip.setSpeed(5);
+        asip.setScore(0);
+        lbScore.setText("0");
+        startGame();
+    }
 
     /**
      * This method is called if player presses a key
@@ -130,18 +145,7 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
      */
     private void onRestart(java.awt.event.ActionEvent evt)
     {
-
-        thread.interrupt();
-        asip.setAus(false);
-        numberX = 0;
-        numberY = 0;
-        asip.setNumberX(numberX);
-        asip.setNumberY(numberY);
-        asip.setCoordY(0);
-        asip.setSpeed(5);
-        asip.setScore(0);
-        lbScore.setText("0");
-        startGame();
+        restartGame();
     }
 
     private JMenuItem miRestart;
