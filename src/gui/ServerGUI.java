@@ -107,6 +107,10 @@ public class ServerGUI extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Starts the server on the selected port
+     * @param evt 
+     */
     private void onStart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onStart
     {//GEN-HEADEREND:event_onStart
 
@@ -127,6 +131,10 @@ public class ServerGUI extends javax.swing.JFrame
 
     }//GEN-LAST:event_onStart
 
+    /**
+     * Stops the server
+     * @param evt 
+     */
     private void onStop(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onStop
     {//GEN-HEADEREND:event_onStop
         try

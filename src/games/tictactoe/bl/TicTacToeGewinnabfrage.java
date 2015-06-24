@@ -20,7 +20,11 @@ public class TicTacToeGewinnabfrage {
     public TicTacToeGewinnabfrage(LinkedList<JLabel> labels) {
         this.labels = labels;
     }
-
+    
+    /**
+     * Checks if the game is over
+     * @return 
+     */
     public boolean isOver() {
         String text = "X";
         sieger = 0;
@@ -78,7 +82,11 @@ public class TicTacToeGewinnabfrage {
         
         return false;
     }
-
+    
+    /**
+     * Checks if the game is draw
+     * @return 
+     */
     public boolean isUnendschieden() {
         for (JLabel jLabel : labels) {
             if (jLabel.getBackground() == Color.black) {
@@ -88,6 +96,10 @@ public class TicTacToeGewinnabfrage {
         return true;
     }
     
+    /**
+     * Returns the winner of the game
+     * @return 
+     */
     public int getSieger()
     {
         return sieger;
