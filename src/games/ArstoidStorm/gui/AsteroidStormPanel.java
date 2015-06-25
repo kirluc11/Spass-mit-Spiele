@@ -61,8 +61,9 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     private void initComponents() {
         
-        pmRestart = new javax.swing.JPopupMenu();
+        pmMyMenu = new javax.swing.JPopupMenu();
         miRestart = new javax.swing.JMenuItem();
+        miHowTo = new javax.swing.JMenuItem();
 
         miRestart.setText("Restart");
         miRestart.addActionListener(new java.awt.event.ActionListener() {
@@ -70,11 +71,25 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
                 onRestart(evt);
             }
         });
-        pmRestart.add(miRestart);
+        pmMyMenu.add(miRestart);
+        
+        miHowTo.setText("How to");
+        miHowTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JOptionPane.showMessageDialog(null, "You are the white block and your "
+                        + "goal is to stay alive as long as you can \n"
+                        + "Move: \n"
+                        + "UP: W, VK_UP\n"
+                        + "RIGHT: D, VK_RIGHT\n"
+                        + "LEFT: A, VK_LEFT\n"
+                        + "DOWN: S, VK_DOWN\n");
+            }
+        });
+        pmMyMenu.add(miHowTo);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createTitledBorder("AsteroidStorm"));
-        setComponentPopupMenu(pmRestart);
+        setComponentPopupMenu(pmMyMenu);
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 onMove(evt);
@@ -148,8 +163,9 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         restartGame();
     }
 
+    private JMenuItem miHowTo;
     private JMenuItem miRestart;
-    private JPopupMenu pmRestart;
+    private JPopupMenu pmMyMenu;
     private JLabel lbScore;
     
 }

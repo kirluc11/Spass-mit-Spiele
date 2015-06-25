@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -26,7 +27,8 @@ import javax.swing.border.TitledBorder;
  *
  * @author Lukas, Marcel
  */
-public class SnakePanel extends javax.swing.JPanel implements Runnable, Directions {
+public class SnakePanel extends javax.swing.JPanel implements Runnable, Directions
+{
 
     private Snake snake;
     private Direction dir = Direction.RIGHT;
@@ -35,10 +37,11 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
     /**
      * Creates new form SnakePanel
      */
-    public SnakePanel() {
+    public SnakePanel()
+    {
         initComponents();
     }
-    
+
     /**
      * Starts a new snake game
      */
@@ -55,7 +58,8 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
     /**
      * Initializes the snake
      */
-    private void initSnake() {
+    private void initSnake()
+    {
         snake = new Snake(this.getWidth(), this.getHeight());
     }
 
@@ -71,6 +75,7 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
 
         pmRestart = new javax.swing.JPopupMenu();
         miRestart = new javax.swing.JMenuItem();
+        miHowTo = new javax.swing.JMenuItem();
 
         miRestart.setText("Restart");
         miRestart.addActionListener(new java.awt.event.ActionListener()
@@ -81,6 +86,16 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
             }
         });
         pmRestart.add(miRestart);
+
+        miHowTo.setText("How To");
+        miHowTo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                onHowTo(evt);
+            }
+        });
+        pmRestart.add(miHowTo);
 
         setBackground(new java.awt.Color(0, 0, 0));
         setComponentPopupMenu(pmRestart);
@@ -106,19 +121,27 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
 
     /**
      * Key typed event which changes the direction of the snake
-     * @param evt 
+     *
+     * @param evt
      */
     private void onKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onKeyTyped
-        if (evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W || (evt.getKeyChar() + "").equalsIgnoreCase("w")) {
+        if (evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W || (evt.getKeyChar() + "").equalsIgnoreCase("w"))
+        {
             dir = Direction.UP;
-        } else {
-            if (evt.getKeyCode() == KeyEvent.VK_DOWN || evt.getKeyCode() == KeyEvent.VK_S || (evt.getKeyChar() + "").equalsIgnoreCase("s")) {
+        } else
+        {
+            if (evt.getKeyCode() == KeyEvent.VK_DOWN || evt.getKeyCode() == KeyEvent.VK_S || (evt.getKeyChar() + "").equalsIgnoreCase("s"))
+            {
                 dir = Direction.DOWN;
-            } else {
-                if (evt.getKeyCode() == KeyEvent.VK_RIGHT || evt.getKeyCode() == KeyEvent.VK_D || (evt.getKeyChar() + "").equalsIgnoreCase("d")) {
+            } else
+            {
+                if (evt.getKeyCode() == KeyEvent.VK_RIGHT || evt.getKeyCode() == KeyEvent.VK_D || (evt.getKeyChar() + "").equalsIgnoreCase("d"))
+                {
                     dir = Direction.RIGHT;
-                } else {
-                    if (evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_A || (evt.getKeyChar() + "").equalsIgnoreCase("a")) {
+                } else
+                {
+                    if (evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_A || (evt.getKeyChar() + "").equalsIgnoreCase("a"))
+                    {
                         dir = Direction.LEFT;
                     }
                 }
@@ -129,19 +152,31 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
 
     /**
      * Restarts the snake game
-     * @param evt 
+     *
+     * @param evt
      */
     private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
     {//GEN-HEADEREND:event_onRestart
-        if(!thread.interrupted())
+        if (!thread.interrupted())
         {
             endGame();
         }
         startGame();
     }//GEN-LAST:event_onRestart
 
-    
-    public static void main(String[] args) {
+    private void onHowTo(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onHowTo
+    {//GEN-HEADEREND:event_onHowTo
+        JOptionPane.showMessageDialog(this, "The aim of the game is to "
+                + "eat as much worms as you can\n"
+                + "Move: \n"
+                + "UP: W, VK_UP\n"
+                + "RIGHT: D, VK_RIGHT\n"
+                + "LEFT: A, VK_LEFT\n"
+                + "DOWN: S, VK_DOWN\n");
+    }//GEN-LAST:event_onHowTo
+
+    public static void main(String[] args)
+    {
         JFrame frame = new JFrame();
         frame.setSize(800, 800);
         frame.setLocationRelativeTo(null);
@@ -172,49 +207,59 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
     {
         thread.interrupt();
     }
-    
-    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem miHowTo;
     private javax.swing.JMenuItem miRestart;
     private javax.swing.JPopupMenu pmRestart;
     // End of variables declaration//GEN-END:variables
     @Override
-    public void run() {
-        try {
-            while (snake.move()&&!Thread.interrupted()) {
-                try {
+    public void run()
+    {
+        try
+        {
+            while (snake.move() && !Thread.interrupted())
+            {
+                try
+                {
                     Thread.sleep(150);
                     repaint();
-                } catch (InterruptedException ex) {
+                } catch (InterruptedException ex)
+                {
                 }
             }
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
             Logger.getLogger(SnakePanel.class.getName()).log(Level.SEVERE, null, ex);
-        }catch(NullPointerException ex)
+        } catch (NullPointerException ex)
         {
             //System.out.println(ex.toString());
         }
     }
-    
+
     @Override
-    public void paint(Graphics gr) {
+    public void paint(Graphics gr)
+    {
         super.paint(gr);
-        try {
+        try
+        {
             Graphics2D g = (Graphics2D) gr;
-            if (snake != null) {
-                if (snake.getFood() != null) {
+            if (snake != null)
+            {
+                if (snake.getFood() != null)
+                {
                     //image, 10, (getHeight() - getWidth()) / 2, getWidth() - 20, getWidth(), null
-                    g.drawImage(snake.getFood().getImg(), (int) snake.getFood().getX(), (int) snake.getFood().getY(), (int)snake.getFood().getWidth(), (int)snake.getFood().getHeight(), null);
+                    g.drawImage(snake.getFood().getImg(), (int) snake.getFood().getX(), (int) snake.getFood().getY(), (int) snake.getFood().getWidth(), (int) snake.getFood().getHeight(), null);
 //                    g.setColor(snake.getFood().getColor());
 //                    g.fill(snake.getFood());
                 }
-                
-                
+
                 LinkedList<SnakePart> snakeParts = snake.getSnakeParts();
-                if (snakeParts != null || !snakeParts.isEmpty()) {
-                    for (int i = snakeParts.size() - 1; i >= 0; i--) {
+                if (snakeParts != null || !snakeParts.isEmpty())
+                {
+                    for (int i = snakeParts.size() - 1; i >= 0; i--)
+                    {
                         g.setColor(snakeParts.get(i).getColor());
                         g.fill(snakeParts.get(i));
                         g.setColor(Color.lightGray);
@@ -222,7 +267,8 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
                     }
                 }
             }
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
 
         }
     }

@@ -21,6 +21,7 @@ import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.Random;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -201,6 +202,18 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
             }
         });
         jPopupMenu1.add(miRestart);
+        
+        miHowTo = new javax.swing.JMenuItem();
+
+        miHowTo.setText("How To");
+        miHowTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JOptionPane.showMessageDialog(null, "The aim of the game is to jump over "
+                        + "as much blocks as you can\n"
+                        + "Jump: W, VK_UP");
+            }
+        });
+        jPopupMenu1.add(miHowTo);
 
         setBackground(new java.awt.Color(0, 0, 0));
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -261,5 +274,6 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JMenuItem miRestart;
+    private javax.swing.JMenuItem miHowTo;
     // End of variables declaration//GEN-END:variables
 }
