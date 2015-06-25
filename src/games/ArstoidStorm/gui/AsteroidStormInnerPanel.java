@@ -30,7 +30,6 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
     private Color col = new Color(234, 122, 50);
     private boolean aus = false;
     private int speed = 5;
-    private JLabel lbScore;
     private int score=0;
 
     /**
@@ -60,7 +59,6 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
    public void addScore()
    {
        score++;
-       lbScore.setText(""+score);
    }
     
     /**
@@ -81,9 +79,8 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
         }
     }
 
-    public AsteroidStormInnerPanel(JLabel lbScore)
+    public AsteroidStormInnerPanel()
     {
-        this.lbScore = lbScore;
         this.setOpaque(true);
         this.setBackground(Color.black);
         repaint();

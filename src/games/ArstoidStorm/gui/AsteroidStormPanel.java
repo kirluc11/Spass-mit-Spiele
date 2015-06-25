@@ -6,13 +6,10 @@
 package games.ArstoidStorm.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.border.LineBorder;
 
 /**
  * Main panel of the game Asteroid Storm
@@ -31,7 +28,7 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
      */
     public AsteroidStormPanel() {
         initComponents();
-        asip = new AsteroidStormInnerPanel(lbScore);
+        asip = new AsteroidStormInnerPanel();
         this.add(asip,BorderLayout.CENTER);
         this.setFocusable(true);
         startGame();
@@ -95,14 +92,7 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
                 onMove(evt);
             }
         });
-        lbScore = new JLabel("0");
-        lbScore.setHorizontalAlignment((int) CENTER_ALIGNMENT);
-        lbScore.setOpaque(true);
-        lbScore.setBackground(Color.BLACK);
-        lbScore.setForeground(Color.white);
-        lbScore.setBorder(new LineBorder(Color.white));
         this.setLayout(new BorderLayout());
-        this.add(lbScore,BorderLayout.NORTH);
 
     }
     
@@ -117,7 +107,6 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         asip.setCoordY(0);
         asip.setSpeed(5);
         asip.setScore(0);
-        lbScore.setText("0");
         startGame();
     }
 
@@ -166,6 +155,5 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
     private JMenuItem miHowTo;
     private JMenuItem miRestart;
     private JPopupMenu pmMyMenu;
-    private JLabel lbScore;
     
 }
