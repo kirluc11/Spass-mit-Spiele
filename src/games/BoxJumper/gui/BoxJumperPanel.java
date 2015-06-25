@@ -20,6 +20,7 @@ import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.Random;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -74,6 +75,11 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         thread = new Thread(this);
         thread.start();
     }
+    
+    public void killThread()
+    {
+        thread.interrupt();
+    }
 
     @Override
     public void paint(Graphics graphics) {
@@ -123,6 +129,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
                     score++;
                 } else if (box.intersects(boxJumper)) {
                     thread.interrupt();
+                    JOptionPane.showMessageDialog(this, "Game over", "Game Over", JOptionPane.ERROR_MESSAGE);
                     break;
                 }
             }

@@ -165,7 +165,7 @@ public class PlayerGUI extends javax.swing.JFrame
             }else if(aktPanel instanceof BoxJumperPanel)
             {
                 BoxJumperPanel bjp = (BoxJumperPanel) aktPanel;
-                //Interrupt Thread
+                bjp.killThread();
             }
             showGameChooser();
         }
