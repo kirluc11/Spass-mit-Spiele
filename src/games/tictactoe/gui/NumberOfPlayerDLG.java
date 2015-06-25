@@ -38,7 +38,7 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog {
     /**
      * Returns the selected game mode
      *
-     * @return the selected game mode
+     * @return <code> int </code> which indicates the selected game mode
      *
      */
     public int getGameMode() {
