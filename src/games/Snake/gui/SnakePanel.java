@@ -231,7 +231,6 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
             Logger.getLogger(SnakePanel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex)
         {
-            //System.out.println(ex.toString());
         }
     }
 

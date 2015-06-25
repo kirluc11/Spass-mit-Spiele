@@ -177,7 +177,6 @@ public class Snake implements Directions, Runnable {
             addNewSnakePart();
             Thread t = new Thread(this);
             t.start();
-            System.out.println(snakeParts.size());
         }
 
         for (int i = snakeParts.size() - 1; i > 0; i--) {
