@@ -5,6 +5,7 @@
 package games.ArstoidStorm.gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Random;
 import javax.swing.JLabel;
@@ -126,6 +127,13 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
         super.paint(g);
         x = this.getWidth();
         y = this.getHeight();
+
+
+        g.setFont(new Font("Open Sans Extrabold", Font.PLAIN, 170));
+        g.setColor(Color.lightGray);
+        g.drawString(score + "", x/10*3, y/10*3);
+        
+        
         g.setColor(Color.white);
         g.fillRect(x / 2 + numberX, y / 2 + numberY, x / 20, y / 20);
         g.setColor(col);
@@ -168,7 +176,6 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
     @Override
     public void run()
     {
-        
         for (int i = 0; i < coordX.length; i++)
         {
             coordX[i] = ran.nextInt(470);
