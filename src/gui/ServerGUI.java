@@ -109,7 +109,7 @@ public class ServerGUI extends javax.swing.JFrame
 
     /**
      * Starts the server on the selected port
-     * @param evt 
+     * @param evt ActionEvent
      */
     private void onStart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onStart
     {//GEN-HEADEREND:event_onStart
@@ -133,7 +133,7 @@ public class ServerGUI extends javax.swing.JFrame
 
     /**
      * Stops the server
-     * @param evt 
+     * @param evt ActionEvent
      */
     private void onStop(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onStop
     {//GEN-HEADEREND:event_onStop

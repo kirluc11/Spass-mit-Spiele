@@ -10,7 +10,6 @@ import games.ArstoidStorm.gui.AsteroidStormPanel;
 import games.BoxJumper.gui.BoxJumperPanel;
 import games.Snake.gui.SnakePanel;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -56,7 +55,7 @@ public class PlayerGUI extends javax.swing.JFrame
 
     /**
      * Sets the actual panel
-     * @param aktPanel 
+     * @param aktPanel the Panel which should be shown now
      */
     public void setAktPanel(JPanel aktPanel)
     {
@@ -146,7 +145,7 @@ public class PlayerGUI extends javax.swing.JFrame
 
     /**
      * Event of the HomeButton which leads you back to start page
-     * @param evt 
+     * @param evt ActionEvent
      */
     private void onHomeBT(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onHomeBT
     {//GEN-HEADEREND:event_onHomeBT
@@ -185,7 +184,7 @@ public class PlayerGUI extends javax.swing.JFrame
 
     /**
      * Connects or Disconnects the player from the server
-     * @param evt 
+     * @param evt ActionEvent
      */
     private void onDisConnect(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onDisConnect
     {//GEN-HEADEREND:event_onDisConnect
@@ -266,7 +265,7 @@ public class PlayerGUI extends javax.swing.JFrame
 
     /**
      * Window Closing event which disconnects if player is connected
-     * @param evt 
+     * @param evt WindowEvent
      */
     private void onClosing(java.awt.event.WindowEvent evt)//GEN-FIRST:event_onClosing
     {//GEN-HEADEREND:event_onClosing
