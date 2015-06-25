@@ -159,10 +159,10 @@ public class SnakePanel extends javax.swing.JPanel implements Runnable, Directio
         JOptionPane.showMessageDialog(this, "The aim of the game is to "
                 + "eat as much worms as you can\n"
                 + "Move: \n"
-                + "UP: W, VK_UP\n"
-                + "RIGHT: D, VK_RIGHT\n"
-                + "LEFT: A, VK_LEFT\n"
-                + "DOWN: S, VK_DOWN\n");
+                + "UP: W, UP\n"
+                + "RIGHT: D, RIGHT\n"
+                + "LEFT: A, LEFT\n"
+                + "DOWN: S, DOWN\n");
     }//GEN-LAST:event_onHowTo
 
     /**

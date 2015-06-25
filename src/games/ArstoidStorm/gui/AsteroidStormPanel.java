@@ -76,10 +76,10 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "You are the white block and your "
                         + "goal is to stay alive as long as you can \n"
                         + "Move: \n"
-                        + "UP: W, VK_UP\n"
-                        + "RIGHT: D, VK_RIGHT\n"
-                        + "LEFT: A, VK_LEFT\n"
-                        + "DOWN: S, VK_DOWN\n");
+                        + "UP: W, UP\n"
+                        + "RIGHT: D, RIGHT\n"
+                        + "LEFT: A, LEFT\n"
+                        + "DOWN: S, DOWN\n");
             }
         });
         pmMyMenu.add(miHowTo);
