@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package connectFour.bl;
+package vierGewinnt.bl;
 
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -11,11 +11,11 @@ import javax.swing.JLabel;
  *
  * @author Lukas
  */
-public class ConnectFourBL {
+public class VierGewinntBL {
 
     private JLabel[][] labels;
 
-    public ConnectFourBL(JLabel[][] labels) {
+    public VierGewinntBL(JLabel[][] labels) {
         this.labels = labels;
     }
 

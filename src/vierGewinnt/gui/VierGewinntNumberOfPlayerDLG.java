@@ -36,6 +36,7 @@ public class VierGewinntNumberOfPlayerDLG extends javax.swing.JDialog
 
     public int getGameMode()
     {
+        
         return gameMode;
     }
 
@@ -46,8 +47,7 @@ public class VierGewinntNumberOfPlayerDLG extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         lbMulti = new javax.swing.JLabel();
@@ -59,12 +59,10 @@ public class VierGewinntNumberOfPlayerDLG extends javax.swing.JDialog
 
         lbMulti.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lbMulti.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbMulti.setText("Singleplayer");
+        lbMulti.setText("Multiplayer");
         lbMulti.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        lbMulti.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        lbMulti.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onMouseClicked(evt);
             }
         });
@@ -74,10 +72,8 @@ public class VierGewinntNumberOfPlayerDLG extends javax.swing.JDialog
         lbOnline.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbOnline.setText("Online");
         lbOnline.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        lbOnline.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        lbOnline.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onMouseClicked(evt);
             }
         });

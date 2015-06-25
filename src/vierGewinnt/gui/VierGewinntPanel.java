@@ -5,7 +5,7 @@
 package vierGewinnt.gui;
 
 import client.GameClient;
-import connectFour.bl.ConnectFourBL;
+import vierGewinnt.bl.VierGewinntBL;
 import gui.PlayerGUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -42,7 +42,7 @@ public class VierGewinntPanel extends JPanel {
     };
     private int lastGameStartedWith = 1;
     private int spieler = 1;
-    private ConnectFourBL bl;
+    private VierGewinntBL bl;
     private int column;
     private boolean over = false;
     private boolean addTimerCompleted = true;
@@ -183,7 +183,7 @@ public class VierGewinntPanel extends JPanel {
                 pgui.showGameChooser();
             }
         }
-        bl = new ConnectFourBL(labels);
+        bl = new VierGewinntBL(labels);
         changePlayer(spieler == 1 ? true : false);
         lbSpieler.setText(namen[0]);
         changePlayer(true);
@@ -209,7 +209,7 @@ public class VierGewinntPanel extends JPanel {
 
     /**
      * Getter method for the curent instance
-     * @return a the current <code> ConnectFourPanel </code> instance
+     * @return the current <code> ConnectFourPanel </code> instance
      */
     private VierGewinntPanel getInstance() {
         return this;
