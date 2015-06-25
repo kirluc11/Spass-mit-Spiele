@@ -29,8 +29,9 @@ public class NumberOfPlayerOnlineDLG extends javax.swing.JDialog
     }
 
     /**
-     * Returns true if player chose a mode false if not
-     * @return 
+     *
+     * @return <code> ture </code> when the
+     * player has chosen a mode
      */
     public boolean isOk()
     {
@@ -39,7 +40,7 @@ public class NumberOfPlayerOnlineDLG extends javax.swing.JDialog
 
     /**
      * Returns the selected game mode
-     * @return 
+     * @return <code> int </code> which indicates the selected game mode
      */
     public int getGameMode()
     {
