@@ -8,14 +8,11 @@ import client.GameClient;
 import games.tictactoe.bl.TicTacToeGewinnabfrage;
 import games.tictactoe.bl.TicTacToeKI;
 import gui.PlayerGUI;
-import gui.WaitingForOpponentDLG;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -34,8 +31,7 @@ import javax.swing.border.TitledBorder;
  *
  * @author Lukas, Marcel
  */
-public class TicTacToePanel extends JPanel
-{
+public class TicTacToePanel extends JPanel {
 
     private LinkedList<JLabel> labels = new LinkedList<>();
     private Color spieler1 = Color.yellow;
@@ -49,56 +45,42 @@ public class TicTacToePanel extends JPanel
     private GameClient gc;
     private boolean myTurn = false;
     private boolean gameOver;
-    private PlayerGUI pgui;
     private boolean ok = true;
 
-    public Color getSpieler1()
-    {
-        return spieler1;
-    }
-
-    public TicTacToePanel(GameClient gc, PlayerGUI pgui)
-    {
+    /**
+     * Creates new form TicTacToePanel
+     */
+    public TicTacToePanel(GameClient gc, PlayerGUI pgui) {
         this.initComponents();
         this.gc = gc;
         tttg = new TicTacToeGewinnabfrage(labels);
-        if (gc.isConnected())
-        {
+        if (gc.isConnected()) {
 
             NumberOfPlayerOnlineDLG onlinedlg = new NumberOfPlayerOnlineDLG(null, true);
-            if (onlinedlg.isOk())
-            {
+            if (onlinedlg.isOk()) {
 
                 gameMode = onlinedlg.getGameMode();
-                if (gameMode == 2)
-                {
-                    try
-                    {
+                if (gameMode == 2) {
+                    try {
                         gc.sendObject("TicTacToe");
 
                         gc.newTicTacToeThread(labels, tttg, this);
-                    } catch (IOException ex)
-                    {
+                    } catch (IOException ex) {
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ClassNotFoundException ex)
-                    {
+                    } catch (ClassNotFoundException ex) {
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            } else
-            {
+            } else {
                 ok = false;
                 pgui.showGameChooser();
 
             }
-        } else
-        {
+        } else {
             NumberOfPlayerDLG dlg = new NumberOfPlayerDLG(null, true);
-            if (dlg.isOk())
-            {
+            if (dlg.isOk()) {
                 gameMode = dlg.getGameMode();
-            } else
-            {
+            } else {
                 ok = false;
                 pgui.showGameChooser();
             }
@@ -106,32 +88,30 @@ public class TicTacToePanel extends JPanel
 
     }
 
-    public boolean isOk()
-    {
+    public boolean isOk() {
         return ok;
     }
 
-    public boolean isMyTurn()
-    {
+    public Color getSpieler1() {
+        return spieler1;
+    }
+
+    public boolean isMyTurn() {
         return myTurn;
     }
 
-    public void setMyTurn(boolean myTurn)
-    {
+    public void setMyTurn(boolean myTurn) {
         this.myTurn = myTurn;
-        if (!gameOver)
-        {
-            if (tttg.isOver())
-            {
-                String gewinner = tttg.getSieger() == 0 ? "X" : "O";
+        if (!gameOver) {
+            if (tttg.isOver()) {
+                String gewinner = tttg.getWinner() == 0 ? "X" : "O";
                 JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                 beginner *= -1;
 
                 changeLabelState(false);
                 gameOver = true;
 
-            } else if (tttg.isUnendschieden())
-            {
+            } else if (tttg.isDraw()) {
                 JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                 beginner *= -1;
 
@@ -142,33 +122,31 @@ public class TicTacToePanel extends JPanel
         }
     }
 
-    private TicTacToePanel getInstance()
-    {
+    private TicTacToePanel getInstance() {
         return this;
     }
 
-    public void sendGoHome()
-    {
-        if (gc.isConnected())
-        {
-            try
-            {
-                if (gameMode == 2)
-                {
+    /**
+     * Sends the so called GoHome String to the server
+     */
+    public void sendGoHome() {
+        if (gc.isConnected()) {
+            try {
+                if (gameMode == 2) {
                     gc.sendObject("##GO##HOME##");
                 }
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex)
-            {
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    private void initComponents()
-    {
+    /**
+     * This method is called from within the constructor to initialize the form.
+     */
+    private void initComponents() {
         this.setLayout(new GridLayout(3, 3, 1, 1));
 
         this.setBorder(new TitledBorder(new EmptyBorder(5, 0, 0, 0), "Tic Tac Toe", TitledBorder.CENTER, TitledBorder.ABOVE_TOP));
@@ -178,54 +156,43 @@ public class TicTacToePanel extends JPanel
         miRestartOfflineMultiplayer = new JMenuItem("New Offline Multiplayer Game");
         miRestartOnlineMultiplayer = new JMenuItem("New Online Multiplayer Game");
 
-        miRestartSinglePlayer.addActionListener(new ActionListener()
-        {
+        miRestartSinglePlayer.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 sendGoHome();
                 gameMode = 0;
                 restart();
             }
         });
 
-        miRestartOfflineMultiplayer.addActionListener(new ActionListener()
-        {
+        miRestartOfflineMultiplayer.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 sendGoHome();
                 gameMode = 1;
                 restart();
             }
         });
 
-        miRestartOnlineMultiplayer.addActionListener(new ActionListener()
-        {
+        miRestartOnlineMultiplayer.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (gc.isConnected())
-                {
-                    try
-                    {
+            public void actionPerformed(ActionEvent e) {
+                if (gc.isConnected()) {
+                    try {
                         sendGoHome();
                         gc.sendObject("TicTacToe");
                         gc.newTicTacToeThread(labels, tttg, getInstance());
                         gameMode = 2;
                         restart();
-                    } catch (IOException ex)
-                    {
+                    } catch (IOException ex) {
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ClassNotFoundException ex)
-                    {
+                    } catch (ClassNotFoundException ex) {
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else
-                {
+                } else {
                     JOptionPane.showMessageDialog(getInstance(), "Not Connected");
                 }
             }
@@ -235,27 +202,21 @@ public class TicTacToePanel extends JPanel
         popupmenu.add(miRestartOfflineMultiplayer);
         popupmenu.add(miRestartOnlineMultiplayer);
 
-        for (int i = 0; i < 9; i++)
-        {
+        for (int i = 0; i < 9; i++) {
             JLabel lb = new JLabel();
             lb.setOpaque(true);
             lb.setBackground(Color.black);
             lb.setFont(new Font("Courier New", Font.BOLD, 75));
             lb.setHorizontalAlignment(JLabel.CENTER);
             lb.setComponentPopupMenu(popupmenu);
-            lb.addMouseListener(new MouseAdapter()
-            {
+            lb.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e)
-                {
-                    try
-                    {
+                public void mouseClicked(MouseEvent e) {
+                    try {
                         onMouseClicked(e);
-                    } catch (IOException ex)
-                    {
+                    } catch (IOException ex) {
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ClassNotFoundException ex)
-                    {
+                    } catch (ClassNotFoundException ex) {
                         Logger.getLogger(TicTacToePanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -266,67 +227,65 @@ public class TicTacToePanel extends JPanel
         }
     }
 
-    public void changeLabelState(boolean b)
-    {
-        for (JLabel label : labels)
-        {
-            label.setEnabled(b);
+    /**
+     * Methode changes the enabled parameter of the labels;
+     *
+     * @param enable a <code> boolean </code> which has to be <code> true
+     * </code> for enabeling the labels
+     */
+    public void changeLabelState(boolean enable) {
+        for (JLabel label : labels) {
+            label.setEnabled(enable);
         }
     }
 
-    private void onMouseClicked(MouseEvent e) throws IOException, ClassNotFoundException
-    {
-        if (!gameOver)
-        {
-            if (gameMode == 0)
-            {
+    /**
+     *
+     * @param e
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void onMouseClicked(MouseEvent e) throws IOException, ClassNotFoundException {
+        if (!gameOver) {
+            if (gameMode == 0) {
                 Object obj = e.getSource();
-                if (obj instanceof JLabel)
-                {
+                if (obj instanceof JLabel) {
                     JLabel lb = (JLabel) obj;
-                    if (lb.getBackground().equals(Color.black))
-                    {
+                    if (lb.getBackground().equals(Color.black)) {
                         lb.setBackground(spieler2);
                         lb.setText("X");
 
-                        if (tttg.isOver())
-                        {
-                            String gewinner = tttg.getSieger() == 0 ? "X" : "O";
+                        if (tttg.isOver()) {
+                            String gewinner = tttg.getWinner() == 0 ? "X" : "O";
                             JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                             beginner *= -1;
 
                             changeLabelState(false);
                             gameOver = true;
 
-                        } else
-                        {
-                            if (tttg.isUnendschieden())
-                            {
+                        } else {
+                            if (tttg.isDraw()) {
                                 JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                                 beginner *= -1;
 
                                 changeLabelState(false);
                                 gameOver = true;
 
-                            } else
-                            {
+                            } else {
                                 player *= -1;
                                 lb = tttki.nextStep(labels);
                                 lb.setBackground(spieler1);
                                 lb.setText("O");
-                                if (tttg.isOver())
-                                {
-                                    String gewinner = tttg.getSieger() == 0 ? "X" : "O";
+                                if (tttg.isOver()) {
+                                    String gewinner = tttg.getWinner() == 0 ? "X" : "O";
                                     JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                                     beginner *= -1;
 
                                     changeLabelState(false);
                                     gameOver = true;
 
-                                } else
-                                {
-                                    if (tttg.isUnendschieden())
-                                    {
+                                } else {
+                                    if (tttg.isDraw()) {
                                         JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                                         beginner *= -1;
 
@@ -340,37 +299,29 @@ public class TicTacToePanel extends JPanel
                         }
                     }
                 }
-            } else if (gameMode == 1)
-            {
+            } else if (gameMode == 1) {
                 Object obj = e.getSource();
-                if (obj instanceof JLabel)
-                {
+                if (obj instanceof JLabel) {
                     JLabel lb = (JLabel) obj;
-                    if (lb.getBackground().equals(Color.black))
-                    {
-                        if (player == 1)
-                        {
+                    if (lb.getBackground().equals(Color.black)) {
+                        if (player == 1) {
                             lb.setBackground(spieler2);
                             lb.setText("X");
-                        } else
-                        {
+                        } else {
                             lb.setBackground(spieler1);
                             lb.setText("O");
                         }
 
-                        if (tttg.isOver())
-                        {
-                            String gewinner = tttg.getSieger() == 0 ? "X" : "O";
+                        if (tttg.isOver()) {
+                            String gewinner = tttg.getWinner() == 0 ? "X" : "O";
                             JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                             beginner *= -1;
 
                             changeLabelState(false);
                             gameOver = true;
 
-                        } else
-                        {
-                            if (tttg.isUnendschieden())
-                            {
+                        } else {
+                            if (tttg.isDraw()) {
                                 JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                                 beginner *= -1;
 
@@ -382,31 +333,26 @@ public class TicTacToePanel extends JPanel
                         player *= -1;
                     }
                 }
-            } else if (gameMode == 2)
-            {
-                if (myTurn)
-                {
+            } else if (gameMode == 2) {
+                if (myTurn) {
                     Object obj = e.getSource();
                     JLabel lb = (JLabel) obj;
-                    if (lb.getBackground().equals(Color.black))
-                    {
+                    if (lb.getBackground().equals(Color.black)) {
 
                         lb.setBackground(spieler2);
                         lb.setText("X");
                         gc.sendObject(lb.getName());
 
                         myTurn = false;
-                        if (tttg.isOver())
-                        {
-                            String gewinner = tttg.getSieger() == 0 ? "X" : "O";
+                        if (tttg.isOver()) {
+                            String gewinner = tttg.getWinner() == 0 ? "X" : "O";
                             JOptionPane.showMessageDialog(this, String.format("%s hat gewonnen!", gewinner));
                             beginner *= -1;
 
                             changeLabelState(false);
                             gameOver = true;
 
-                        } else if (tttg.isUnendschieden())
-                        {
+                        } else if (tttg.isDraw()) {
                             JOptionPane.showMessageDialog(this, String.format("Unendschieden"));
                             beginner *= -1;
 
@@ -420,18 +366,17 @@ public class TicTacToePanel extends JPanel
         }
     }
 
-    private void restart()
-    {
-        for (JLabel label : labels)
-        {
+    /**
+     * Restarts the game
+     */
+    private void restart() {
+        for (JLabel label : labels) {
             label.setBackground(Color.black);
             label.setText("");
         }
         player = beginner;
-        if (gameMode == 0)
-        {
-            if (beginner == -1)
-            {
+        if (gameMode == 0) {
+            if (beginner == -1) {
                 JLabel lb = tttki.nextStep(labels);
                 lb.setBackground(spieler1);
                 lb.setText("O");
