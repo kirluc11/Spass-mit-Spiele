@@ -12,10 +12,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
@@ -23,7 +20,6 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 /**
  * @since 12.06.2015
@@ -55,21 +51,18 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
     private boolean start = false;
 
-    private Timer addTimer = new Timer(10, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-        }
-    });
-
     /**
-     * Creates new form BoxJumperGUI
+     * Creates new form BoxJumperPanel
      */
     public BoxJumperPanel() {
         initComponents();
         this.setComponentPopupMenu(jPopupMenu1);
     }
 
+
+    /**
+     * Restarts the game
+     */
     public void restart() {
         start = true;
         score = 0;
@@ -77,6 +70,9 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         thread.start();
     }
     
+    /**
+     * Game thread gets interrupted
+     */
     public void killThread()
     {
         thread.interrupt();
@@ -150,12 +146,18 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         g.fill(boxJumper);
     }
 
+    /**
+     * Makes the boxjumper jump
+     */
     public void jump() {
         if (!jump) {
             jump = true;
         }
     }
 
+    /**
+     * Adds a new Box which appears on the right side of the window
+     */
     public void addBox() {
         Box box = new Box();
         box.setFrame(this.getWidth(), h * (DIV - POSITION_OF_GROUND - 1), w, h);
@@ -251,6 +253,11 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         restart();
     }//GEN-LAST:event_onMiRestart
 
+    /**
+     * Main method to start game isolated from the whole project
+     * 
+     * @param args 
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setSize(800, 800);
