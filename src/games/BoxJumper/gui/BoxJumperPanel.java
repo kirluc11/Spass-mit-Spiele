@@ -123,22 +123,22 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         }
 
         try {
-                int o = 0;
-                for (int i = boxes.size() - 1; i >= 0; i--) {
-                    Box box = boxes.get(i);
-                    box.move(w / 4);
-                    g.setColor(box.getColor());
-                    g.fill(box);
-                    if (box.getX() < -w * 2) {
-                        boxes.remove(box);
-                        score++;
-                    } else if (box.intersects(boxJumper) && !over) {
-                        over = true;
-                        thread.interrupt();
-                        JOptionPane.showMessageDialog(this, "Game over", "Game Over", JOptionPane.ERROR_MESSAGE);
-                        break;
-                    }
+            int o = 0;
+            for (int i = boxes.size() - 1; i >= 0; i--) {
+                Box box = boxes.get(i);
+                box.move(w / 4);
+                g.setColor(box.getColor());
+                g.fill(box);
+                if (box.getX() < -w * 2) {
+                    boxes.remove(box);
+                    score++;
+                } else if (box.intersects(boxJumper) && !over) {
+                    over = true;
+                    thread.interrupt();
+                    JOptionPane.showMessageDialog(this, "Game over", "Game Over", JOptionPane.ERROR_MESSAGE);
+                    break;
                 }
+            }
         } catch (ConcurrentModificationException cme) {
 
         }
@@ -177,6 +177,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         int ug = 30;
         int count = 0;
         int rn = rand.nextInt(og - ug + 1) + ug;
+        boolean wasInIf = false;
         try {
             while (!Thread.interrupted() && !over) {
                 Thread.sleep(15);
@@ -188,8 +189,11 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
                 if (count == rn) {
                     addBox();
                     rn = rand.nextInt(og - ug + 1) + ug;
-                    if (rn % 10 == 0) {
+                    if ((rn % 7 == 0 || rn % 10 == 0) && !wasInIf) {
                         rn = 12;
+                        wasInIf = true;
+                    } else {
+                        wasInIf = false;
                     }
                     count = 0;
                 }
