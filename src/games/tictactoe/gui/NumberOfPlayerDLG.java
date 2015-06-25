@@ -11,8 +11,7 @@ import javax.swing.JLabel;
  *
  * @author Lukas
  */
-public class NumberOfPlayerDLG extends javax.swing.JDialog
-{
+public class NumberOfPlayerDLG extends javax.swing.JDialog {
 
     private boolean ok = false;
     private int gameMode;
@@ -20,8 +19,7 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog
     /**
      * Creates new form AnzSpielerDLG
      */
-    public NumberOfPlayerDLG(java.awt.Frame parent, boolean modal)
-    {
+    public NumberOfPlayerDLG(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
@@ -29,20 +27,21 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog
     }
 
     /**
-     * Returns true if player chose a mode false if not
-     * @return 
+     *
+     * @return <code> ture </code> when the
+     * player has chosen a mode
      */
-    public boolean isOk()
-    {
+    public boolean isOk() {
         return ok;
     }
 
     /**
      * Returns the selected game mode
-     * @return 
+     *
+     * @return the selected game mode
+     *
      */
-    public int getGameMode()
-    {
+    public int getGameMode() {
         return gameMode;
     }
 
@@ -92,16 +91,15 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog
 
     /**
      * Sets the game mode depending on the butten he pressed
-     * @param evt 
+     *
+     * @param evt a MouseEvent
      */
     private void onMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onMouseClicked
-        if (((JLabel) evt.getSource()).getText().equals(lbSingle.getText()))
-        {
+        if (((JLabel) evt.getSource()).getText().equals(lbSingle.getText())) {
             ok = true;
             gameMode = 0;
             dispose();
-        } else if (((JLabel) evt.getSource()).getText().equals(lbMult.getText()))
-        {
+        } else if (((JLabel) evt.getSource()).getText().equals(lbMult.getText())) {
             ok = true;
             gameMode = 1;
             dispose();
