@@ -17,8 +17,10 @@ public class TicTacToeKI {
 
     /**
      * An intelligent KI made by Lukas
-     * @param labels
-     * @return 
+     *
+     * @param labels a <code> LinkedList </code> including every single <code> JLabel
+     * </code> which is used in the game.
+     * @return the <code> JLabel </code> where the O should be set next.
      */
     public JLabel nextStep(LinkedList<JLabel> labels) {
         int[] indices = new int[3];
@@ -128,8 +130,6 @@ public class TicTacToeKI {
             return labels.get(indices[0]);
         }
 
-        
-        
         a = "X";
         b = "O";
         indices[0] = 0;
@@ -235,13 +235,13 @@ public class TicTacToeKI {
         if (labels.get(indices[1]).getText().equals(a) && labels.get(indices[2]).getText().equals(a) && !labels.get(indices[0]).getText().equals(b)) {
             return labels.get(indices[0]);
         }
-        
+
         Random rand = new Random();
         int zz = 0;
         do {
             zz = rand.nextInt(9);
         } while (!labels.get(zz).getBackground().equals(Color.black));
-        
+
         return labels.get(zz);
     }
 }
