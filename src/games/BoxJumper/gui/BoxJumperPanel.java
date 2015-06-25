@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * Main game <code> JPanel </code> which implements everthing
- * which is necessary for playing BoxJumper
+ * Main game <code> JPanel </code> which implements everthing which is necessary
+ * for playing BoxJumper
  *
  * @since 12.06.2015
  * @author Lukas Kirchsteiger
@@ -42,7 +42,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     private double h;
 
     private LinkedList<Box> boxes = new LinkedList<>();
-    
+
     private boolean jump;
     private boolean up = true;
     private int heightOfJump = 0;
@@ -53,6 +53,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     private Random rand = new Random();
 
     private boolean start = false;
+    private boolean over = false;
 
     /**
      * Creates new form BoxJumperPanel
@@ -62,22 +63,24 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         this.setComponentPopupMenu(jPopupMenu1);
     }
 
-
     /**
      * Restarts the game
      */
     public void restart() {
         start = true;
+        over = false;
+        jump = false;
+        heightOfJump = 0;
+        up = true;
         score = 0;
         thread = new Thread(this);
         thread.start();
     }
-    
+
     /**
      * Game thread gets interrupted
      */
-    public void killThread()
-    {
+    public void killThread() {
         thread.interrupt();
     }
 
@@ -92,7 +95,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         double jumpMultiplier = h / 7;
 
         g.setColor(groundColor);
-        g.fill(new Rectangle2D.Double(0, h * (DIV - POSITION_OF_GROUND), this.getWidth(), POSITION_OF_GROUND*h+h));
+        g.fill(new Rectangle2D.Double(0, h * (DIV - POSITION_OF_GROUND), this.getWidth(), POSITION_OF_GROUND * h + h));
 
         if (start) {
             Box startBox = new Box();
@@ -105,7 +108,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         if (jump) {
             if (up) {
                 heightOfJump--;
-                
+
             } else {
                 heightOfJump++;
             }
@@ -120,26 +123,27 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         }
 
         try {
-            for (int i = boxes.size()-1; i >= 0; i--) {
-                Box box = boxes.get(i);
-                box.move(w / 4);
-                g.setColor(box.getColor());
-                g.fill(box);
-                if (box.getX() < -w * 2) {
-                    boxes.remove(box);
-                    score++;
-                } else if (box.intersects(boxJumper)) {
-                    thread.interrupt();
-                    JOptionPane.showMessageDialog(this, "Game over", "Game Over", JOptionPane.ERROR_MESSAGE);
-                    break;
+                int o = 0;
+                for (int i = boxes.size() - 1; i >= 0; i--) {
+                    Box box = boxes.get(i);
+                    box.move(w / 4);
+                    g.setColor(box.getColor());
+                    g.fill(box);
+                    if (box.getX() < -w * 2) {
+                        boxes.remove(box);
+                        score++;
+                    } else if (box.intersects(boxJumper) && !over) {
+                        over = true;
+                        thread.interrupt();
+                        JOptionPane.showMessageDialog(this, "Game over", "Game Over", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
                 }
-            }
         } catch (ConcurrentModificationException cme) {
 
         }
 
         boxJumper.setFrame(w * 2, h * (DIV - POSITION_OF_GROUND - 1) + jumpMultiplier * heightOfJump, w, h);
-
 
         g.setFont(new Font("Open Sans Extrabold", Font.PLAIN, 170));
         g.setColor(groundColor);
@@ -174,7 +178,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         int count = 0;
         int rn = rand.nextInt(og - ug + 1) + ug;
         try {
-            while (!Thread.interrupted()) {
+            while (!Thread.interrupted() && !over) {
                 Thread.sleep(15);
                 count++;
                 repaint();
@@ -258,8 +262,8 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
 
     /**
      * Main method to start game isolated from the whole project
-     * 
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
