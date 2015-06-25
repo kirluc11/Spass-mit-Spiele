@@ -18,7 +18,7 @@ public class NumberOfPlayerOnlineDLG extends javax.swing.JDialog
     private int gameMode;
 
     /**
-     * Creates new form AnzSpielerDLG
+     * Creates new form NumberOfPlayerOnlineDLG
      */
     public NumberOfPlayerOnlineDLG(java.awt.Frame parent, boolean modal)
     {
