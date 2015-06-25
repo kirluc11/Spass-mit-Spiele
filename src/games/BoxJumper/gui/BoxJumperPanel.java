@@ -22,6 +22,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
+ * Main game <code> JPanel </code> which implements everthing
+ * which is necessary for playing BoxJumper
+ *
  * @since 12.06.2015
  * @author Lukas Kirchsteiger
  */

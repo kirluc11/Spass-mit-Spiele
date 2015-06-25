@@ -10,7 +10,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
 /**
- *
+ * Box to jump over in BoxJumper
+ * 
+ * @since 12.06.2015
  * @author Churchy
  */
 public class Box extends Rectangle2D.Double {

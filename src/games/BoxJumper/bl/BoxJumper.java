@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
 /**
+ * BoxJumper for the same called game BoxJumper
+ * 
  * @since 12.06.2015
  * @author Lukas Kirchsteiger
  */
