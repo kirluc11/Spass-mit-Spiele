@@ -16,6 +16,11 @@ public class BoxJumper extends Rectangle2D.Double{
     
     private final Color color = Color.ORANGE;
 
+    /**
+     * Returns color of the boxjumper
+     * 
+     * @return color
+     */
     public Color getColor() {
         return color;
     }
