@@ -8,7 +8,7 @@ package games.tictactoe.gui;
 import javax.swing.JLabel;
 
 /**
- *
+ * @since 16.04.2015
  * @author Lukas
  */
 public class NumberOfPlayerDLG extends javax.swing.JDialog {
@@ -17,7 +17,7 @@ public class NumberOfPlayerDLG extends javax.swing.JDialog {
     private int gameMode;
 
     /**
-     * Creates new form AnzSpielerDLG
+     * Creates new form NumberOfPlayerDLG
      */
     public NumberOfPlayerDLG(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
