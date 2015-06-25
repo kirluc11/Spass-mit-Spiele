@@ -9,13 +9,15 @@ import java.util.LinkedList;
 import javax.swing.JLabel;
 
 /**
- *
+ * 
+ * 
+ * @since 16.04.2015
  * @author Lukas
  */
 public class TicTacToeGewinnabfrage {
 
     private LinkedList<JLabel> labels;
-    private int sieger;
+    private int winner;
 
     public TicTacToeGewinnabfrage(LinkedList<JLabel> labels) {
         this.labels = labels;
@@ -23,11 +25,11 @@ public class TicTacToeGewinnabfrage {
     
     /**
      * Checks if the game is over
-     * @return 
+     * @return <code> boolean </code> which is true when the game is over
      */
     public boolean isOver() {
         String text = "X";
-        sieger = 0;
+        winner = 0;
         if (labels.get(0).getText().equals(text) && labels.get(1).getText().equals(text) && labels.get(2).getText().equals(text)) {
             return true;
         }
@@ -54,7 +56,7 @@ public class TicTacToeGewinnabfrage {
         }
 
         text = "O";
-        sieger = 1;
+        winner = 1;
         if (labels.get(0).getText().equals(text) && labels.get(1).getText().equals(text) && labels.get(2).getText().equals(text)) {
             return true;
         }
@@ -85,9 +87,9 @@ public class TicTacToeGewinnabfrage {
     
     /**
      * Checks if the game is draw
-     * @return 
+     * @return a <code> boolean </code> which is true when the game is draw
      */
-    public boolean isUnendschieden() {
+    public boolean isDraw() {
         for (JLabel jLabel : labels) {
             if (jLabel.getBackground() == Color.black) {
                 return false;
@@ -98,10 +100,10 @@ public class TicTacToeGewinnabfrage {
     
     /**
      * Returns the winner of the game
-     * @return 
+     * @return a <code> int </code> which is 0 when X is the winner
      */
-    public int getSieger()
+    public int getWinner()
     {
-        return sieger;
+        return winner;
     }
 }
