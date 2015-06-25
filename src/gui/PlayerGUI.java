@@ -42,6 +42,9 @@ public class PlayerGUI extends javax.swing.JFrame
         showGameChooser();
     }
 
+    /**
+     * Changes actual panel to GameChooserPanel
+     */
     public void showGameChooser()
     {
         GameChooserPanel gcp = new GameChooserPanel(pnGame, gClient, this);
@@ -51,6 +54,10 @@ public class PlayerGUI extends javax.swing.JFrame
         pnGame.updateUI();
     }
 
+    /**
+     * Sets the actual panel
+     * @param aktPanel 
+     */
     public void setAktPanel(JPanel aktPanel)
     {
         this.aktPanel = aktPanel;
@@ -137,6 +144,10 @@ public class PlayerGUI extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Event of the HomeButton which leads you back to start page
+     * @param evt 
+     */
     private void onHomeBT(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onHomeBT
     {//GEN-HEADEREND:event_onHomeBT
         if (!(aktPanel instanceof GameChooserPanel))
@@ -172,6 +183,10 @@ public class PlayerGUI extends javax.swing.JFrame
 
     }//GEN-LAST:event_onHomeBT
 
+    /**
+     * Connects or Disconnects the player from the server
+     * @param evt 
+     */
     private void onDisConnect(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onDisConnect
     {//GEN-HEADEREND:event_onDisConnect
         try
@@ -249,6 +264,10 @@ public class PlayerGUI extends javax.swing.JFrame
         }
     }//GEN-LAST:event_onDisConnect
 
+    /**
+     * Window Closing event which disconnects if player is connected
+     * @param evt 
+     */
     private void onClosing(java.awt.event.WindowEvent evt)//GEN-FIRST:event_onClosing
     {//GEN-HEADEREND:event_onClosing
        if(gClient.isConnected())

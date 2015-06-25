@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
@@ -42,7 +43,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     private double h;
 
     private LinkedList<Box> boxes = new LinkedList<>();
-
+    
     private boolean jump;
     private boolean up = true;
     private int heightOfJump = 0;
@@ -105,6 +106,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         if (jump) {
             if (up) {
                 heightOfJump--;
+                
             } else {
                 heightOfJump++;
             }
@@ -138,6 +140,7 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
         }
 
         boxJumper.setFrame(w * 2, h * (DIV - POSITION_OF_GROUND - 1) + jumpMultiplier * heightOfJump, w, h);
+
 
         g.setFont(new Font("Open Sans Extrabold", Font.PLAIN, 170));
         g.setColor(groundColor);
@@ -206,6 +209,18 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
             }
         });
         jPopupMenu1.add(miRestart);
+        
+        miHowTo = new javax.swing.JMenuItem();
+
+        miHowTo.setText("How To");
+        miHowTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JOptionPane.showMessageDialog(null, "The aim of the game is to jump over "
+                        + "as much blocks as you can\n"
+                        + "Jump: W, VK_UP");
+            }
+        });
+        jPopupMenu1.add(miHowTo);
 
         setBackground(new java.awt.Color(0, 0, 0));
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -266,5 +281,6 @@ public class BoxJumperPanel extends javax.swing.JPanel implements Runnable {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JMenuItem miRestart;
+    private javax.swing.JMenuItem miHowTo;
     // End of variables declaration//GEN-END:variables
 }

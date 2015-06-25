@@ -20,6 +20,11 @@ public class SnakePart extends Rectangle2D.Double implements Directions {
     double h;
     Direction dir;
 
+    /**
+     * Calculates the x position where the next part needs to be set
+     * @param part
+     * @return 
+     */
     public static double calcNextPartX(SnakePart part) {
         if (part.getDir() == Direction.UP || part.getDir() == Direction.DOWN) {
             return part.getX();
@@ -33,6 +38,11 @@ public class SnakePart extends Rectangle2D.Double implements Directions {
         return -1;
     }
 
+    /**
+     * Calculates the y position where the next part needs to be set
+     * @param part
+     * @return 
+     */
     public static double calcNextPartY(SnakePart part) {
         if (part.getDir() == Direction.LEFT || part.getDir() == Direction.RIGHT) {
             return part.getY();
@@ -46,6 +56,14 @@ public class SnakePart extends Rectangle2D.Double implements Directions {
         return -1;
     }
 
+    /**
+     * Params are direction, position and size of the snake part
+     * @param dir
+     * @param x
+     * @param y
+     * @param w
+     * @param h 
+     */
     public SnakePart(Direction dir, double x, double y, double w, double h) {
         super(x, y, w, h);
         this.w = w;

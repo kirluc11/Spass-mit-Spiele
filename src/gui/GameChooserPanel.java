@@ -55,13 +55,9 @@ public class GameChooserPanel extends javax.swing.JPanel
     }
 
     /**
-     * Creates new form GameChooserPanel
+     * Adds the games to allGames HashMap
+     * @throws IOException 
      */
-    public GameChooserPanel()
-    {
-
-    }
-
     public void gameAdding() throws IOException
     {
         String path = System.getProperty("user.dir")
@@ -105,6 +101,10 @@ public class GameChooserPanel extends javax.swing.JPanel
         }
     }
 
+    /**
+     * Updates the panel and informations in the PlayerGUI
+     * @param aktGame 
+     */
     public void aktualisierePaGame(JPanel aktGame)
     {
         pgui.setAktPanel(aktGame);
@@ -113,6 +113,12 @@ public class GameChooserPanel extends javax.swing.JPanel
         paGame.getRootPane().updateUI();
     }
 
+    /**
+     * Changes the actual game
+     * @param name
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     public void changeGame(String name) throws IOException, ClassNotFoundException
     {
         paGame.removeAll();

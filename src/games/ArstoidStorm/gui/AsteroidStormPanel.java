@@ -9,12 +9,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.border.LineBorder;
 
 /**
  * Main panel of the game Asteroid Storm
- * @author Marcel
+ * @author Marcel, Lukas
  */
 public class AsteroidStormPanel extends javax.swing.JPanel {
 
@@ -59,8 +61,9 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     private void initComponents() {
         
-        pmRestart = new javax.swing.JPopupMenu();
+        pmMyMenu = new javax.swing.JPopupMenu();
         miRestart = new javax.swing.JMenuItem();
+        miHowTo = new javax.swing.JMenuItem();
 
         miRestart.setText("Restart");
         miRestart.addActionListener(new java.awt.event.ActionListener() {
@@ -68,11 +71,25 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
                 onRestart(evt);
             }
         });
-        pmRestart.add(miRestart);
+        pmMyMenu.add(miRestart);
+        
+        miHowTo.setText("How to");
+        miHowTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JOptionPane.showMessageDialog(null, "You are the white block and your "
+                        + "goal is to stay alive as long as you can \n"
+                        + "Move: \n"
+                        + "UP: W, VK_UP\n"
+                        + "RIGHT: D, VK_RIGHT\n"
+                        + "LEFT: A, VK_LEFT\n"
+                        + "DOWN: S, VK_DOWN\n");
+            }
+        });
+        pmMyMenu.add(miHowTo);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createTitledBorder("AsteroidStorm"));
-        setComponentPopupMenu(pmRestart);
+        setComponentPopupMenu(pmMyMenu);
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 onMove(evt);
@@ -87,6 +104,21 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
         this.setLayout(new BorderLayout());
         this.add(lbScore,BorderLayout.NORTH);
 
+    }
+    
+    public void restartGame()
+    {
+        thread.interrupt();
+        asip.setAus(false);
+        numberX = 0;
+        numberY = 0;
+        asip.setNumberX(numberX);
+        asip.setNumberY(numberY);
+        asip.setCoordY(0);
+        asip.setSpeed(5);
+        asip.setScore(0);
+        lbScore.setText("0");
+        startGame();
     }
 
     /**
@@ -126,23 +158,14 @@ public class AsteroidStormPanel extends javax.swing.JPanel {
      * Restarts the whole game
      * @param evt 
      */
-    private void onRestart(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onRestart
-    {//GEN-HEADEREND:event_onRestart
+    private void onRestart(java.awt.event.ActionEvent evt)
+    {
+        restartGame();
+    }
 
-        thread.interrupt();
-        asip.setAus(false);
-        numberX = 0;
-        numberY = 0;
-        asip.setNumberX(numberX);
-        asip.setNumberY(numberY);
-        asip.setCoordY(0);
-        asip.setSpeed(5);
-        startGame();
-    }//GEN-LAST:event_onRestart
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem miRestart;
-    private javax.swing.JPopupMenu pmRestart;
+    private JMenuItem miHowTo;
+    private JMenuItem miRestart;
+    private JPopupMenu pmMyMenu;
     private JLabel lbScore;
-    // End of variables declaration//GEN-END:variables
+    
 }

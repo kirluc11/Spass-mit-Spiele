@@ -33,7 +33,7 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
     private int score=0;
 
     /**
-     * Returns bool If the game has ended true else false
+     * Returns bool variable if the game has ended true else false
      *
      * @return
      */
@@ -42,6 +42,20 @@ public class AsteroidStormInnerPanel extends JPanel implements Runnable
         return aus;
     }
 
+    /**
+     * Sets the score of the player
+     * @param score 
+     */
+    public void setScore(int score)
+    {
+        this.score = score;
+    }
+    
+    
+
+    /**
+     * Increases the score by 1 and sets the text of the Scorepanel
+     */
    public void addScore()
    {
        score++;

@@ -123,6 +123,7 @@ public class GameServer
         }
     }
 
+    
     class ServerThread extends Thread
     {
 
@@ -132,7 +133,7 @@ public class GameServer
         }
 
         /**
-         * Is waiting for clients to connect Adds client to HomeThread if
+         * Is waiting for clients to connect adds client to HomeThread if
          * connect
          */
         @Override

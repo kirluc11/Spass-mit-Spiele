@@ -28,11 +28,19 @@ public class NumberOfPlayerOnlineDLG extends javax.swing.JDialog
         this.setVisible(true);
     }
 
+    /**
+     * Returns true if player chose a mode false if not
+     * @return 
+     */
     public boolean isOk()
     {
         return ok;
     }
 
+    /**
+     * Returns the selected game mode
+     * @return 
+     */
     public int getGameMode()
     {
         return gameMode;
@@ -100,6 +108,10 @@ public class NumberOfPlayerOnlineDLG extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Sets the game mode depending on the butten he pressed
+     * @param evt 
+     */
     private void onMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onMouseClicked
         if (((JLabel) evt.getSource()).getText().equals(lbSingle.getText()))
         {

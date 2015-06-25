@@ -30,17 +30,29 @@ public class InputWordDLG extends javax.swing.JDialog
         
 
     }
-
+    /**
+     * Returns true if the player entered a accepted string else false
+     * @return 
+     */
     public boolean isOk()
     {
         return ok;
     }
-
+    
+    /**
+     * Returns the entered word
+     * @return 
+     */
     public String getWord()
     {
         return word;
     }
 
+    /**
+     * Checks if the text is a accepted word
+     * @param text
+     * @return 
+     */
     public boolean checkWord(String text)
     {
         boolean accepted = true;
@@ -104,6 +116,11 @@ public class InputWordDLG extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Funktion of the choose button
+     * Reads the word and sets the word if the text is valid
+     * @param evt 
+     */
     private void onChoose(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onChoose
     {//GEN-HEADEREND:event_onChoose
         String text = tfInput.getText();
@@ -125,6 +142,10 @@ public class InputWordDLG extends javax.swing.JDialog
         }
     }//GEN-LAST:event_onChoose
 
+    /**
+     * Cancels the dialog
+     * @param evt 
+     */
     private void onCancel(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onCancel
     {//GEN-HEADEREND:event_onCancel
         this.dispose();

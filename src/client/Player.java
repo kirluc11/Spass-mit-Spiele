@@ -56,6 +56,11 @@ public class Player
         this.nickname = nickname;
     }
     
+    
+    /**
+     * Closes the ObjectOutputStream and the ObjectInputStream
+     * @throws IOException 
+     */
     public void closePlayer() throws IOException
     {
         oos.close();

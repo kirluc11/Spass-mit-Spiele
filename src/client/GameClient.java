@@ -59,9 +59,10 @@ public class GameClient
 
     /**
      * Sets the nickname of the client and writes it to the server
+     * if nickname isn't available retry another one
      *
-     * @param nickname
      * @throws IOException
+     * @throws java.lang.ClassNotFoundException
      */
     public boolean setNickname() throws IOException, ClassNotFoundException
     {

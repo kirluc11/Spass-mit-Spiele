@@ -15,6 +15,11 @@ import javax.swing.JLabel;
  */
 public class TicTacToeKI {
 
+    /**
+     * An intelligent KI made by Lukas
+     * @param labels
+     * @return 
+     */
     public JLabel nextStep(LinkedList<JLabel> labels) {
         int[] indices = new int[3];
         String a = "O";
