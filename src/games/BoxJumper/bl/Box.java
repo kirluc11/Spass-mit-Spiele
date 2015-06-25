@@ -17,10 +17,19 @@ public class Box extends Rectangle2D.Double {
 
     private final Color color = Color.RED;
 
+    /**
+     * Returns the color of a box
+     * 
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Makes the box moving to the left
+     * 
+     * @param distance Number of pixles the box should move
+     */
     public void move(double distance) {
         this.x -= distance;
     }
