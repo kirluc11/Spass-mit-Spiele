@@ -13,7 +13,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
+ * The food for the snake
  *
+ * @since 30.04.2015
  * @author Lukas
  */
 public class SnakeFood extends Ellipse2D.Double {
@@ -21,21 +23,20 @@ public class SnakeFood extends Ellipse2D.Double {
     Color color = Color.BLUE;
     double w;
     double h;
-    
+
     private String path = System.getProperty("user.dir")
-                + File.separator + "src"
-                + File.separator + "res"
-                + File.separator + "pictures";
+            + File.separator + "src"
+            + File.separator + "res"
+            + File.separator + "pictures";
 
     Image img;
 
     /**
-     * Params are position and size of the food
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @throws IOException 
+     * @param x a <code> double </code> which is the x coordinate of the food
+     * @param y a <code> double </code> which is the y coordinate of the food
+     * @param w a <code> double </code> which is the width of the food
+     * @param h a <code> double </code> which is the height of the food
+     * @throws IOException
      */
     public SnakeFood(double x, double y, double w, double h) throws IOException {
         super(x, y, w, h);
@@ -44,18 +45,19 @@ public class SnakeFood extends Ellipse2D.Double {
         this.h = h;
     }
 
-    
     /**
      * Returns the color of the food
-     * @return 
+     *
+     * @return the <code> Color </code> of the food
      */
     public Color getColor() {
         return color;
     }
 
     /**
-     * Returns the selected image
-     * @return 
+     * Returns the selected image for the food
+     *
+     * @return the <code> Image </code> of the food
      */
     public Image getImg() {
         return img;
@@ -63,7 +65,8 @@ public class SnakeFood extends Ellipse2D.Double {
 
     /**
      * Sets the selected image
-     * @param img 
+     *
+     * @param img a <code> Image </code> for the food
      */
     public void setImg(Image img) {
         this.img = img;

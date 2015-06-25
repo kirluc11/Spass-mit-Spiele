@@ -6,11 +6,12 @@
 package games.Snake.bl;
 
 import java.awt.Color;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 /**
+ * The food for the snake
  *
+ * @since 30.04.2015
  * @author Lukas
  */
 public class SnakePart extends Rectangle2D.Double implements Directions {
@@ -21,9 +22,11 @@ public class SnakePart extends Rectangle2D.Double implements Directions {
     Direction dir;
 
     /**
-     * Calculates the x position where the next part needs to be set
-     * @param part
-     * @return 
+     * Calculates the x coordinate where the next part needs to be set
+     *
+     * @param part the last <code> SnakePart </code> of the <code> Snake </code>
+     * @return a <code> double </code> which is the x coordinate for a new <code> SnakePart
+     * </code>
      */
     public static double calcNextPartX(SnakePart part) {
         if (part.getDir() == Direction.UP || part.getDir() == Direction.DOWN) {
@@ -39,9 +42,11 @@ public class SnakePart extends Rectangle2D.Double implements Directions {
     }
 
     /**
-     * Calculates the y position where the next part needs to be set
-     * @param part
-     * @return 
+     * Calculates the y coordinate where the next part needs to be set
+     *
+     * @param part the last <code> SnakePart </code> of the <code> Snake </code>
+     * @return a <code> double </code> which is the y coordinate for a new <code> SnakePart
+     * </code>
      */
     public static double calcNextPartY(SnakePart part) {
         if (part.getDir() == Direction.LEFT || part.getDir() == Direction.RIGHT) {
@@ -57,12 +62,15 @@ public class SnakePart extends Rectangle2D.Double implements Directions {
     }
 
     /**
-     * Params are direction, position and size of the snake part
-     * @param dir
-     * @param x
-     * @param y
-     * @param w
-     * @param h 
+     * Constructor for <code> SnakePart </code>
+     *
+     * @param dir is the <code> Direction </code> in which the <code> SnakePart
+     * </code> has to move
+     * @param x a <code> double </code> which is the x coordinate of the food
+     * @param y a <code> double </code> which is the y coordinate of the food
+     * @param w a <code> double </code> which is the width of the food
+     * @param h a <code> double </code> which is the height of the food
+     * @throws IOException
      */
     public SnakePart(Direction dir, double x, double y, double w, double h) {
         super(x, y, w, h);

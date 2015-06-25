@@ -6,7 +6,9 @@
 package games.Snake.bl;
 
 /**
- *
+ * Interface including the enum with the 4 directions in which the snake can move
+ * 
+ * @since 30.04.2015
  * @author Lukas
  */
 public interface Directions {

@@ -6,17 +6,15 @@
 package games.Snake.bl;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * The snake for the game snake
+ * 
+ * @since 30.04.2015
  * @author Lukas
  */
 public class Snake implements Directions, Runnable {
@@ -41,6 +39,11 @@ public class Snake implements Directions, Runnable {
         this.windowHeight = windowHeight;
     }
 
+    /**
+     * Inits all things which are necassery for a Snake
+     * 
+     * @throws IOException 
+     */
     public void initSnake() throws IOException {
         snakeParts = new LinkedList<>();
         Random rand = new Random();
@@ -63,6 +66,11 @@ public class Snake implements Directions, Runnable {
         newFood();
     }
 
+    /**
+     * Initialices a new Food which the Snake can eat
+     * 
+     * @throws IOException 
+     */
     private void newFood() throws IOException {
         Random rand = new Random();
         int xf = 0;
@@ -74,6 +82,14 @@ public class Snake implements Directions, Runnable {
         food = new SnakeFood(xf * partWidth, yf * partHeight, partWidth, partHeight);
     }
 
+    /**
+     * Checks wheather the Food is under the Snake
+     * 
+     * @param xf a <code> int </code> to set for the x coordinate of the Food
+     * @param yf a <code> int </code> to set for the y coordinate of the Food
+     * 
+     * @return <code> ture </code> when the food is under the snake
+     */
     private boolean foodAppearsInSnake(int xf, int yf) {
         try {
             for (SnakePart snakePart : snakeParts) {
@@ -93,12 +109,22 @@ public class Snake implements Directions, Runnable {
         }
     }
 
+    /**
+     * Adds a new SnakePart at the end of the Snake
+     */
     public void addNewSnakePart() {
         SnakePart lastPart = snakeParts.getLast();
         SnakePart newPart = new SnakePart(lastPart.getDir(), SnakePart.calcNextPartX(lastPart), SnakePart.calcNextPartY(lastPart), partWidth, partHeight);
         snakeParts.add(newPart);
     }
 
+    /**
+     * Makes the snake move
+     * 
+     * @return a <code> boolean </code> which is true when the snake chrashed into itself
+     * 
+     * @throws IOException 
+     */
     public boolean move() throws IOException {
         if (snakeParts == null) {
             initSnake();
@@ -147,7 +173,7 @@ public class Snake implements Directions, Runnable {
             }
         }
 
-        if (head.atenFood(food)) {
+        if (head.eatenFood(food)) {
             addNewSnakePart();
             Thread t = new Thread(this);
             t.start();
@@ -161,6 +187,11 @@ public class Snake implements Directions, Runnable {
         return true;
     }
 
+    /**
+     * Changes direction of the snake
+     * 
+     * @param dir a <code> Direction </code> in which the snake should move
+     */
     public void changeDirection(Direction dir) {
         if (snakeParts != null) {
             SnakeHead head = (SnakeHead) snakeParts.getFirst();
@@ -185,7 +216,7 @@ public class Snake implements Directions, Runnable {
     public double getWidth() {
         return windowWidth;
     }
-
+    
     public void setWidth(double windowWidth) {
         this.windowWidth = windowWidth;
     }
@@ -214,6 +245,10 @@ public class Snake implements Directions, Runnable {
         this.food = food;
     }
 
+    /**
+     * Run method to check if the food is not under the snake in a own Thread
+     * to make the performance better
+     */
     @Override
     public void run() {
         try {
